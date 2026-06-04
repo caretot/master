@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Notes — Scientific Research</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;font-size:15px;line-height:1.6;padding:16px}
+  h1{font-size:18px;font-weight:600;margin-bottom:4px}
+  .subtitle{font-size:13px;color:#888;margin-bottom:16px}
+  .search-wrap{position:relative;margin-bottom:12px}
+  .search-wrap input{width:100%;padding:10px 14px 10px 36px;border:1px solid #e0e0e0;border-radius:10px;font-size:14px;background:#fff;outline:none;color:#1a1a1a}
+  .search-wrap input:focus{border-color:#999}
+  .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#aaa;font-size:15px;pointer-events:none}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .tab{padding:5px 12px;border:1px solid #ddd;border-radius:20px;font-size:12px;cursor:pointer;background:#fff;color:#666;user-select:none;transition:all .15s}
+  .tab.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+  .sec-label{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.06em;margin:20px 0 8px;padding-bottom:4px;border-bottom:1px solid #e8e8e8}
+  .card{border-radius:12px;margin-bottom:8px;overflow:hidden;border:1px solid #e8e8e8;background:#fff}
+  .card.dup{background:#fff5f5;border-color:#ffc8c8}
+  .card-head{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;cursor:pointer;user-select:none}
+  .card.dup .card-head{background:#fff0f0}
+  .qnum{font-size:11px;color:#aaa;padding-top:2px;min-width:26px;flex-shrink:0;font-weight:500}
+  .card.dup .qnum{color:#e07070}
+  .qtxt{font-size:14px;font-weight:500;flex:1;line-height:1.4;color:#1a1a1a}
+  .card.dup .qtxt{color:#c0392b}
+  .badge{font-size:10px;font-weight:600;background:#ffe0e0;color:#c0392b;border-radius:6px;padding:2px 7px;flex-shrink:0;margin-top:2px;border:1px solid #ffc8c8}
+  .chevron{font-size:12px;color:#bbb;padding-top:3px;flex-shrink:0;transition:transform .2s}
+  .chevron.op{transform:rotate(180deg)}
+  .card-body{display:none;padding:0 14px 14px;font-size:13.5px;color:#444;line-height:1.7;border-top:1px solid #f0f0f0}
+  .card.dup .card-body{border-top-color:#ffd5d5;color:#555}
+  .card-body.op{display:block}
+  .card-body b{color:#1a1a1a;font-weight:600}
+  .card-body ul{margin:6px 0 4px 16px}
+  .card-body li{margin-bottom:3px}
+  .ref-note{font-style:italic;color:#e07070;font-size:13px}
+  .extra{margin-top:8px;padding-top:8px;border-top:1px dashed #ffc8c8;font-size:13px;color:#555}
+  .no-results{text-align:center;color:#aaa;font-size:13px;padding:32px 0}
+  @media(max-width:400px){body{padding:12px}h1{font-size:16px}.qtxt{font-size:13.5px}}
+</style>
+</head>
+<body>
+
+<h1>Scientific Research — Exam Notes</h1>
+<p class="subtitle">44 questions · tap to expand · <span style="color:#c0392b;font-weight:500">red = repeat question</span></p>
+
+<div class="search-wrap">
+  <span class="search-icon">&#128269;</span>
+  <input id="si" type="text" placeholder="Search any keyword..." oninput="render()">
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="out"></div>
+<div class="no-results" id="nr" style="display:none">Nothing found.</div>
+
+<script>
+const D=[
+  {s:1,q:"Subject and objectives of the course",dup:false,a:`<b>Subject:</b> How scientific research is organized, planned, and conducted — from identifying a problem to presenting results.<br><b>Objectives:</b><ul><li>Teach you to identify research problems and choose the right method.</li><li>Develop logical and analytical thinking.</li><li>Prepare you to work independently in scientific fields.</li></ul><b>Key idea:</b> The course teaches you <i>how to think like a scientist</i>, not just what science is.`},
+  {s:1,q:"Methods and methodology of scientific knowledge",dup:false,a:`<b>Method</b> = a specific tool or technique used in research. Examples: observation, experiment, survey.<br><b>Methodology</b> = the full system that decides <i>which</i> methods to use, <i>why</i>, and in what order.<br><b>Analogy:</b> A method is one cooking technique (frying). Methodology is the whole recipe — why you fry first, then bake.<br><b>Key point:</b> Methodology ensures the research is consistent and scientifically valid.`},
+  {s:1,q:"Search, accumulation and processing of scientific information",dup:false,a:`<b>Search:</b> Gather from reliable sources — journals, books, databases (Scopus, Google Scholar).<br><b>Accumulation:</b> Collect and organize sources by topic, date, or relevance.<br><b>Processing:</b> Critically evaluate each source — is it accurate? Is it recent? Summarize, compare, and connect ideas.<br><b>Why it matters:</b> Proper processing avoids duplicating research that already exists and builds a solid theoretical base.`},
+  {s:1,q:"Subject and objectives of the course",dup:true,ref:"1.1",extra:"Extra detail: The course also introduces academic standards for writing and presenting research, covering both theoretical and practical aspects of scientific investigation."},
+  {s:1,q:"Methods and methodology of scientific knowledge",dup:true,ref:"1.2",extra:"Extra detail: Understanding methodology is what separates a true researcher from someone who just runs random tests. Methodology gives the research its logical backbone."},
+  {s:1,q:"Search, accumulation and processing of scientific information",dup:true,ref:"1.3",extra:"Extra detail: Not every source found online is reliable — peer-reviewed journals are far more trustworthy than random websites. Critical thinking during processing is essential."},
+  {s:2,q:"The methodological concept of the research and its main stages",dup:false,a:`Research follows a structured sequence:<ul><li><b>1. Identify the problem</b> — what gap in knowledge exists?</li><li><b>2. Form a hypothesis</b> — your proposed answer.</li><li><b>3. Choose methods</b> — how will you test it?</li><li><b>4. Collect and analyze data</b> — run experiments or gather evidence.</li><li><b>5. Draw conclusions</b> — confirm or reject the hypothesis.</li></ul><b>Important:</b> Skipping or reordering stages weakens the entire study's scientific validity.`},
+  {s:2,q:"Methodology for writing a scientific research",dup:false,a:`<b>Structure:</b> Introduction → Literature Review → Methodology → Results → Discussion → Conclusion → References.<br><b>Introduction</b> must state: the problem, aim, objectives, and novelty of the work.<br><b>Rules:</b><ul><li>Write objectively — no personal opinions.</li><li>Use precise, clear language.</li><li>Cite every borrowed idea.</li></ul><b>Gold standard:</b> A reader must be able to fully repeat your experiment using only your written methodology.`},
+  {s:2,q:"The essence of scientific research",dup:false,a:`Scientific research is a <b>systematic, objective process</b> of discovering new, verifiable knowledge.<br><b>Four must-haves:</b><ul><li><b>Systematic</b> — follows a clear plan.</li><li><b>Objective</b> — not influenced by personal opinion.</li><li><b>Reproducible</b> — someone else repeats it and gets the same result.</li><li><b>Evidence-based</b> — every claim is supported by data.</li></ul><b>Two types:</b> Fundamental (discovers new laws of nature) vs. Applied (solves a practical problem using existing knowledge).`},
+  {s:2,q:"Scientific and technical patent information",dup:false,a:`<b>Definition:</b> Official legal documents that protect inventions and describe their technical details fully.<br><b>Why researchers need it:</b><ul><li>Shows existing technologies — prevents accidental duplication.</li><li>Inspires new research directions.</li><li>Reveals the current state of technology in a field.</li></ul><b>Where to find:</b> WIPO database, Espacenet, national patent offices.`},
+  {s:2,q:"Scientific theory and methodology",dup:false,a:`<b>Scientific theory:</b> A well-tested, organized explanation of how something in nature works — built from verified facts and logical reasoning. NOT a guess.<br>Examples: Theory of evolution, theory of relativity.<br><b>Methodology's role:</b> Provides tools and procedures to test and refine theories. Without correct methodology, a theory cannot be scientifically validated.<br><b>Important:</b> Theories can be updated when new evidence appears.`},
+  {s:2,q:"Research methods",dup:false,a:`Research methods are specific tools used to collect and analyze data:<br><b>Empirical</b> (real-world based): observation, experiment, measurement, survey.<br><b>Theoretical</b> (logic based): analysis, synthesis, modeling, deduction.<br><b>Key rule:</b> The choice of method depends on the research goal. Using the wrong method produces unreliable results.`},
+  {s:3,q:"Organization of work with scientific literature",dup:false,a:`<b>Step 1 — Select:</b> Peer-reviewed, recent sources (within ~10 years) relevant to your topic.<br><b>Step 2 — Read strategically:</b> Skim abstract and conclusion first. Read in full only what is truly relevant.<br><b>Step 3 — Take structured notes:</b> Summarize main idea, record author, year, journal.<br><b>Step 4 — Cite everything:</b> Using someone's idea without citing = plagiarism.<br><b>Result:</b> Shows what is already known and reveals the gap your research will fill.`},
+  {s:3,q:"Methodology of theoretical research",dup:false,a:`<b>Definition:</b> Gaining new knowledge through logic and abstract thinking — no physical experiment needed.<br><b>Key methods:</b><ul><li><b>Analysis</b> — break a complex idea into parts.</li><li><b>Synthesis</b> — combine parts into a new unified understanding.</li><li><b>Abstraction</b> — focus only on essential features, ignore irrelevant details.</li><li><b>Modeling</b> — create a simplified version of a real system to study it.</li></ul><b>Used when:</b> Early research stages, or in fields like mathematics and physics.`},
+  {s:3,q:"Methodology of experimental research",dup:false,a:`<b>Definition:</b> Testing a hypothesis by deliberately changing one condition and measuring the effect.<br><b>Three key variables:</b><ul><li><b>Independent variable</b> — what you change.</li><li><b>Dependent variable</b> — what you measure.</li><li><b>Control group</b> — kept unchanged, used as reference.</li></ul><b>Requirements:</b> Results must be measurable, objective, and reproducible.<br><b>Example:</b> Testing a new drug — give it to Group A, give a placebo to Group B, compare the difference.`},
+  {s:3,q:"General scientific research methods",dup:false,a:`Used across all scientific fields:<ul><li><b>Observation</b> — watching carefully without interfering.</li><li><b>Comparison</b> — finding similarities and differences.</li><li><b>Classification</b> — grouping things by shared features (e.g. Mendeleev's periodic table).</li><li><b>Analysis & Synthesis</b> — breaking down then rebuilding understanding.</li><li><b>Analogy</b> — understanding something unknown by comparing to something known.</li><li><b>Modeling</b> — using a simplified model to study a real system.</li></ul>`},
+  {s:3,q:"General philosophical methods",dup:false,a:`The deepest framework for all scientific thinking:<ul><li><b>Dialectics</b> (Hegel/Marx) — everything develops through contradictions and constant change.</li><li><b>Formal logic</b> — rules of correct reasoning: a statement cannot be true and false at the same time.</li><li><b>Hermeneutics</b> — method of interpreting texts and meanings, mainly in humanities.</li></ul><b>Why they matter:</b> These shape how a researcher thinks about truth and knowledge — they underpin all other methods.`},
+  {s:3,q:"Correlation of general scientific methods",dup:false,a:`No single method is used alone — they form a working system:<ul><li><b>Analysis + Synthesis</b> — break down then rebuild understanding.</li><li><b>Observation + Comparison</b> — watch, then compare what you saw.</li><li><b>Abstraction + Modeling</b> — isolate key features, then build a model from them.</li><li><b>Induction + Deduction</b> — draw general conclusions from cases, then apply back to specifics.</li></ul><b>Key point:</b> Combining methods gives more complete and reliable results than any single method alone.`},
+  {s:4,q:"The «goal tree» method",dup:false,a:`<b>Definition:</b> A planning tool that takes one main goal and breaks it into sub-goals, then into specific tasks.<br><b>Structure:</b> Root = main goal → Branches = sub-goals → Leaves = specific actions.<br><b>Example:</b> Goal: "Cut costs by 20%." Sub-goals: reduce energy use, optimize supply chain, automate packaging.<br><b>Benefit:</b> Makes large complex objectives manageable and shows which tasks are most critical.`},
+  {s:4,q:"«Delphi» type method",dup:false,a:`<b>Definition:</b> Structured expert forecasting through multiple anonymous questionnaire rounds.<br><b>How it works:</b> Experts answer → answers summarized and shared → experts revise → repeat until consensus.<br><b>Key features:</b><ul><li><b>Anonymity</b> — no authority bias.</li><li><b>Iteration</b> — multiple rounds narrow disagreement.</li></ul><b>Used for:</b> Long-term forecasting in technology, medicine, economics when hard data is unavailable.`},
+  {s:4,q:"Organization of work with scientific literature",dup:true,ref:"3.1",extra:"Extra focus: At the planning stage, literature review also helps <b>confirm the research gap</b> exists, <b>justify your chosen method</b>, and avoid repeating experimental designs that already failed."},
+  {s:4,q:"Empirical methods",dup:false,a:`<b>Definition:</b> Methods based on direct observation and experience of the real world.<br><b>Examples:</b> observation, experiment, measurement, survey, interview.<br><b>Characteristics:</b><ul><li>Produce concrete, measurable, real-world data.</li><li>Objective — the result does not depend on what the researcher hopes to find.</li><li>Reproducible — another researcher can repeat and verify.</li></ul><b>When to use:</b> When you need to test a hypothesis with actual data, not just reasoning.`},
+  {s:4,q:"Theoretical methods",dup:false,a:`<b>Definition:</b> Methods based on abstract thinking and logic — no direct experiment needed.<br><b>Examples:</b> analysis, synthesis, induction, deduction, analogy, abstraction, modeling.<br><b>Induction vs. Deduction:</b><ul><li><b>Induction</b> — from specific examples to a general conclusion (bottom-up).</li><li><b>Deduction</b> — from a general rule to a specific conclusion (top-down).</li></ul><b>Relationship:</b> Theory generates hypotheses → empirical methods test them → results refine theory.`},
+  {s:5,q:"The essence of scientific research",dup:true,ref:"2.3",extra:"Extra detail: Research can also be classified by purpose — <b>exploratory</b> (investigating something little known), <b>descriptive</b> (describing characteristics), <b>explanatory</b> (finding causes), or <b>predictive</b> (forecasting outcomes)."},
+  {s:5,q:"Scientific and technical patent information",dup:true,ref:"2.4",extra:"Extra detail: Patent documents contain: title, abstract, claims (what is legally protected), and a detailed technical description. The <b>claims</b> section is the most legally important part."},
+  {s:5,q:"Organization of work with scientific literature",dup:true,ref:"3.1",extra:"Extra focus: Pay attention to the <b>research methods used in previous studies</b> — this helps you choose better methods for your own work and understand why certain approaches succeeded or failed."},
+  {s:5,q:"Expert assessment methods",dup:false,a:`<b>Definition:</b> Methods that use qualified specialists' judgment — especially when hard numerical data is limited.<br><b>Types:</b><ul><li><b>Individual</b> — one expert gives a judgment (fast but subjective).</li><li><b>Collective</b> — group methods like Delphi or brainstorming (reduces bias).</li><li><b>Peer review</b> — standard in academic publishing.</li></ul><b>Advantage:</b> Useful when the problem is too complex for simple data analysis.<br><b>Disadvantage:</b> Subjective — quality depends on who the experts are.`},
+  {s:5,q:"Scripting method",dup:false,a:`<b>Definition:</b> A forecasting method that creates several detailed descriptions of possible future situations based on different assumptions.<br><b>How it works:</b> Identify uncertain key factors → build 2–4 plausible scenarios (optimistic, pessimistic, most likely) → analyze risks in each.<br><b>Used in:</b> Business strategy, risk management, military planning, climate research.<br><b>Key benefit:</b> Forces planners to think beyond one expected future — reduces shock when something unexpected happens.`},
+  {s:5,q:"Brainstorming method",dup:false,a:`<b>Definition:</b> A group creativity technique for generating many ideas quickly — criticism is banned during the generation phase.<br><b>Rules:</b><ul><li>No criticism while ideas are being generated.</li><li>Quantity over quality at first.</li><li>Wild ideas are welcome.</li><li>Build on each other's ideas freely.</li></ul><b>Two phases:</b> Generation (free idea flow) → Evaluation (critical analysis).<br><b>Why it works:</b> Fear of judgment kills creativity. Removing criticism temporarily lets unconventional solutions appear.<br><b>Created by:</b> Alex Osborn, 1950s.`},
+  {s:6,q:"Fundamental Laws of Hegel's Dialectics",dup:false,a:`Hegel's dialectics explains how everything develops through contradictions.<br><b>Law 1 — Unity and Struggle of Opposites:</b> Every phenomenon contains contradictions (hot/cold, growth/decline). The tension between opposites drives all change and development.<br><b>Law 2 — Transition of Quantity into Quality:</b> Gradual small changes eventually produce a sudden qualitative leap. Example: heating water degree by degree → suddenly it boils and becomes steam.<br><b>Law 3 — Negation of Negation:</b> Development moves like a spiral, not a circle. Thesis → negated by antithesis → combined into synthesis at a higher level. Progress never simply reverses.`},
+  {s:6,q:"Methodology for Writing Scientific Research",dup:true,ref:"2.2",extra:"Extra focus: In theoretical papers, the methodology section must clearly explain which logical methods were used (analysis, synthesis, modeling etc.) and <b>why</b> they are appropriate for the specific research problem."},
+  {s:6,q:"Methodology of Experimental Research",dup:true,ref:"3.3",extra:"Extra point: In the context of theoretical research, experimental methodology is used to <b>verify theoretical conclusions</b>. A theory that cannot be tested experimentally has limited scientific value."},
+  {s:6,q:"Correlation of General Scientific Methods",dup:true,ref:"3.6",extra:"Extra point: In theoretical work specifically, the most important pair is <b>Analysis + Synthesis</b>. You cannot synthesize a new theory without first carefully analyzing the existing ones."},
+  {s:6,q:"The hypothetical-deductive method",dup:false,a:`<b>Definition:</b> Propose a hypothesis → logically deduce what must follow if it is true → test those consequences.<br><b>Steps:</b><ul><li>Observe a problem.</li><li>Form a hypothesis to explain it.</li><li>Deduce: "If my hypothesis is true, then X must happen."</li><li>Test X through experiment or observation.</li><li>Confirm or reject the hypothesis.</li></ul><b>Key rule:</b> A hypothesis can never be proven 100% — it can only be supported or falsified (Popper's falsifiability principle).<br><b>Example:</b> Newton hypothesized universal gravity → deduced planets orbit in ellipses → confirmed by observation.`},
+  {s:7,q:"Graphic methods",dup:false,a:`<b>Definition:</b> Representing data or relationships visually to make patterns easier to see and communicate.<br><b>Main types:</b><ul><li><b>Graphs/Charts</b> — show quantitative relationships (line, bar, pie).</li><li><b>Diagrams</b> — show structure or logic (flowcharts, block diagrams).</li><li><b>Histograms</b> — show frequency distribution of data.</li><li><b>Nomograms</b> — graphical calculators; read results without computing.</li></ul><b>Why use them:</b> The brain processes visual patterns much faster than raw numbers. A good graph instantly reveals trends and correlations that tables hide.`},
+  {s:7,q:"The hypothetical-deductive method",dup:true,ref:"6.5",extra:"Extra focus for experiments: The experiment must be designed <b>before</b> collecting data. Adjusting your hypothesis <i>after</i> seeing the data is called HARKing (Hypothesizing After Results are Known) — considered bad scientific practice."},
+  {s:7,q:"The essence of scientific research",dup:true,ref:"2.3",extra:"Extra focus for experimental research: In experimental science, essence is particularly tied to <b>control and reproducibility</b>. A result that cannot be reproduced by another lab is not accepted as scientific fact, no matter how interesting it seems."},
+  {s:7,q:"Methodology of experimental research",dup:true,ref:"3.3",extra:"Extended summary: Full process: Hypothesis → Experimental design → Variable identification → Data collection → Statistical analysis → Conclusion. Every step must be documented so the study can be reproduced."},
+  {s:7,q:"General information about science and research",dup:false,a:`<b>Science</b> is a systematic way of building and organizing knowledge through testable explanations and predictions.<br><b>Three main branches:</b><ul><li><b>Natural sciences</b> — physics, chemistry, biology.</li><li><b>Social sciences</b> — psychology, economics, sociology.</li><li><b>Formal sciences</b> — mathematics, logic.</li></ul><b>Science vs. pseudoscience:</b> Science requires <b>falsifiability</b> — a claim must be capable of being proven wrong. Astrology and homeopathy are pseudoscience because their claims cannot be properly tested.<br><b>Research</b> = the engine of science — the process by which new knowledge is created.`},
+  {s:8,q:"Information Retrieval Systems",dup:false,a:`<b>Definition:</b> Systems designed to store, manage, and retrieve documents or data based on a user's query.<br><b>Main components:</b><ul><li>A <b>database</b> of documents.</li><li>An <b>indexing system</b> — keywords and metadata describing each document.</li><li>A <b>search interface</b> — where the user types their query.</li><li>A <b>ranking algorithm</b> — sorts results by relevance.</li></ul><b>Key challenge:</b> Balancing <b>precision</b> (only relevant results shown) vs. <b>recall</b> (all relevant results found). Improving one often reduces the other.`},
+  {s:8,q:"The most popular information Search Systems",dup:false,a:`<ul><li><b>Scopus</b> (Elsevier) — largest abstract and citation database; covers science, technology, medicine, social sciences.</li><li><b>Web of Science</b> (Clarivate) — prestigious index; used to calculate impact factor and h-index.</li><li><b>Google Scholar</b> — free, very broad coverage, but less strict on source quality.</li><li><b>PubMed</b> — specialized in biomedical and life sciences.</li><li><b>IEEE Xplore</b> — engineering and electronics.</li></ul><b>How to choose:</b> Scopus/WoS for verified academic sources. Google Scholar for a broad initial search. PubMed/IEEE for specific fields.`},
+  {s:8,q:"Organization of work with scientific literature",dup:true,ref:"3.1",extra:"Extra focus: When using search databases, always apply <b>filters</b> — by year, subject area, document type, and language. This saves time and improves the quality of sources you find."},
+  {s:8,q:"Methodology of theoretical research",dup:true,ref:"3.2",extra:"Extra focus: Theoretical research depends heavily on literature. A strong theoretical methodology always includes a <b>systematic literature review</b> — using information search systems to ensure no important prior work is missed."},
+  {s:8,q:"Scientific and generally retrieval Systems",dup:false,a:`<b>General systems</b> (Google, Bing) — index all web content. No quality filtering. Anyone can publish anything.<br><b>Scientific systems</b> (Scopus, Web of Science, PubMed) — index only peer-reviewed, expert-validated sources.<br><b>Key differences:</b><ul><li>Scientific systems show citation counts, impact factor, h-index.</li><li>Scientific systems allow filtering by discipline, year, journal.</li><li>General systems are faster but require you to judge quality yourself.</li></ul><b>Rule:</b> For academic research, always prioritize scientific retrieval systems.`},
+  {s:8,q:"Information Scientific Systems",dup:false,a:`<b>Definition:</b> Digital systems that organize, store, and provide access to scientific knowledge globally.<br><b>Examples:</b> Scopus, Web of Science, PubMed, institutional repositories, national patent databases.<br><b>Functions:</b><ul><li>Store millions of scientific documents digitally.</li><li>Allow full-text or keyword search.</li><li>Support global collaboration — researchers everywhere access the same information.</li><li>Track citations — showing how ideas spread and influence each other.</li></ul><b>Importance:</b> Without these systems, finding relevant prior research would take enormous time and effort.`},
+];
+
+const LABELS=["Lecture 1 — Introduction","Lecture 2 — Methods & Methodology","Lecture 3 — Scientific Information","Lecture 4 — Methodological Concept & Stages","Lecture 5 — Essence of Scientific Research","Lecture 6 — Theoretical Research Methodology","Lecture 7 — Experimental Research Methodology","Lecture 8 — Information Search Systems"];
+
+let tab=0,sq="";
+
+function render(){
+  sq=document.getElementById("si").value.toLowerCase();
+  const out=document.getElementById("out"),nr=document.getElementById("nr");
+  out.innerHTML="";
+  const f=D.filter(d=>(tab===0||d.s===tab)&&(!sq||d.q.toLowerCase().includes(sq)||(d.a||"").toLowerCase().includes(sq)||(d.extra||"").toLowerCase().includes(sq)));
+  if(!f.length){nr.style.display="block";return;}
+  nr.style.display="none";
+  let lastS=-1,secNum=0;
+  f.forEach(d=>{
+    if(d.s!==lastS){
+      lastS=d.s;secNum=0;
+      const lbl=document.createElement("div");
+      lbl.className="sec-label";
+      lbl.textContent=LABELS[d.s-1];
+      out.appendChild(lbl);
+    }
+    secNum++;
+    const origIdx=D.filter(x=>x.s===d.s).indexOf(d)+1;
+    const card=document.createElement("div");
+    card.className="card"+(d.dup?" dup":"");
+
+    let bodyHTML="";
+    if(d.dup){
+      bodyHTML=`<p class="ref-note">&#128260; Repeat of question ${d.ref} — refer to that answer.</p>`;
+      if(d.extra) bodyHTML+=`<div class="extra"><b>Additional point for this lecture:</b><br>${d.extra}</div>`;
+    } else {
+      bodyHTML=d.a;
+    }
+
+    card.innerHTML=`<div class="card-head" onclick="tog(this)">
+      <span class="qnum">${d.s}.${origIdx}</span>
+      <span class="qtxt">${d.q}</span>
+      ${d.dup?'<span class="badge">REPEAT</span>':''}
+      <span class="chevron">&#9660;</span>
+    </div>
+    <div class="card-body">${bodyHTML}</div>`;
+    out.appendChild(card);
+  });
+}
+
+function tog(el){
+  const b=el.nextElementSibling,c=el.querySelector(".chevron"),o=b.classList.contains("op");
+  b.classList.toggle("op",!o);c.classList.toggle("op",!o);
+}
+
+function setTab(n,el){
+  tab=n;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));
+  el.classList.add("on");
+  render();
+}
+
+const tEl=document.getElementById("tabs");
+[["All",0],["1",1],["2",2],["3",3],["4",4],["5",5],["6",6],["7",7],["8",8]].forEach(([l,n])=>{
+  const t=document.createElement("div");
+  t.className="tab"+(n===0?" on":"");
+  t.textContent=n===0?"All":"L"+l;
+  t.onclick=()=>setTab(n,t);
+  tEl.appendChild(t);
+});
+render();
+</script>
+</body>
+</html>
