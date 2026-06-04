@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seismic Attributes & Inversion — Exam Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d11;
+    --surface: #13161d;
+    --card: #1a1e28;
+    --border: #252a38;
+    --border-hover: #3a4260;
+    --text: #d4daf0;
+    --muted: #6b7494;
+    --accent: #4f7fff;
+    --accent2: #7c4dff;
+    --green: #2ecc8a;
+    --red: #e05252;
+    --yellow: #f0c060;
+    --glow: rgba(79,127,255,0.12);
+    --dup: rgba(224,82,82,0.1);
+    --dup-border: rgba(224,82,82,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 32px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,127,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #7eb3ff 0%, #a78bfa 60%, #5eead4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* ── STATS BAR ── */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 12px 20px;
+    font-size: 12px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .stats span { display: flex; align-items: center; gap: 5px; }
+  .stats .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot-blue { background: var(--accent); }
+  .dot-red { background: var(--red); }
+  .dot-green { background: var(--green); }
+
+  /* ── SEARCH & CONTROLS ── */
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11,13,17,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  .search-wrap {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto 10px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 15px;
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px 10px 40px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #searchInput:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+  #searchInput::placeholder { color: var(--muted); }
+
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 640px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .filter-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .filter-btn.dup-filter.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+  .expand-all {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .expand-all:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px 16px 60px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 0 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 5px;
+    padding: 2px 8px;
+    letter-spacing: 0.5px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .q-count {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .q-card:hover { border-color: var(--border-hover); }
+  .q-card.duplicate {
+    background: var(--dup);
+    border-color: var(--dup-border);
+  }
+  .q-card.hidden { display: none; }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .q-header:hover { background: rgba(255,255,255,0.02); }
+
+  .q-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .q-card.duplicate .q-title { color: #e07575; }
+
+  .dup-badge {
+    font-size: 10px;
+    background: rgba(224,82,82,0.2);
+    color: var(--red);
+    border: 1px solid rgba(224,82,82,0.3);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .final-badge {
+    font-size: 10px;
+    background: rgba(46,204,138,0.1);
+    color: var(--green);
+    border: 1px solid rgba(46,204,138,0.2);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .q-card.open .chevron { transform: rotate(90deg); }
+
+  .q-body {
+    display: none;
+    padding: 0 14px 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+  .q-card.open .q-body { display: block; }
+
+  .q-answer {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #b8c4e0;
+    padding-top: 12px;
+  }
+  .q-answer strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .q-answer em {
+    color: var(--yellow);
+    font-style: normal;
+  }
+
+  /* ── NO RESULTS ── */
+  #noResults {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    display: none;
+  }
+  #noResults .icon { font-size: 36px; margin-bottom: 10px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ── HIGHLIGHT ── */
+  mark {
+    background: rgba(240,192,96,0.3);
+    color: var(--yellow);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  @media (max-width: 480px) {
+    .filter-row { gap: 5px; }
+    .filter-btn, .expand-all { font-size: 11px; padding: 4px 9px; }
+    .q-title { font-size: 13px; }
+    .q-answer { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ Seismic Attributes & Inversion</h1>
+  <p>Exam Study Guide · All 15 Topics · Quick Reference</p>
+</header>
+
+<div class="stats">
+  <span><span class="dot dot-blue"></span> All questions</span>
+  <span><span class="dot dot-red"></span> Overlapping / repeat topics</span>
+  <span><span class="dot dot-green"></span> Final exam</span>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search any topic, keyword…" autocomplete="off">
+  </div>
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn dup-filter" data-filter="dup">⚠ Repeats</button>
+    <button class="expand-all" id="expandAll">Expand All</button>
+  </div>
+</div>
+
+<main id="mainContent">
+  <!-- Sections are generated by JS below -->
+</main>
+
+<div id="noResults">
+  <div class="icon">🔭</div>
+  <div>No results found. Try a different keyword.</div>
+</div>
+
+<script>
+const data = [
+  {
+    section: 1,
+    title: "Introduction, Hilbert Transformation",
+    questions: [
+      {
+        q: "Seismic data for seismic attributes",
+        a: `<strong>Seismic data</strong> is recorded as many vertical traces showing how sound waves reflect off underground rock layers. Before you can calculate any attribute, the data must be properly processed and free from noise. Attributes are derived measurements — numbers calculated from the seismic trace that tell us about rock structure, lithology, or fluids. The <em>Hilbert transform</em> is the key mathematical tool used to create what we call the "complex trace" from the original seismic trace. The complex trace has two parts: the original (real part) and its Hilbert transform (imaginary part). Together they allow us to extract envelope, phase, and frequency information from the data.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 2,
+    title: "Seismic Cube – Introduction & Petrel",
+    questions: [
+      {
+        q: "Classification of Seismic Attributes",
+        a: `Seismic attributes are divided into groups based on what they measure and how they are calculated. One classification is <strong>pre-stack vs post-stack</strong> — pre-stack attributes use raw gathers, post-stack use the final stacked cube. Another classification splits them into <em>instantaneous</em> (sample-by-sample), <em>wavelet</em> (over a short window), and <em>horizon-based</em> (along or between picked surfaces). You can also group them as <strong>geometric</strong> (related to structure, like dip and coherence), <strong>amplitude-based</strong> (energy), and <strong>frequency-based</strong>. The most common categories are: complex trace attributes, structural attributes, and surface attributes. Understanding which class an attribute belongs to helps you choose the right one for your problem.`,
+        dup: false
+      },
+      {
+        q: "Seismic Attributes in Petrel",
+        a: `<strong>Petrel</strong> is a software by Schlumberger (now SLB) widely used in oil and gas exploration. Once you load a seismic cube in Petrel, you can calculate attributes from the "Volume Attributes" or "Surface Attributes" workflow menus. Results are stored as new 3D cubes or 2D horizon maps that you can visualize in 3D and 2D windows. Petrel includes built-in tools for structural attributes like <em>Ant Tracking</em>, structural smoothing, variance, and dip-azimuth. It also has a seismic calculator where you can write custom attribute formulas. Petrel is the main software this course focuses on for practical attribute work.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 3,
+    title: "Colour Palettes in Petrel",
+    questions: [
+      {
+        q: "Colour palette visualization in Petrel",
+        a: `Colour palettes in Petrel control how numbers in the seismic data are translated into visible colours on screen. Different colours represent different amplitude or attribute values — for example, blue to red might go from low to high amplitude. You can choose from preset palettes or design custom ones by adjusting the colour bar. The choice of palette is <strong>critical</strong> for correct interpretation because the human eye can be misled by poor colour choices. For example, a rainbow palette can create false visual boundaries that do not exist in the data. A good rule is to use a diverging palette (like blue–white–red) centered at zero to correctly show positive and negative amplitudes.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 4,
+    title: "Fundamentals of Signal Theory",
+    questions: [
+      {
+        q: "Non-harmonic Signals",
+        a: `A <strong>non-harmonic signal</strong> is any signal that is not a pure sine wave — it contains a mix of multiple frequencies. Real seismic signals are non-harmonic because they have complex shapes that change over time and space. By <em>Fourier theory</em>, any complex signal can be broken down into a sum of many harmonic (sine/cosine) components. Non-harmonic signals carry more varied information and are harder to analyze than simple sine waves. Processing non-harmonic signals requires tools like the Fourier transform, filtering, and windowed analysis. Most of the signal processing techniques in this course deal with non-harmonic seismic signals.`,
+        dup: false
+      },
+      {
+        q: "Harmonic Signals",
+        a: `A <strong>harmonic signal</strong> is a pure sine or cosine wave defined by a single frequency, amplitude, and phase. It is the fundamental building block of all more complex signals, as stated by Fourier theory. Any real signal can be expressed as a superposition (sum) of harmonic components — this is what the Fourier transform does. In seismic work, we study harmonics to understand how individual frequency components behave as they travel through the earth. The amplitude of each harmonic tells us about energy at that frequency, and the phase tells us about timing. Harmonic analysis is the theoretical foundation for all filtering and spectral operations.`,
+        dup: false
+      },
+      {
+        q: "Fundamentals of Seismic Signal Theory",
+        a: `Seismic signals are <strong>elastic waves</strong> generated by a source (dynamite, vibroseis, airgun) that travel through the earth and are recorded at the surface. The recorded signal is the result of the <em>convolution</em> of the source wavelet with the earth's reflectivity. Key properties of a seismic signal include: frequency content, phase, amplitude, and bandwidth. Signal theory gives us the mathematical tools (Fourier transform, convolution, filtering) to process and interpret these recordings. The goal of signal processing is to remove the wavelet effect and enhance the true reflectivity information. A good understanding of signal theory is the foundation for all seismic attribute analysis.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 5,
+    title: "Seismic Signal Processing",
+    questions: [
+      {
+        q: "First Derivative",
+        a: `The <strong>first derivative</strong> of a seismic trace measures how fast the amplitude is changing at each time sample. Mathematically it is the slope of the amplitude curve — where the trace is rising, the derivative is positive; where it is falling, it is negative. It <em>highlights boundaries</em> and edges where amplitude changes rapidly, such as at the top or base of a reflector. High first derivative values indicate rapid amplitude transitions, which can mark thin beds or layer boundaries. It is useful for edge detection and improving the sharpness of seismic images. One downside is that it also amplifies high-frequency noise.`,
+        dup: false
+      },
+      {
+        q: "Second Derivative",
+        a: `The <strong>second derivative</strong> measures the rate of change of the first derivative — it is the curvature of the seismic amplitude curve. It is even more sensitive to rapid amplitude changes than the first derivative and can highlight very subtle features. High second derivative values occur at inflection points of the trace, which often correspond to thin reflectors. It amplifies high-frequency noise more aggressively than the first derivative, so it must be used carefully on noisy data. It is useful for <em>thin bed detection and edge delineation</em>. In practice, some smoothing is usually applied before using the second derivative.`,
+        dup: false
+      },
+      {
+        q: "Time Gain",
+        a: `<strong>Time Gain</strong> is a correction applied to seismic data to compensate for the fact that deeper reflections are weaker. As seismic waves travel deeper, they lose energy through <em>geometric spreading</em> (the wavefront expands) and absorption by rocks. Time Gain amplifies the later (deeper) parts of the trace so that shallow and deep reflectors can be compared. Without time gain, deep reflectors would look very weak and might be missed in interpretation. Common types include <em>spherical divergence correction</em> (based on physics) and user-defined gain functions. Time Gain is one of the most fundamental steps in seismic processing and should always be applied.`,
+        dup: false
+      },
+      {
+        q: "Seismic signal processing (Reflection Intensity)",
+        a: `<strong>Reflection Intensity</strong> measures the energy or strength of a reflected seismic wave at a given point. It tells you how large the contrast in rock properties (acoustic impedance) is between two layers at a boundary. High reflection intensity often means a big difference between layers — for example, a gas sand below a shale creates a very strong reflection. It is closely related to the <em>reflection coefficient</em> and to the envelope (reflection strength) attribute. Reflection intensity is used as an indicator of lithological boundaries and potential hydrocarbon zones. Bright spots on a seismic section are areas of very high reflection intensity.`,
+        dup: false
+      },
+      {
+        q: "Seismic signal processing (Time Gain, Trace AGC)",
+        a: `<strong>AGC</strong> (Automatic Gain Control) automatically adjusts the amplitude of a trace to make it more uniform throughout. It calculates the RMS (root mean square) amplitude within a sliding time window and then normalizes the trace by that value. <em>Time Gain</em> corrects for amplitude decay with depth, while AGC normalizes trace-by-trace variation. Together they produce a balanced, evenly amplified trace that is easier to interpret visually. However, AGC destroys true relative amplitude information — it should not be used if you want to preserve amplitudes for AVO or attribute analysis. These two are mainly used for display and visual quality control.`,
+        dup: false
+      },
+      {
+        q: "Seismic signal processing (Reflection Intensity, Time Gain)",
+        a: `<strong>Reflection Intensity</strong> shows where strong impedance contrasts exist, and <strong>Time Gain</strong> ensures you can see both shallow and deep reflectors equally well by correcting for amplitude decay. Together they help balance the seismic data for interpretation. Reflection Intensity is particularly good for identifying <em>bright spots</em> that may indicate gas or good reservoir sands. Time Gain makes the whole section visible, while Reflection Intensity tells you where the interesting zones are. These two are often applied together as part of standard seismic data conditioning. They complement each other well — one corrects depth effects, the other highlights geological contrasts.`,
+        dup: true, dupNote: "Similar to: Seismic signal processing (Reflection Intensity) and Time Gain"
+      },
+      {
+        q: "Seismic signal processing (Graphic Equalizer, Phase shift)",
+        a: `A <strong>Graphic Equalizer</strong> in seismic works like an audio equalizer — it allows you to boost or reduce specific frequency bands in the data. This is used to balance the frequency content or enhance certain frequencies that carry more geological information. <strong>Phase shift</strong> rotates the phase of the seismic wavelet, changing the apparent shape and position of reflectors. A 90-degree phase shift turns a zero-phase wavelet into a 90-phase wavelet. Phase shifting is used to match the seismic data to well log data, which is important for accurate well-tie and attribute extraction. Both operations are performed in the <em>frequency domain</em> using Fourier transforms.`,
+        dup: false
+      },
+      {
+        q: "Seismic signal processing (Time Gain, Trace AGC, Trace Gradient)",
+        a: `<strong>Trace Gradient</strong> measures how the trace amplitude changes from trace to trace in the lateral direction. It highlights areas where there is a sudden lateral change — these often correspond to faults or stratigraphic boundaries. <em>Time Gain</em> corrects for depth-dependent amplitude loss, and <em>AGC</em> normalizes the overall amplitude level. Together these three operations produce data that is both amplitude-balanced and sensitive to lateral changes. This combination is powerful for detecting faults and lateral facies variations. The Trace Gradient adds a spatial (horizontal) dimension to what Time Gain and AGC do in the time direction.`,
+        dup: true, dupNote: "Similar to: Time Gain and AGC questions"
+      },
+      {
+        q: "Seismic signal processing (Graphic Equalizer, Phase shift, Trace Gradient)",
+        a: `This combination targets three different aspects of the signal: the <strong>Graphic Equalizer</strong> balances frequency content, <strong>Phase shift</strong> adjusts the wavelet phase for well-tie, and <strong>Trace Gradient</strong> highlights lateral amplitude changes. The Graphic Equalizer is like a spectral filter that reshapes the frequency spectrum. Phase shift is critical when you need to match seismic data to well logs. Trace Gradient adds sensitivity to <em>horizontal changes</em> in the data, revealing faults and stratigraphic edges. Together they produce spectrally balanced, phase-correct data with enhanced structural sensitivity. This is a useful combination before fault mapping.`,
+        dup: true, dupNote: "Similar to: Graphic Equalizer/Phase shift and Trace Gradient questions"
+      },
+      {
+        q: "Seismic signal processing (Graphic Equalizer, Phase shift, Time Gain)",
+        a: `These three operations together are a standard data conditioning workflow. <strong>Time Gain</strong> fixes amplitude decay with depth, <strong>Graphic Equalizer</strong> corrects the frequency spectrum, and <strong>Phase shift</strong> rotates the wavelet to match well data. They are often applied as a sequence — gain first, then spectral balancing, then phase rotation. The result is data that is better balanced in both amplitude and frequency, and correctly phased for interpretation. This combination is commonly used before detailed horizon picking and attribute extraction. It is essentially a "quality improvement" package for the seismic data.`,
+        dup: true, dupNote: "Similar to: Graphic Equalizer/Phase shift and Time Gain questions"
+      },
+      {
+        q: "Seismic signal processing (Time Gain, Trace AGC, Trace Gradient, Phase shift)",
+        a: `This is the most comprehensive combination — four operations each fixing a different problem. <strong>Time Gain</strong> corrects depth-dependent amplitude loss. <strong>AGC</strong> normalizes trace-to-trace amplitude variations. <strong>Trace Gradient</strong> highlights lateral changes for structural detection. <strong>Phase shift</strong> rotates the wavelet for correct well-tie. Together they produce a fully conditioned seismic dataset ready for interpretation and attribute extraction. Each operation is independent and targets a specific issue, so they work well together without canceling each other out. This is essentially a full <em>preprocessing workflow</em> before interpretation begins.`,
+        dup: true, dupNote: "Similar to: other signal processing combination questions"
+      },
+      {
+        q: "Seismic data and signal processing",
+        a: `<strong>Seismic data processing</strong> is the whole series of steps that converts raw field recordings into clean, interpretable seismic images. Key steps include: noise removal, amplitude corrections (Time Gain), deconvolution (to remove the wavelet), filtering, normal moveout (NMO) correction, stacking, and migration. All these steps rely on <em>signal processing theory</em> — Fourier transforms, convolution, filtering, and statistical methods. The goal is to produce a final seismic image that is as close as possible to the true reflectivity of the earth. Good processing is absolutely essential before any attribute analysis, because attributes calculated from poorly processed data will give wrong results. Signal processing is the bridge between raw field data and geological interpretation.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 6,
+    title: "Attributes of a Complex Trace",
+    questions: [
+      {
+        q: "Apparent Polarity",
+        a: `<strong>Apparent Polarity</strong> describes whether the seismic reflection at a peak is positive (hard kick) or negative (soft kick). It is determined by looking at the sign of the envelope at each amplitude peak of the trace. A positive polarity means the seismic wavelet shows a peak at the top of a layer — this usually happens when you go from soft to hard rock. A negative polarity (or reversed polarity) occurs when going from hard to soft rock, for example from shale into gas sand. <em>Gas-saturated sands often show reversed polarity</em>, making this a key hydrocarbon indicator. Polarity analysis is one of the first things an interpreter checks when looking for DHI (direct hydrocarbon indicator) anomalies.`,
+        dup: false
+      },
+      {
+        q: "Cosine of Instantaneous Phase",
+        a: `The <strong>cosine of instantaneous phase</strong> converts the phase attribute into values between -1 and +1. Because it uses the cosine function, it removes the amplitude information entirely — all reflectors look equally strong. This makes it excellent for <em>visualizing reflector continuity</em> regardless of amplitude. Discontinuities like faults and unconformities show up clearly because the phase pattern is broken. It is essentially a structural continuity/edge detection tool that works purely on the phase of the signal. It is particularly useful in areas where amplitude variations are large and might distract from structural interpretation.`,
+        dup: false
+      },
+      {
+        q: "Envelope (Reflection Strength)",
+        a: `The <strong>Envelope</strong> (also called Reflection Strength) is calculated as the square root of (original trace squared + Hilbert transform squared). It gives the <em>total energy</em> of the seismic reflection at each point, independent of phase. High envelope values — called <strong>bright spots</strong> — often indicate gas or other fluid anomalies because they create very strong reflections. The envelope turns the oscillating seismic trace into a smooth positive curve showing where energy is concentrated. It was one of the first complex trace attributes used in hydrocarbon exploration (introduced by Taner et al., 1979). Envelope maps are one of the most commonly used tools for amplitude anomaly detection.`,
+        dup: false
+      },
+      {
+        q: "Instantaneous Frequency",
+        a: `<strong>Instantaneous Frequency</strong> is the rate of change of the instantaneous phase with respect to time — it gives the local frequency at each time sample. Unlike a Fourier-based frequency which gives an average over a window, instantaneous frequency varies point by point. <em>Low instantaneous frequency</em> in a zone can indicate gas saturation, because gas absorbs higher frequencies (this is called low-frequency shadows). Sudden jumps in instantaneous frequency can indicate noise, cycle-skipping, or thin beds. It is a sensitive attribute — very useful for spotting anomalies but also very noisy in practice. Smoothing is often needed before using this attribute for interpretation.`,
+        dup: false
+      },
+      {
+        q: "Instantaneous Quality",
+        a: `<strong>Instantaneous Quality</strong> (sometimes called Q factor or quality factor) measures the sharpness and quality of the seismic signal at each sample. It is related to how much energy is lost per oscillation cycle — low Q means high attenuation (energy loss), high Q means low attenuation. <em>Gas-saturated rocks and fractured zones</em> tend to show low Q values because they absorb seismic energy more than solid rock. High Q values indicate rigid, low-attenuation rock. This attribute is useful for identifying anomalous subsurface zones where energy is being absorbed. It complements the instantaneous frequency attribute and is used in fluid and fracture detection.`,
+        dup: false
+      },
+      {
+        q: "Attributes of a complex trace (Dominant Frequency, Instantaneous Bandwidth)",
+        a: `<strong>Dominant Frequency</strong> is the primary frequency of the signal at a given point — it is more stable and less noisy than instantaneous frequency. <strong>Instantaneous Bandwidth</strong> tells you how wide the frequency content of the signal is at that moment. A wide bandwidth means the signal contains many frequencies, which means <em>better vertical resolution</em>. A narrow bandwidth can indicate that certain frequencies have been absorbed by specific rock types (like gas). Together they describe the spectral character of the trace at each sample. These two attributes are useful for lithology discrimination and understanding where frequency content changes laterally or with depth.`,
+        dup: false
+      },
+      {
+        q: "Attributes of a complex trace (Dominant Frequency, Instantaneous Phase)",
+        a: `<strong>Dominant Frequency</strong> describes the main frequency content of the signal (more stable than instantaneous frequency), while <strong>Instantaneous Phase</strong> shows the angular position in the current cycle of the wavelet. Dominant frequency helps you understand where the seismic signal has been spectrally altered by rock properties. Instantaneous Phase is excellent for showing <em>lateral continuity of reflectors</em> because it treats all amplitudes equally. Together they provide both spectral information (what frequencies are present) and structural continuity information. They are used together for mapping stratigraphic patterns and reservoir continuity over large areas.`,
+        dup: false
+      },
+      {
+        q: "Attributes of a complex trace (Instantaneous Phase, Quadrature Amplitude)",
+        a: `The <strong>Instantaneous Phase</strong> is calculated from the complex trace as the arctangent of (imaginary / real). The <strong>Quadrature Amplitude</strong> is simply the imaginary part of the complex trace — which is the Hilbert transform of the original trace. These are the two raw components of the complex trace before any further calculations. The quadrature trace is exactly 90 degrees out of phase with the original trace. Together, the original trace (real) and quadrature trace (imaginary) are the <em>building blocks</em> from which all other complex trace attributes are derived. Understanding these two is fundamental to understanding the entire complex trace analysis framework.`,
+        dup: false
+      },
+      {
+        q: "Attributes of a complex trace (Instantaneous Phase, Quadrature Amplitude, Dominant Frequency)",
+        a: `These three attributes together give a <strong>complete description</strong> of the complex seismic signal. <em>Instantaneous Phase</em> shows reflector continuity and structural patterns. <em>Quadrature Amplitude</em> is the imaginary part of the complex trace, used to calculate all other attributes. <em>Dominant Frequency</em> describes the spectral character and how it changes. In multi-attribute seismic interpretation, these three are often combined to map both structural and stratigraphic features simultaneously. They are all derived using the Hilbert transform approach and represent different "views" of the same signal. This combination is particularly useful for detailed facies analysis.`,
+        dup: false
+      },
+      {
+        q: "Attributes of a complex trace (Dominant Frequency, Instantaneous Bandwidth, Instantaneous Phase)",
+        a: `<strong>Dominant Frequency</strong> and <strong>Instantaneous Bandwidth</strong> together describe the spectral properties of the signal, while <strong>Instantaneous Phase</strong> describes the geometric continuity. Bandwidth tells you how focused or spread the energy is in frequency — thin beds tend to have broader bandwidth signatures. Dominant frequency shows where the spectral energy is concentrated, useful for identifying gas zones (low frequency anomalies). Phase shows continuity of reflectors and helps identify faults and channels. Together these three attributes cover both spectral and geometric aspects of the data. This combination is standard in modern complex trace analysis workflows for full characterization of a seismic zone.`,
+        dup: false
+      },
+      {
+        q: "Complex Trace Attributes",
+        a: `<strong>Complex trace attributes</strong> are a family of seismic attributes calculated by creating an analytic signal from the real seismic trace using the <em>Hilbert transform</em>. The result is a complex-valued signal with a real part (original trace) and an imaginary part (Hilbert transform). From this complex signal we can calculate: Envelope (reflection strength), Instantaneous Phase, Instantaneous Frequency, Dominant Frequency, Quadrature Amplitude, Cosine of Phase, Apparent Polarity, and Instantaneous Quality. These attributes were first introduced by <strong>Taner, Koehler, and Sheriff in 1979</strong> and revolutionized seismic interpretation. They are still among the most widely used attributes today for hydrocarbon detection and stratigraphic analysis.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 7,
+    title: "Structural Attributes",
+    questions: [
+      {
+        q: "Variance (Edge method)",
+        a: `<strong>Variance</strong> measures how different a seismic trace is from its neighboring traces within a local time window. Where traces are very similar, variance is low — this means continuous, undisturbed reflectors. Where traces differ significantly, variance is high — this indicates a <em>fault, fracture, or channel edge</em>. It is essentially an automatic edge detection method applied to 3D seismic cubes. Variance is very widely used for fault mapping and fracture zone identification without manual picking. The result is a 3D volume where fault planes and discontinuities stand out clearly as high-value zones. It is one of the most popular structural attributes in the industry.`,
+        dup: false
+      },
+      {
+        q: "Structural smoothing",
+        a: `<strong>Structural smoothing</strong> is a special filtering operation that cleans noise from the seismic data while preserving fault edges. It works by first determining the local reflector orientation (dip and azimuth) and then smoothing the data <em>along</em> the reflector surface rather than across it. This means that noise is reduced without blurring fault planes, which would happen with simple averaging. The result is cleaner, more continuous reflectors with sharper fault boundaries. Structural smoothing is almost always applied <strong>before</strong> calculating attributes like variance, ant-tracking, or curvature. It is a critical preparation step for high-quality structural interpretation.`,
+        dup: false
+      },
+      {
+        q: "Local Structural Dip",
+        a: `<strong>Local Structural Dip</strong> measures the angle at which a reflector is tilted relative to horizontal, calculated at every point in the 3D seismic cube. High dip values mean the beds are steeply inclined, like on the flanks of an anticline. Flat (zero) dip means horizontal, undisturbed layers. Dip is calculated by measuring how the seismic events change position from trace to trace. The result is a 3D volume of dip values that can be displayed as a map to show structural highs, lows, and fold geometry. Combined with <em>azimuth</em>, dip gives the complete 3D orientation of every reflector. Dip volumes are extremely useful for structural mapping and are often the starting point for horizon picking.`,
+        dup: false
+      },
+      {
+        q: "Ant-tracking",
+        a: `<strong>Ant-tracking</strong> is a fault extraction algorithm inspired by how ants find food using chemical trails. Virtual "ants" are sent through the seismic volume and they follow discontinuities — faults, fractures, and edges — based on attributes like variance or similarity. The ants reinforce strong fault signals while ignoring noise and weak artifacts. The result is a 3D volume where fault surfaces are clearly highlighted and easy to extract as surfaces. Ant-tracking is very useful for automatically mapping <em>complex fault networks</em> in 3D seismic data that would take weeks to map manually. It is a standard tool in Petrel and is heavily used in fractured reservoir characterization.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 8,
+    title: "Structural Attributes (cont.)",
+    questions: [
+      {
+        q: "Structural attributes (Local Structural Dip, Structural smoothing)",
+        a: `<strong>Local Structural Dip</strong> measures how steeply reflectors are tilted, and <strong>Structural Smoothing</strong> reduces noise in the data along the reflector direction. In practice, structural smoothing is applied <em>first</em> to clean the data, and then dip is calculated from the smoothed version — this gives much more stable and accurate dip estimates. Together they form the most basic structural interpretation workflow. Dip maps from smoothed data clearly show anticlines, synclines, and fault blocks. This combination is also used as input for horizon autotracking algorithms. They are essential first steps before any more advanced structural attribute calculation.`,
+        dup: true, dupNote: "Overlaps with Section 7 questions on Structural Dip and Structural Smoothing"
+      },
+      {
+        q: "Structural attributes (Gradient Magnitude, Local Structural Azimuth, Structural smoothing)",
+        a: `<strong>Gradient Magnitude</strong> measures how fast the seismic amplitude changes in any direction — like the steepness of a slope in a landscape. <strong>Local Structural Azimuth</strong> shows the compass direction in which the reflectors are dipping. <strong>Structural Smoothing</strong> is applied first to make both of these more accurate and less noisy. Together, gradient magnitude and azimuth give a complete picture of the 3D geometry of reflectors. High gradient magnitude combined with a specific azimuth can point to fault orientations. This combination is particularly useful in complex structural settings like fold-and-thrust belts or salt diapir flanks.`,
+        dup: false
+      },
+      {
+        q: "Structural attributes (Gradient Magnitude, Local Structural Azimuth)",
+        a: `<strong>Gradient Magnitude</strong> highlights areas where amplitude changes rapidly in any direction, which often indicates boundaries like faults or channel edges. <strong>Local Structural Azimuth</strong> tells the <em>direction</em> that the reflectors are dipping toward (north, south, etc.). Combined, they give you both the "how steep" and "which direction" of the structural geometry. High gradient magnitude + consistent azimuth patterns reveal the strike of fault planes and fold axes. Azimuth maps show dominant structural trends and can reveal patterns that are not visible in regular amplitude sections. These two are often displayed together as a rose diagram or as color maps for structural analysis.`,
+        dup: true, dupNote: "Overlaps with the question above (same attributes, just without smoothing)"
+      },
+      {
+        q: "Seismic Structural attributes",
+        a: `<strong>Seismic structural attributes</strong> are a group of attributes designed to describe and highlight the <em>geometry and discontinuities</em> of seismic reflectors. Key members include: Variance/Coherence (fault detection), Dip and Azimuth (reflector orientation), Curvature (bending of reflectors), Gradient Magnitude, Structural Smoothing, and Ant-Tracking (automatic fault extraction). These attributes help the interpreter map the structural framework of the subsurface quickly and objectively from 3D seismic cubes. Modern workflows use these attributes as inputs to automatic fault detection and machine learning algorithms. Structural attributes are essential in every 3D seismic interpretation project and are among the most used in the industry worldwide.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 9,
+    title: "Surface Attributes",
+    questions: [
+      {
+        q: "Interval attributes",
+        a: `<strong>Interval attributes</strong> are calculated from the seismic data within a vertical window defined between two interpreted horizons. Instead of using the full 3D cube, you extract a statistical or amplitude summary from within a specific rock layer. Examples include <em>RMS amplitude, maximum amplitude, average absolute amplitude, and sum of positive values</em>. They are displayed as 2D maps showing how the attribute varies across the study area within that layer. This is the main way to characterize reservoirs — you pick your target horizon and calculate attributes within it. Interval attributes are the bread and butter of reservoir characterization and direct hydrocarbon indicator (DHI) analysis.`,
+        dup: false
+      },
+      {
+        q: "Waveform attributes",
+        a: `<strong>Waveform attributes</strong> describe the <em>shape</em> of the seismic trace within a time window. Instead of just measuring amplitude or frequency, they classify how the trace looks — peaked, troughed, asymmetric, complex. Waveform classification can group seismic traces into different waveform classes that correspond to different lithofacies or fluid situations. For example, a channel sand might have a different waveform shape than the surrounding shale. Waveform attribute maps are used for lateral stratigraphic mapping and facies analysis. They are more holistic than single-number attributes because they describe the entire trace shape at once.`,
+        dup: false
+      },
+      {
+        q: "Statistical attributes",
+        a: `<strong>Statistical attributes</strong> summarize the statistical properties of the seismic trace values within a window. Common examples include: <em>mean amplitude, variance, kurtosis (a measure of peakedness), skewness (asymmetry), and RMS amplitude</em>. They are useful for comparing zones and identifying zones that behave differently from the background. For example, high variance in a zone might indicate a chaotic facies like a mass transport complex. Statistical attributes are relatively simple to calculate and interpret, making them good starting points for any attribute analysis. They are also used as inputs to multi-attribute neural network classification.`,
+        dup: false
+      },
+      {
+        q: "Amplitude attributes",
+        a: `<strong>Amplitude attributes</strong> measure various aspects of the seismic amplitude within a zone or at a horizon. The most common ones are: <em>maximum amplitude, minimum amplitude, average amplitude, absolute average amplitude, and RMS (root mean square) amplitude</em>. RMS amplitude is particularly popular because it gives a robust measure of the overall energy level. High amplitudes often indicate good reservoir conditions, gas presence, or a hard/soft contrast at a layer boundary. Amplitude maps along target horizons are one of the first things an interpreter looks at when exploring for hydrocarbons. They are simple, intuitive, and directly related to the seismic response of the reservoir.`,
+        dup: false
+      },
+      {
+        q: "Seismic Surface attributes",
+        a: `<strong>Seismic surface attributes</strong> are extracted along or between interpreted horizons in the seismic cube, collapsing 3D information into 2D maps. They make it possible to visualize reservoir properties as maps, which are easier to relate to geological maps and well locations. Common types include: <em>amplitude-based</em> (RMS, max, min), <em>frequency-based</em> (dominant frequency, bandwidth), and <em>shape-based</em> (waveform classification). Surface attributes are the primary output used by explorationists for prospect evaluation and reservoir mapping. They can show channels, fans, anticlines, and other features that are critical for finding and developing oil and gas. In Petrel, they are extracted using the Surface Attributes workflow.`,
+        dup: false
+      },
+      {
+        q: "Attributes according to the shape of the signal",
+        a: `Shape-based attributes classify or describe the <em>form of the seismic waveform</em> within a time window. Instead of measuring a single number like amplitude, they look at the entire trace shape — whether it has one peak, multiple peaks, a particular asymmetry, etc. Different rock types and fluids produce different waveform shapes when they reflect seismic energy. Shape attributes can therefore distinguish between different lithofacies that have the same amplitude but different waveform character. Examples include trace shape classification using template matching or principal component analysis. They are powerful tools for facies mapping in stratigraphic interpretation, especially in areas with complex layering.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 10,
+    title: "Surface Attributes (cont.)",
+    questions: [
+      {
+        q: "Local flatness",
+        a: `<strong>Local Flatness</strong> measures how horizontal (flat) a reflector is within a small local area. A perfectly flat reflector has maximum flatness, while a tilted or disrupted reflector has low flatness. It is mathematically the inverse or complement of dip — high flatness means low dip, low flatness means high dip or disorder. It can detect subtle structural disruptions, faults, and unconformities that are not obvious from simple amplitude inspection. Flatness maps help identify areas where the reservoir geometry is favorable — flat-topped anticlines are ideal hydrocarbon traps. It is a structural attribute that is particularly useful in gentle, low-relief settings.`,
+        dup: false
+      },
+      {
+        q: "Chaos attribute",
+        a: `The <strong>Chaos attribute</strong> measures the degree of randomness or disorder in the seismic data within a local window. Areas of <em>low chaos</em> have regular, well-organized traces that look continuous and parallel — these are undisturbed sedimentary layers. Areas of <em>high chaos</em> show disordered, irregular traces — these indicate faults, gas clouds, mass transport complexes, or chaotic depositional settings. It is conceptually similar to variance but uses a different mathematical approach. Chaos is particularly useful for identifying <strong>gas chimneys</strong> (columns of chaotic seismic response above gas accumulations) and mass transport deposits. It is a standard attribute in structural and stratigraphic interpretation workflows.`,
+        dup: false
+      },
+      {
+        q: "Iso-Frequency",
+        a: `<strong>Iso-Frequency</strong> attributes are generated using <em>spectral decomposition</em> — splitting the seismic signal into individual frequency components and extracting the amplitude at each specific frequency. Different frequencies respond to different layer thicknesses — thin beds are better resolved at high frequencies, thick beds at low frequencies. By creating multiple volumes at different frequencies (e.g., 10 Hz, 20 Hz, 30 Hz), you can see different stratigraphic layers separately. This is a very powerful technique for stratigraphic mapping — channels and other thin features may only appear on certain frequency volumes. Spectral decomposition using iso-frequency is one of the most important recent advances in seismic attribute technology.`,
+        dup: false
+      },
+      {
+        q: "Relative Acoustic Impedance",
+        a: `<strong>Relative Acoustic Impedance (RAI)</strong> is calculated by integrating (summing up) the seismic trace over time. It gives an approximation of the relative change in acoustic impedance that the rocks produce. Acoustic Impedance is the product of rock density and seismic velocity — it is the fundamental rock property that seismic measures. Unlike full inversion, RAI does not require well data or a low-frequency model — it is a simple, quick calculation. It helps identify boundaries between rocks of different stiffness and can indicate lithological changes. While not as accurate as full inversion, RAI is very useful for a rapid first-look assessment of the impedance structure.`,
+        dup: false
+      },
+      {
+        q: "t* Attenuation",
+        a: `<strong>t*</strong> (pronounced "t-star") is a measurement of how much seismic energy is absorbed as waves travel through rock. Higher t* values mean more attenuation — the rock is "lossy" and absorbs energy. Gas-saturated rocks and heavily fractured zones typically show <em>high t*</em> values because they absorb high-frequency energy efficiently. It is calculated by analyzing how the frequency content of the seismic signal changes with depth — if the high frequencies disappear faster than expected, t* is high. t* attenuation maps are useful for detecting gas and identifying fracture zones. It is related to the quality factor Q — high t* means low Q.`,
+        dup: false
+      },
+      {
+        q: "Seismic Stratigraphic attributes",
+        a: `<strong>Seismic Stratigraphic attributes</strong> are used to identify and map sedimentary patterns and depositional features from seismic data. They include attributes related to <em>reflection continuity, divergence, convergence, amplitude conformance, and onlap/offlap patterns</em>. These attributes help geologists understand how sediments were originally deposited — as river channels, submarine fans, deltas, or deep-water turbidites. Stratigraphic attributes work best on <em>flattened horizon slices</em> that follow original depositional surfaces. They are essential for finding <strong>stratigraphic traps</strong> — oil and gas accumulations that are controlled by the shape of the sediment layers rather than structural highs. This is a growing area in exploration because many remaining undiscovered reservoirs are stratigraphic in nature.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 11,
+    title: "Seismic Calculator",
+    questions: [
+      {
+        q: "Applications of the seismic calculator",
+        a: `The <strong>seismic calculator</strong> in Petrel is a flexible tool that allows you to write mathematical formulas to create new seismic volumes from existing ones. You can apply operations like addition, subtraction, multiplication, division, square root, logarithm, or any combination to seismic cubes. For example, the <em>Sweetness attribute</em> is created in the calculator by dividing the Envelope by the square root of the Instantaneous Frequency. You can also combine multiple attributes into a single composite attribute that enhances specific features. The calculator is valuable because it lets geoscientists test new ideas quickly without programming. It is one of the most powerful and flexible tools in Petrel for custom attribute generation.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 12,
+    title: "Seismic Calculator & Shape Attributes",
+    questions: [
+      {
+        q: "Seismic data calculation",
+        a: `<strong>Seismic data calculation</strong> means performing mathematical operations on seismic volumes to generate new, derived volumes. In Petrel's calculator, you write formulas that can reference one or more seismic cubes as input variables. Common calculations include: normalization (dividing by the maximum value), combining two attributes, applying thresholds, or creating composite indicators. The output is a new seismic cube that can be displayed and used for interpretation just like any original data volume. Calculations can also include conditional logic — for example, "if amplitude > threshold, value = 1, otherwise = 0" to create a mask. This approach allows geoscientists to tailor the data to their specific geological question.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 13,
+    title: "Seismic Inversion: Introduction",
+    questions: [
+      {
+        q: "Seismic inversion in reservoir characterization",
+        a: `<strong>Seismic inversion</strong> is the process of converting seismic reflection data into rock property volumes, primarily <em>Acoustic Impedance (AI)</em>. Acoustic Impedance is the product of rock velocity and density, and it tells us directly about the rock type and fluid content. Inversion "inverts" the seismic process — instead of going from the earth to the seismic recording, you go backwards from the seismic recording to the earth properties. It requires a <strong>low-frequency model</strong> built from well logs (because seismic data lacks low-frequency content) and a wavelet extracted from the data. The result is a volume that looks like a well log extended across the entire seismic survey. Inversion results are much more useful for quantitative reservoir characterization (porosity, fluid prediction) than raw seismic amplitudes.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 14,
+    title: "Types of Inversion",
+    questions: [
+      {
+        q: "Types of seismic inversion",
+        a: `There are several types of seismic inversion, each with different inputs and outputs. <strong>Post-stack inversion</strong> uses the final stacked seismic section and produces acoustic impedance (P-impedance). <strong>Pre-stack inversion</strong> uses angle or offset gathers and can produce both P-impedance and S-impedance (and sometimes density), giving much more information. <strong>Model-based inversion</strong> starts with a geological model from well logs and updates it until it matches the seismic data. <strong>Sparse-spike inversion</strong> assumes the earth has only a few sharp reflection boundaries and finds the simplest model that explains the data. <strong>Simultaneous inversion</strong> works on multiple partial angle stacks at once to separate P and S impedance. Each type has trade-offs in complexity, data requirements, and what rock properties it can resolve.`,
+        dup: false
+      }
+    ]
+  },
+  {
+    section: 15,
+    title: "Application of Seismic Attributes in Azerbaijan & World",
+    questions: [
+      {
+        q: "Sweetness attribute",
+        a: `<strong>Sweetness</strong> is a composite attribute calculated as: <em>Envelope ÷ √(Instantaneous Frequency)</em>. It was designed as a quick indicator of "sweet spots" — zones of high amplitude and low frequency, which often correspond to gas-saturated, clean, porous sands. Gas causes both high amplitudes (bright spots) and low frequency shadows, so high sweetness values are a strong indicator of potential gas reservoirs. It works because both conditions — high envelope and low frequency — tend to occur together over gas sands. Sweetness maps are widely used in <strong>unconventional reservoir exploration</strong> and in identifying bright spot anomalies. It was popularized by Radovich and Oliveros (1998) and is now a standard attribute in many exploration workflows.`,
+        dup: false
+      },
+      {
+        q: "Time Derivatives of Envelope",
+        a: `The <strong>time derivative of the envelope</strong> measures how fast the envelope (reflection strength) is changing with time at each point. The first derivative of the envelope highlights the <em>top and bottom boundaries</em> of amplitude anomalies — where the amplitude is rapidly increasing or decreasing. This helps distinguish the boundaries of a gas sand from the interior of it. The second derivative is even more sensitive to rapid changes and can resolve thin features. Time derivatives of envelope are used as additional discriminators alongside the envelope itself to improve detection of bed boundaries and thin pay zones. They are particularly useful when dealing with thin reservoirs where the top and base reflections are hard to separate.`,
+        dup: false
+      },
+      {
+        q: "Neural network",
+        a: `A <strong>neural network</strong> in seismic interpretation is a machine learning algorithm that learns patterns from example data. You give it inputs (like several seismic attributes at well locations) and the known output at those wells (like porosity from well logs), and the network learns the mathematical relationship. Then you apply that learned relationship to the entire seismic volume to create a 3D prediction of porosity or another rock property. Neural networks are used in Petrel and other software for <em>multi-attribute analysis and lithology prediction</em>. They are powerful because they can find complex, non-linear relationships between attributes and rock properties. The main risk is <strong>overfitting</strong> — if you train on too few wells, the network just memorizes the well data and gives poor predictions away from wells.`,
+        dup: false
+      },
+      {
+        q: "Flattened stratal slicing",
+        a: `A <strong>stratal slice</strong> is a 2D amplitude map extracted from the 3D seismic at a specific stratigraphic horizon — following a rock layer rather than a flat time surface. <em>Flattening</em> means correcting for structural tilt so that the slice follows the original depositional surface as it existed when the sediments were laid down. This is important because a simple flat time slice cuts through different layers in different places, mixing geological ages. Flattened stratal slices reveal <strong>channels, submarine fans, delta lobes,</strong> and other depositional features as they looked at the time of deposition. They are extremely powerful for stratigraphic exploration and are used routinely in 3D seismic interpretation. Petrel supports stratal slicing using proportional slicing between two horizons.`,
+        dup: false
+      },
+      {
+        q: "Algorithms for calculating seismic attributes",
+        a: `Seismic attributes are computed using specific mathematical algorithms applied to the seismic trace or cube. For <strong>complex trace attributes</strong>, the Hilbert transform is used to create the analytic signal. For <strong>coherence and variance</strong>, eigenvalue decomposition or cross-correlation between neighboring traces is used. For <strong>dip and azimuth</strong>, gradient operators measure how reflectors change from trace to trace. For <strong>spectral decomposition</strong>, the Short-Time Fourier Transform (STFT) or Continuous Wavelet Transform (CWT) is used. The quality of attributes depends on the window size chosen (larger windows are more stable but lose resolution), the amount of smoothing, and the quality of the input seismic data. Understanding the algorithm helps you recognize limitations and choose the right parameters for your data.`,
+        dup: false
+      },
+      {
+        q: "Application of Seismic Attributes in Azerbaijan and Worldwide",
+        a: `Seismic attributes are used worldwide wherever 3D seismic data is acquired for oil and gas exploration and development. In <strong>Azerbaijan</strong>, they are applied to major offshore fields in the Caspian Sea, including <em>Azeri-Chirag-Gunashli (ACG)</em> and <em>Shah Deniz</em>. Companies like BP, SOCAR, and TotalEnergies use amplitude maps, coherence volumes, and inversion results to characterize reservoirs and plan wells in these fields. Globally, attributes have helped discover new reservoirs in deepwater settings, identify stratigraphic traps, and reduce drilling risk significantly. Azerbaijan is historically one of the world's oldest oil-producing regions, and modern seismic methods have revitalized exploration in the Caspian region. The combination of classic structural plays and newer stratigraphic exploration using attributes makes it an excellent case study for seismic attribute application.`,
+        dup: false
+      }
+    ]
+  }
+];
+
+// ── DETECT DUPLICATES ──
+const allQuestions = [];
+data.forEach(sec => sec.questions.forEach(q => allQuestions.push(q.q)));
+const qCount = {};
+allQuestions.forEach(q => { qCount[q] = (qCount[q] || 0) + 1; });
+
+// ── BUILD DOM ──
+const main = document.getElementById('mainContent');
+let cardElements = [];
+
+data.forEach(sec => {
+  const secEl = document.createElement('div');
+  secEl.className = 'section';
+  secEl.dataset.section = sec.section;
+
+  const totalQ = sec.questions.length;
+  secEl.innerHTML = `
+    <div class="section-header">
+      <span class="section-num">${String(sec.section).padStart(2,'0')}</span>
+      <span class="section-title">${sec.title}</span>
+      <span class="q-count">${totalQ} Q</span>
+    </div>
+  `;
+
+  sec.questions.forEach((q, qi) => {
+    const isDup = q.dup || qCount[q.q] > 1;
+    const card = document.createElement('div');
+    card.className = 'q-card' + (isDup ? ' duplicate' : '');
+    card.dataset.q = q.q.toLowerCase();
+    card.dataset.sec = sec.section;
+    card.dataset.dup = isDup ? '1' : '0';
+
+    const dupBadge = isDup ? `<span class="dup-badge">⚠ OVERLAP</span>` : '';
+    const finalBadge = `<span class="final-badge">FINAL</span>`;
+    const dupNote = q.dupNote ? `<div style="font-size:12px;color:#e07575;margin-top:6px;font-style:italic;">⚠ ${q.dupNote}</div>` : '';
+
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-title">${q.q}</span>
+        ${dupBadge}
+        ${finalBadge}
+        <span class="chevron">▶</span>
+      </div>
+      <div class="q-body">
+        <div class="q-answer">${q.a}${dupNote}</div>
+      </div>
+    `;
+
+    card.querySelector('.q-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+
+    secEl.appendChild(card);
+    cardElements.push(card);
+  });
+
+  main.appendChild(secEl);
+});
+
+// ── SEARCH ──
+const searchInput = document.getElementById('searchInput');
+const noResults = document.getElementById('noResults');
+let currentFilter = 'all';
+let allExpanded = false;
+
+function applyFilters() {
+  const term = searchInput.value.toLowerCase().trim();
+  let visible = 0;
+
+  // Clear highlights
+  document.querySelectorAll('mark').forEach(m => {
+    const text = document.createTextNode(m.textContent);
+    m.parentNode.replaceChild(text, m);
+  });
+  // Normalize text nodes
+  document.querySelectorAll('.q-title, .q-answer').forEach(el => el.normalize());
+
+  cardElements.forEach(card => {
+    const qText = card.dataset.q;
+    const isDup = card.dataset.dup === '1';
+    const answerEl = card.querySelector('.q-answer');
+    const titleEl = card.querySelector('.q-title');
+
+    let show = true;
+    if (currentFilter === 'dup' && !isDup) show = false;
+
+    if (show && term) {
+      const titleText = titleEl.textContent.toLowerCase();
+      const answerText = answerEl.textContent.toLowerCase();
+      if (!titleText.includes(term) && !answerText.includes(term)) show = false;
+    }
+
+    if (show) {
+      card.classList.remove('hidden');
+      visible++;
+      // Highlight
+      if (term) {
+        [titleEl, answerEl].forEach(el => highlightText(el, term));
+        card.classList.add('open');
+      }
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  // Hide empty sections
+  document.querySelectorAll('.section').forEach(sec => {
+    const hasVisible = [...sec.querySelectorAll('.q-card')].some(c => !c.classList.contains('hidden'));
+    sec.style.display = hasVisible ? '' : 'none';
+  });
+
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+}
+
+function highlightText(el, term) {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  let node;
+  while (node = walker.nextNode()) nodes.push(node);
+
+  nodes.forEach(textNode => {
+    const text = textNode.textContent;
+    const lower = text.toLowerCase();
+    const idx = lower.indexOf(term);
+    if (idx === -1) return;
+
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    let i = idx;
+    while (i !== -1) {
+      frag.appendChild(document.createTextNode(text.substring(last, i)));
+      const mark = document.createElement('mark');
+      mark.textContent = text.substring(i, i + term.length);
+      frag.appendChild(mark);
+      last = i + term.length;
+      i = lower.indexOf(term, last);
+    }
+    frag.appendChild(document.createTextNode(text.substring(last)));
+    textNode.parentNode.replaceChild(frag, textNode);
+  });
+}
+
+searchInput.addEventListener('input', applyFilters);
+
+// ── FILTER BUTTONS ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+// ── EXPAND ALL ──
+document.getElementById('expandAll').addEventListener('click', function() {
+  allExpanded = !allExpanded;
+  cardElements.forEach(card => {
+    if (!card.classList.contains('hidden')) {
+      if (allExpanded) card.classList.add('open');
+      else card.classList.remove('open');
+    }
+  });
+  this.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+});
+</script>
+</body>
+</html>
