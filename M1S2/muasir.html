@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOR Exam Prep – MİF-B1204</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --muted: #888;
+    --accent: #4da6ff;
+    --repeat: #ff4d4d;
+    --repeat-bg: rgba(255,77,77,0.08);
+    --green: #4dffb8;
+    --yellow: #ffd966;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 16px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .course-info h1 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+  }
+
+  .course-info p {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 2px;
+  }
+
+  /* ── Countdown ── */
+  #countdown {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: center;
+    min-width: 180px;
+  }
+
+  #countdown .label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #countdown .time {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--yellow);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  #countdown .date-line {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    background: var(--border);
+    height: 3px;
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    background: var(--accent);
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 2px;
+  }
+
+  .progress-text {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+
+  /* ── Layout ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 14px 60px;
+  }
+
+  /* ── Lecture block ── */
+  .lecture {
+    margin-bottom: 32px;
+  }
+
+  .lecture-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 6px 0 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+
+  /* ── Q&A card ── */
+  .qa {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .qa:hover {
+    border-color: #3a3a3a;
+  }
+
+  .qa.repeat {
+    border-color: rgba(255,77,77,0.35);
+    background: var(--repeat-bg);
+  }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 14px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .q-number {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 2px;
+    min-width: 22px;
+  }
+
+  .q-text {
+    flex: 1;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .repeat-tag {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--repeat);
+    border: 1px solid var(--repeat);
+    border-radius: 4px;
+    padding: 1px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1px;
+  }
+
+  .toggle-icon {
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    transition: transform 0.25s;
+    margin-top: 1px;
+  }
+
+  .qa.open .toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .answer {
+    display: none;
+    padding: 0 14px 14px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .qa.open .answer {
+    display: block;
+  }
+
+  .answer-inner {
+    padding-top: 12px;
+    font-size: 0.85rem;
+    color: #c8c8c8;
+    line-height: 1.65;
+  }
+
+  .answer-inner ul, .answer-inner ol {
+    padding-left: 18px;
+    margin: 6px 0;
+  }
+
+  .answer-inner li {
+    margin-bottom: 4px;
+  }
+
+  .answer-inner strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .answer-inner .tip {
+    background: rgba(77,166,255,0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 6px 10px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #aac8e8;
+  }
+
+  .answer-inner table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 0.82rem;
+  }
+
+  .answer-inner th {
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 6px 10px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .answer-inner td {
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .answer-inner tr:nth-child(even) td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* ── Repeat note ── */
+  .repeat-note {
+    font-size: 0.78rem;
+    color: var(--repeat);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  /* ── Expand all ── */
+  .section-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .btn-small {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-small:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  /* ── Sticky nav ── */
+  .lecture-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .lecture-nav a {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    transition: all 0.15s;
+  }
+
+  .lecture-nav a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--repeat);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .header-top { flex-direction: column; }
+    #countdown { width: 100%; }
+    .course-info h1 { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="course-info">
+      <h1>MİF-B1204 — EOR Exam Prep</h1>
+      <p>Neft-qaz yataqlarında süni təsir üsullarına müasir yanaşma · Namazlı M.M.</p>
+      <div class="legend">
+        <div class="legend-dot"></div>
+        <span>Red border = repeated question (appears in multiple lectures)</span>
+      </div>
+    </div>
+    <div id="countdown">
+      <div class="label">Exam in</div>
+      <div class="time" id="timer">--d --h --m --s</div>
+      <div class="date-line">19 June 2026 · 17:00</div>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 45 questions answered</div>
+  <nav class="lecture-nav">
+    <a href="#l1">L1 Recovery</a>
+    <a href="#l3">L3 Characterization</a>
+    <a href="#l5">L5 Porosity</a>
+    <a href="#l7">L7 Primary/Secondary</a>
+    <a href="#l9">L9 EOR Tech</a>
+    <a href="#l11">L11 Simulation</a>
+    <a href="#l13">L13 Formation Damage</a>
+    <a href="#l15">L15 Digital</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- LECTURE 1 -->
+<section class="lecture" id="l1">
+  <div class="lecture-title">Lecture 1 · Introduction to Petroleum Recovery Mechanisms</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l1','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l1','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="1">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">1</span>
+      <span class="q-text">What is the role of viscosity in EOR processes?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Viscosity</strong> = how thick/resistant a fluid is to flow. In EOR it matters because:
+        <ul>
+          <li>High oil viscosity → oil moves slowly and is hard to displace.</li>
+          <li>If injected water is much less viscous than oil, water "fingers" through the reservoir, bypassing oil (bad sweep).</li>
+          <li>The <strong>mobility ratio</strong> M = mobility of displacing fluid ÷ mobility of oil. If M &gt; 1 → unstable, poor sweep.</li>
+        </ul>
+        <strong>How EOR addresses it:</strong>
+        <ul>
+          <li><strong>Steam/thermal EOR</strong>: heat reduces oil viscosity dramatically (e.g., 1000 mPa·s → 20 mPa·s).</li>
+          <li><strong>Polymer flooding</strong>: thickens water → lower M → better sweep.</li>
+          <li><strong>CO₂/miscible</strong>: mixes with oil, swells it and reduces viscosity.</li>
+        </ul>
+        <div class="tip">Key rule: reduce oil viscosity OR increase injected-fluid viscosity to get a better mobility ratio.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="2">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">2</span>
+      <span class="q-text">List the main categories of EOR methods and briefly describe each.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th>Category</th><th>How it works</th><th>Examples</th></tr>
+          <tr><td><strong>Thermal</strong></td><td>Inject heat to reduce oil viscosity</td><td>Steam flooding, SAGD, in-situ combustion</td></tr>
+          <tr><td><strong>Chemical</strong></td><td>Inject chemicals to lower interfacial tension or improve sweep</td><td>Polymer, surfactant, alkaline flooding</td></tr>
+          <tr><td><strong>Miscible / Gas</strong></td><td>Injected gas mixes with oil, reduces viscosity, swells oil</td><td>CO₂ injection, N₂, hydrocarbon gas</td></tr>
+          <tr><td><strong>Microbial (MEOR)</strong></td><td>Bacteria produce surfactants or gases in-situ</td><td>Nutrient injection, biosurfactant flooding</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa repeat" data-id="3">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">3</span>
+      <span class="q-text">How does reservoir depth and temperature influence the choice of EOR technique?</span>
+      <span class="repeat-tag">repeat</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <p class="repeat-note">⚠ Also appears in Lecture 13</p>
+        <table>
+          <tr><th>Condition</th><th>Best EOR choice</th><th>Why</th></tr>
+          <tr><td>Shallow + heavy oil</td><td>Steam flooding / SAGD</td><td>Less heat loss to overburden; economically viable</td></tr>
+          <tr><td>Deep reservoir</td><td>CO₂ or gas miscible injection</td><td>Steam loses heat in deep wells; CO₂ stays miscible at high pressure</td></tr>
+          <tr><td>High temperature (&gt;90°C)</td><td>Avoid polymer EOR</td><td>Polymers degrade at high temperature</td></tr>
+          <tr><td>High salinity + high temp</td><td>Surfactant or CO₂</td><td>Polymers lose viscosity in brines</td></tr>
+          <tr><td>Low temperature</td><td>Thermal EOR preferred</td><td>Microbial methods also need warm temp to work</td></tr>
+        </table>
+        <div class="tip">Simple rule: shallow + heavy = steam; deep + light = CO₂/gas; chemical = moderate depth and temperature.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="4">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">4</span>
+      <span class="q-text">What are the main criteria for selecting injection and production well patterns?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Key criteria:</strong>
+        <ul>
+          <li><strong>Reservoir size and geometry</strong> — large, elongated reservoirs use line-drive patterns; compact reservoirs use 5-spot.</li>
+          <li><strong>Permeability distribution</strong> — heterogeneous reservoirs need injection rows perpendicular to high-perm channels.</li>
+          <li><strong>Oil viscosity</strong> — high viscosity → denser well patterns, more injectors per producer.</li>
+          <li><strong>Mobility ratio</strong> — unfavorable M → tighter patterns to avoid early water breakthrough.</li>
+          <li><strong>Structural position</strong> — up-dip injection exploits gravity for gas; down-dip for water.</li>
+        </ul>
+        <strong>Common patterns:</strong>
+        <ul>
+          <li><strong>5-spot</strong>: 1 injector surrounded by 4 producers (most common).</li>
+          <li><strong>7-spot</strong>: 1 injector, 6 producers.</li>
+          <li><strong>Line drive</strong>: rows of injectors and producers alternating.</li>
+          <li><strong>9-spot</strong>: used in heterogeneous or low-permeability reservoirs.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="5">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">5</span>
+      <span class="q-text">Explain the processes of maturation, migration, and accumulation of hydrocarbons.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>1. Maturation</strong> (source rock → oil/gas):
+        <ul>
+          <li>Organic matter (kerogen) buried under sediment gets heated by geothermal gradient.</li>
+          <li>"Oil window": ~60–120°C → liquid oil generated.</li>
+          <li>"Gas window": &gt;120°C → dry gas generated.</li>
+          <li>Measured by Tmax, Ro (vitrinite reflectance), HI.</li>
+        </ul>
+        <strong>2. Migration</strong> (source → reservoir):
+        <ul>
+          <li><strong>Primary migration</strong>: expelled from source rock pores (short distance).</li>
+          <li><strong>Secondary migration</strong>: moves through carrier beds, faults, fractures until trapped.</li>
+          <li>Driven by buoyancy (oil/gas less dense than water) and pressure.</li>
+        </ul>
+        <strong>3. Accumulation</strong> (reservoir + trap):
+        <ul>
+          <li>Oil/gas fills porous reservoir rock (sandstone, limestone).</li>
+          <li>Held in place by an impermeable cap rock (shale, anhydrite) in a structural or stratigraphic trap.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 3 -->
+<section class="lecture" id="l3">
+  <div class="lecture-title">Lecture 3 · Reservoir Characterization and Rock Properties</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l3','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l3','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="6">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">6</span>
+      <span class="q-text">Explain Conventional and Unconventional Petroleum System with scheme.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th></th><th>Conventional</th><th>Unconventional</th></tr>
+          <tr><td><strong>Where oil/gas is</strong></td><td>Migrated into separate reservoir rock</td><td>Stays in source rock (or tight rock)</td></tr>
+          <tr><td><strong>Permeability</strong></td><td>High (&gt;0.1 mD)</td><td>Very low (&lt;0.1 mD, sometimes nD)</td></tr>
+          <tr><td><strong>Production method</strong></td><td>Standard vertical/deviated wells</td><td>Horizontal wells + hydraulic fracturing</td></tr>
+          <tr><td><strong>Examples</strong></td><td>Baku Absheron anticlines, North Sea</td><td>Shale gas (Marcellus, Barnett), oil sands</td></tr>
+        </table>
+        <strong>Simplified scheme:</strong>
+        <ul>
+          <li><em>Conventional</em>: [Source Rock] → migration → [Porous Reservoir] → trapped by [Cap Rock]</li>
+          <li><em>Unconventional</em>: [Source Rock = also the Reservoir] → no migration needed</li>
+        </ul>
+        <div class="tip">Think of conventional as oil that "ran away" from source rock; unconventional oil "stayed home."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="7">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">7</span>
+      <span class="q-text">Describe Petroleum System Elements.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        Five essential elements — <em>all must be present and in the right timing</em>:
+        <ul>
+          <li><strong>Source Rock</strong> — organic-rich rock (shale, mudstone) that generates oil/gas when heated.</li>
+          <li><strong>Reservoir Rock</strong> — porous and permeable rock that stores hydrocarbons (sandstone, limestone).</li>
+          <li><strong>Seal / Cap Rock</strong> — impermeable barrier above reservoir preventing escape (shale, anhydrite).</li>
+          <li><strong>Trap</strong> — geometric configuration that concentrates hydrocarbons (anticline, fault, stratigraphic pinch-out).</li>
+          <li><strong>Overburden</strong> — overlying rock providing burial depth, heat, and pressure for maturation.</li>
+        </ul>
+        <div class="tip">Plus timing: generation must happen after the trap was formed, otherwise oil escapes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="8">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">8</span>
+      <span class="q-text">Give examples of Reservoir and Source rock and their characteristics.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Source Rocks:</strong>
+        <ul>
+          <li><em>Barnett Shale (USA)</em> — fine-grained, TOC 4–5%, very low permeability (&lt;0.0001 mD), Type II kerogen.</li>
+          <li><em>Kimmeridge Clay (North Sea)</em> — marine organic shale, high TOC (&gt;5%), main source for North Sea oil.</li>
+        </ul>
+        <strong>Reservoir Rocks:</strong>
+        <ul>
+          <li><em>Good: Berea Sandstone</em> — clean, well-sorted quartz sand, porosity 20–25%, permeability 100–500 mD.</li>
+          <li><em>Good: Jurassic Limestone (Arabian Peninsula)</em> — high porosity from dissolution (vugs), karst features.</li>
+          <li><em>Poor: Tight Sandstone</em> — heavily cemented, porosity &lt;10%, permeability &lt;0.1 mD.</li>
+          <li><em>Poor: Shaley sandstone</em> — clay minerals fill pores, permeability very low.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="9">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">9</span>
+      <span class="q-text">Explain Basin types.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th>Basin Type</th><th>How it forms</th><th>Example</th></tr>
+          <tr><td><strong>Rift Basin</strong></td><td>Crust pulled apart (extension); graben structures form</td><td>North Sea, East Africa Rift</td></tr>
+          <tr><td><strong>Passive Margin</strong></td><td>Along continental edges after rifting stops; thick sediment accumulates</td><td>Offshore Brazil, Gulf of Mexico</td></tr>
+          <tr><td><strong>Foreland Basin</strong></td><td>Compression near mountain belts creates basin adjacent to orogen</td><td>Zagros Basin (Iran), Alberta Basin</td></tr>
+          <tr><td><strong>Strike-slip / Pull-apart</strong></td><td>Offset along transform fault creates local depression</td><td>Los Angeles Basin, Dead Sea</td></tr>
+          <tr><td><strong>Intracratonic</strong></td><td>Subsidence within stable continental interior</td><td>Michigan Basin</td></tr>
+        </table>
+        <div class="tip">Basin type controls burial history, geothermal gradient, source rock quality, and trap style.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="10">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">10</span>
+      <span class="q-text">Explain TOC, S1, S2, S3 and Tmax parameters.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        These are <strong>Rock-Eval pyrolysis</strong> parameters used to evaluate source rocks:
+        <table>
+          <tr><th>Parameter</th><th>What it measures</th><th>Key threshold</th></tr>
+          <tr><td><strong>TOC</strong></td><td>Total Organic Carbon (% by weight) — richness of source rock</td><td>&gt;0.5% = fair; &gt;2% = good; &gt;4% = excellent</td></tr>
+          <tr><td><strong>S1</strong></td><td>Free hydrocarbons already present in rock (mg HC/g rock)</td><td>&gt;1 = some generation; indicates existing oil</td></tr>
+          <tr><td><strong>S2</strong></td><td>Remaining generation potential — HC released by cracking kerogen (mg HC/g rock)</td><td>&gt;2 = good potential</td></tr>
+          <tr><td><strong>S3</strong></td><td>CO₂ released during pyrolysis — reflects kerogen oxygen content (Type III)</td><td>High S3 = gas-prone kerogen</td></tr>
+          <tr><td><strong>Tmax</strong></td><td>Temperature of maximum S2 yield — maturity indicator (°C)</td><td>~435°C = early oil; ~450°C = peak oil; &gt;470°C = gas</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="11">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">11</span>
+      <span class="q-text">Explain parameters of source rock.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>TOC</strong> — organic richness (see Q10).</li>
+          <li><strong>HI (Hydrogen Index)</strong> = S2/TOC × 100 → kerogen type; high HI = oil-prone.</li>
+          <li><strong>OI (Oxygen Index)</strong> = S3/TOC × 100 → high OI = gas-prone or immature.</li>
+          <li><strong>PI (Production Index)</strong> = S1 / (S1 + S2) → how much potential has already been used; &gt;0.4 = highly mature or migrated.</li>
+          <li><strong>Vitrinite Reflectance (Ro%)</strong> — optical maturity: &lt;0.5 = immature; 0.5–1.3 = oil window; &gt;1.3 = gas zone.</li>
+          <li><strong>Tmax</strong> — thermal maturity from Rock-Eval (see Q10).</li>
+          <li><strong>Type of kerogen</strong> — determines oil vs gas generation potential.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="12">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">12</span>
+      <span class="q-text">What is Kerogen and its types. Explain with diagram.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Kerogen</strong> = solid, insoluble organic matter locked in sedimentary rock. The raw material that converts to oil and gas when buried and heated.
+        <table>
+          <tr><th>Type</th><th>Origin</th><th>H/C ratio</th><th>Generates mainly</th></tr>
+          <tr><td><strong>Type I</strong></td><td>Lacustrine algae (lake sediments)</td><td>Very high</td><td>Oil (waxy crude)</td></tr>
+          <tr><td><strong>Type II</strong></td><td>Marine plankton and algae</td><td>High</td><td>Oil + some gas</td></tr>
+          <tr><td><strong>Type III</strong></td><td>Land plant material (woody)</td><td>Low</td><td>Gas (mostly)</td></tr>
+          <tr><td><strong>Type IV</strong></td><td>Reworked, oxidized organic matter</td><td>Very low</td><td>Nothing useful (inert)</td></tr>
+        </table>
+        <div class="tip">Van Krevelen diagram: plots H/C vs O/C for each type — Types I/II start high-left; Type III starts low-right. As maturation progresses, all converge toward zero.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 5 -->
+<section class="lecture" id="l5">
+  <div class="lecture-title">Lecture 5 · Fundamentals of Porosity and Permeability</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l5','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l5','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="13">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">13</span>
+      <span class="q-text">What is Porosity and which parameters affect it. Give source examples both of good and poor.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Porosity (φ)</strong> = fraction of rock volume that is void space (pores). Expressed as %.<br>
+        Formula: φ = Vp / Vt × 100
+        <br><br><strong>Parameters that affect porosity:</strong>
+        <ul>
+          <li><strong>Grain sorting</strong> — well-sorted = uniform grain size = higher porosity.</li>
+          <li><strong>Grain shape</strong> — angular grains pack more loosely → higher porosity.</li>
+          <li><strong>Cementation</strong> — silica, calcite, dolomite cement fills pores → lowers porosity.</li>
+          <li><strong>Compaction</strong> — burial depth increases overburden stress, compresses pores.</li>
+          <li><strong>Diagenesis</strong> — dissolution can create secondary porosity (vugs); minerals can block pores.</li>
+          <li><strong>Fractures</strong> — add fracture porosity.</li>
+        </ul>
+        <strong>Examples:</strong>
+        <ul>
+          <li>✅ Good: Aeolian (wind-deposited) sandstone — 25–35%; clean, well-sorted.</li>
+          <li>✅ Good: Vuggy limestone — 20–30% (dissolution porosity).</li>
+          <li>❌ Poor: Deeply buried, cemented sandstone — &lt;5%.</li>
+          <li>❌ Poor: Shale — &lt;5% (pores too small, not connected).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="14">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">14</span>
+      <span class="q-text">What is Permeability and which parameters affect it, give source examples both of good and poor.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Permeability (k)</strong> = ability of rock to allow fluid to flow through connected pores. Measured in milliDarcies (mD).<br>
+        Governed by <strong>Darcy's Law</strong>: Q = kA(ΔP) / (μL)
+        <br><br><strong>Parameters affecting permeability:</strong>
+        <ul>
+          <li><strong>Pore throat size</strong> — the bottleneck for flow; small throats = low k even with high porosity.</li>
+          <li><strong>Pore connectivity</strong> — disconnected pores = zero permeability.</li>
+          <li><strong>Clay content</strong> — swelling clays (smectite) block pore throats.</li>
+          <li><strong>Fractures</strong> — dramatically increase permeability in otherwise tight rock.</li>
+          <li><strong>Cementation and compaction</strong> — reduce k just like porosity.</li>
+        </ul>
+        <strong>Examples:</strong>
+        <ul>
+          <li>✅ Good: Coarse clean sandstone — 500–2000 mD.</li>
+          <li>✅ Good: Naturally fractured carbonate — 10–1000 mD (via fractures).</li>
+          <li>❌ Poor: Shale — 0.00001–0.001 mD (source rock, not reservoir).</li>
+          <li>❌ Poor: Tight gas sandstone — &lt;0.1 mD (needs fracking).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="15">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">15</span>
+      <span class="q-text">Explain the relationship between porosity and permeability, and discuss how these properties influence EOR.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Relationship:</strong> Generally a positive correlation — higher porosity tends to mean higher permeability. BUT not always:
+        <ul>
+          <li>Vuggy carbonates: high porosity but vugs may not be connected → low k.</li>
+          <li>Fractured tight rock: low matrix porosity but high k via fractures.</li>
+        </ul>
+        <strong>Influence on EOR:</strong>
+        <ul>
+          <li><strong>High porosity</strong> = more oil in place (OOIP) = more potential.</li>
+          <li><strong>High permeability</strong> = easier to inject EOR fluids and get oil out.</li>
+          <li><strong>Heterogeneity</strong> in k → injected fluids channel through high-k zones, bypassing low-k zones (poor sweep).</li>
+          <li>Polymer flooding helps when permeability contrast is high (diverts flow).</li>
+          <li>Fractured carbonate → chemical EOR may work poorly (chemicals flow fast through fractures, bypass matrix oil).</li>
+        </ul>
+        <div class="tip">EOR success = not just about average properties, but how uniform (homogeneous) they are.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa repeat" data-id="16">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">16</span>
+      <span class="q-text">Explain how reservoir heterogeneity affects the success of EOR methods.</span>
+      <span class="repeat-tag">repeat</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <p class="repeat-note">⚠ Also appears in Lecture 7</p>
+        <strong>Reservoir heterogeneity</strong> = variation in rock properties (permeability, porosity, lithology) throughout the reservoir.
+        <br><br><strong>Effects on EOR:</strong>
+        <ul>
+          <li><strong>Thief zones</strong>: high-k layers take most of the injected fluid → bypasses oil in low-k zones.</li>
+          <li><strong>Channeling</strong>: early breakthrough of injected fluid at producer wells → less contact with oil.</li>
+          <li><strong>Vertical sweep efficiency</strong> drops when different layers have very different permeabilities (Dykstra-Parsons coefficient).</li>
+        </ul>
+        <strong>How EOR methods deal with it:</strong>
+        <ul>
+          <li>Polymer flooding: thickens water → reduces flow in high-k zones → better coverage of low-k zones.</li>
+          <li>Gel treatments (conformance control): block high-k zones with crosslinked polymer.</li>
+          <li>Steam flooding: heat evens out over time, but still challenged by heterogeneity.</li>
+        </ul>
+        <div class="tip">High heterogeneity = lower EOR efficiency. The more uniform the reservoir, the better the EOR sweep.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="17">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">17</span>
+      <span class="q-text">What is the difference between steady-state and unsteady-state relative permeability measurements?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Relative permeability</strong> = permeability to one fluid when multiple fluids coexist in pores (e.g., oil + water). Critical for modeling EOR.
+        <br><br>
+        <table>
+          <tr><th></th><th>Steady-state</th><th>Unsteady-state</th></tr>
+          <tr><td><strong>Method</strong></td><td>Both fluids injected simultaneously at fixed ratio until flow stabilizes</td><td>One fluid displaces the other; data analyzed with Buckley-Leverett theory</td></tr>
+          <tr><td><strong>Speed</strong></td><td>Slow (hours to days per point)</td><td>Fast</td></tr>
+          <tr><td><strong>Accuracy</strong></td><td>More accurate, mimics reservoir conditions well</td><td>Less accurate (relies on assumptions)</td></tr>
+          <tr><td><strong>Use</strong></td><td>Detailed reservoir characterization</td><td>Routine screening, quick estimates</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 7 -->
+<section class="lecture" id="l7">
+  <div class="lecture-title">Lecture 7 · Primary and Secondary Recovery Methods</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l7','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l7','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="18">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">18</span>
+      <span class="q-text">What is Enhanced Oil Recovery (EOR), and how does it differ from primary and secondary recovery?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th>Stage</th><th>Energy source</th><th>Typical recovery</th></tr>
+          <tr><td><strong>Primary</strong></td><td>Natural reservoir pressure (solution gas drive, water drive, gravity)</td><td>10–15% of OOIP</td></tr>
+          <tr><td><strong>Secondary</strong></td><td>Artificial pressure support — water flooding or gas injection</td><td>Additional 15–25%</td></tr>
+          <tr><td><strong>EOR (Tertiary)</strong></td><td>Advanced techniques — thermal, chemical, miscible gas</td><td>Additional 5–20%</td></tr>
+        </table>
+        <br><strong>Why EOR is needed:</strong> After primary + secondary, 40–70% of oil is still in the reservoir. EOR targets this remaining oil by:
+        <ul>
+          <li>Reducing oil viscosity (thermal)</li>
+          <li>Reducing interfacial tension (chemical)</li>
+          <li>Increasing displacement and sweep efficiency (polymer, miscible gas)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa repeat" data-id="19">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">19</span>
+      <span class="q-text">Explain how reservoir heterogeneity affects the success of EOR methods.</span>
+      <span class="repeat-tag">repeat</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <p class="repeat-note">⚠ Same as Lecture 5, Q16 — see answer above.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="20">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">20</span>
+      <span class="q-text">What are the main challenges associated with CO₂ injection in reservoirs?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>Miscibility pressure (MMP)</strong>: CO₂ only fully mixes with oil above a minimum pressure. Deep enough reservoir needed.</li>
+          <li><strong>Viscous fingering</strong>: CO₂ is much less viscous than oil → channels through reservoir, poor sweep.</li>
+          <li><strong>Gravity override</strong>: CO₂ is lighter than oil → rises to top, bypasses bottom oil.</li>
+          <li><strong>Asphaltene precipitation</strong>: CO₂ mixing can destabilize asphaltenes, plugging pores.</li>
+          <li><strong>Corrosion</strong>: CO₂ + water → carbonic acid → corrodes steel equipment.</li>
+          <li><strong>CO₂ supply and cost</strong>: Large volumes needed; pipeline infrastructure required.</li>
+          <li><strong>Recycling</strong>: Produced CO₂ must be captured and re-injected.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="21">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">21</span>
+      <span class="q-text">What is reservoir boundary conditions?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        Boundary conditions define how pressure and fluid behave at the edges of the reservoir in flow models:
+        <ul>
+          <li><strong>No-flow (closed) boundary</strong>: impermeable barrier (fault, facies pinch-out). Pressure declines as production proceeds — like a sealed box.</li>
+          <li><strong>Constant pressure boundary</strong>: connected to an active aquifer or gas cap. Pressure stays roughly constant — reservoir has external support.</li>
+          <li><strong>Mixed boundary</strong>: partial support from aquifer (common in real fields).</li>
+        </ul>
+        <strong>Why important:</strong>
+        <ul>
+          <li>Wrong boundary → wrong pressure decline prediction → wrong production forecast.</li>
+          <li>Defines whether water flooding or natural drive is needed.</li>
+          <li>Used in well test analysis (pressure transient) to identify reservoir size and connectivity.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="22">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">22</span>
+      <span class="q-text">Compare pressure maintenance strategies: water flooding vs gas injection (secondary recovery).</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th></th><th>Water Flooding</th><th>Gas Injection</th></tr>
+          <tr><td><strong>Recovery efficiency</strong></td><td>35–60% in favorable conditions</td><td>Lower sweep (gravity, fingering)</td></tr>
+          <tr><td><strong>Cost</strong></td><td>Lower — water is abundant</td><td>Higher — gas must be sourced or recycled</td></tr>
+          <tr><td><strong>Applicability</strong></td><td>Best for moderate viscosity oil in layered reservoirs</td><td>Best for light oil at high pressure (immiscible or miscible)</td></tr>
+          <tr><td><strong>Challenges</strong></td><td>Clay swelling, scale, corrosion, water handling</td><td>Gas channeling, gravity override, availability</td></tr>
+          <tr><td><strong>Reservoir impact</strong></td><td>Can cause water-sensitive mineral damage</td><td>Maintains gas-cap energy; can improve mobility</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="23">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">23</span>
+      <span class="q-text">What are the main limitations of primary recovery?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>Limited energy</strong>: relies purely on natural pressure — depletes as oil is produced.</li>
+          <li><strong>Pressure below bubble point</strong>: gas comes out of solution, oil becomes heavier and less mobile.</li>
+          <li><strong>Capillary forces</strong>: trap oil in small pores — can't be overcome without EOR.</li>
+          <li><strong>Low sweep efficiency</strong>: natural drive often sweeps only part of the reservoir.</li>
+          <li><strong>Typical recovery only 10–15% of OOIP</strong> — most oil is left behind.</li>
+          <li><strong>Declining flow rates</strong>: wellbore pressure drop reduces production rate over time.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 9 -->
+<section class="lecture" id="l9">
+  <div class="lecture-title">Lecture 9 · Enhanced Oil Recovery (EOR) Techniques</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l9','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l9','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="24">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">24</span>
+      <span class="q-text">What are the main mechanisms of oil recovery in steam flooding?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>Viscosity reduction</strong> (most important): heat drops oil viscosity by orders of magnitude, making it flow easily.</li>
+          <li><strong>Thermal expansion</strong>: oil volume expands with heat, pushing oil toward producers.</li>
+          <li><strong>Steam drive (pressure)</strong>: injected steam pressure physically drives oil.</li>
+          <li><strong>Distillation</strong>: light oil components vaporize, travel ahead of steam front, condense near producer — solvent-like effect.</li>
+          <li><strong>Relative permeability improvement</strong>: high temperature reduces water viscosity more than oil, slightly improving relative flow.</li>
+          <li><strong>Hot water front</strong>: hot condensed water ahead of steam zone also displaces oil.</li>
+        </ul>
+        <div class="tip">Best for: heavy oil (&gt;10,000 mPa·s), shallow reservoirs (&lt;1000 m), thick pay zones.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="25">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">25</span>
+      <span class="q-text">Describe the function of surfactants in chemical EOR.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Surfactants</strong> (surface-active agents) work at the oil-water interface:
+        <ul>
+          <li><strong>Reduce interfacial tension (IFT)</strong>: normally oil is held in pores by capillary forces. Surfactants reduce IFT from ~30 mN/m down to &lt;0.01 mN/m → capillary number increases → trapped oil is mobilized.</li>
+          <li><strong>Wettability alteration</strong>: can change rock surface from oil-wet to water-wet, improving displacement of oil.</li>
+          <li><strong>Emulsification</strong>: create oil-in-water emulsions that help transport oil to producers.</li>
+        </ul>
+        <strong>Key challenge: adsorption</strong> — surfactant molecules stick to rock surfaces, reducing effective concentration. Requires large volumes or pre-flush.
+        <div class="tip">Often used in ASP (Alkaline-Surfactant-Polymer) floods combining wettability change, IFT reduction, and mobility control.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="26">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">26</span>
+      <span class="q-text">What is polymer flooding, and how does it improve oil recovery?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Polymer flooding</strong>: add long-chain polymers (usually HPAM – hydrolyzed polyacrylamide) to injection water to make it more viscous.
+        <br><br><strong>How it improves recovery:</strong>
+        <ul>
+          <li><strong>Better mobility ratio</strong>: thicker water moves more slowly → doesn't finger through oil as badly.</li>
+          <li><strong>More uniform sweep</strong>: viscous water is diverted from high-k thief zones into low-k unswept zones.</li>
+          <li><strong>Delayed water breakthrough</strong>: oil produced for longer before water floods producers.</li>
+        </ul>
+        <strong>Best for:</strong> High-viscosity oil, heterogeneous reservoirs, mature waterflood fields with poor sweep.
+        <br><br><strong>Limitations:</strong>
+        <ul>
+          <li>Polymer degrades at high temperature (&gt;90°C) and high salinity.</li>
+          <li>Can plug formation if too concentrated.</li>
+          <li>More expensive than plain water flooding.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="27">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">27</span>
+      <span class="q-text">Discuss the role of injection water quality in preventing formation damage.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        Poor water quality is a major source of formation damage in water flooding:
+        <table>
+          <tr><th>Problem</th><th>Effect</th><th>Treatment</th></tr>
+          <tr><td>Suspended solids</td><td>Pore plugging, injectivity loss</td><td>Filtration</td></tr>
+          <tr><td>Bacteria (SRB)</td><td>Biofilm, H₂S generation, corrosion</td><td>Biocides</td></tr>
+          <tr><td>Incompatible waters</td><td>Scale (BaSO₄, CaCO₃) in pores</td><td>Scale inhibitors, compatibility testing</td></tr>
+          <tr><td>Dissolved oxygen</td><td>Iron oxide precipitation, corrosion</td><td>Oxygen scavengers, deaeration</td></tr>
+          <tr><td>Fresh water + clays</td><td>Clay swelling → pore blockage</td><td>Use saline water; KCl treatment</td></tr>
+        </table>
+        <div class="tip">Water quality standards: typically &lt;1 mg/L suspended solids, &lt;50 ppb oxygen, bacteria &lt;10 CFU/mL for injection.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="28">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">28</span>
+      <span class="q-text">How does bacterial activity (biofouling) affect reservoir properties during EOR?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Biofouling</strong>: bacteria grow in injection systems and reservoir pores, forming biofilms.
+        <br><br><strong>Negative effects:</strong>
+        <ul>
+          <li><strong>Pore plugging</strong>: biofilm reduces pore throat size → lower permeability → reduced injectivity.</li>
+          <li><strong>Reservoir souring</strong>: sulfate-reducing bacteria (SRB) convert sulfate → H₂S → toxic, corrosive, lowers oil value.</li>
+          <li><strong>Corrosion (MIC)</strong>: bacteria produce acids and H₂S → attack steel pipes and equipment.</li>
+          <li><strong>Increased maintenance</strong>: more workovers, filter replacements, corrosion monitoring.</li>
+        </ul>
+        <strong>Some positive use (MEOR):</strong> controlled bacterial injection can plug high-k thief zones or produce biosurfactants.
+        <div class="tip">Control: biocides (glutaraldehyde, quaternary ammonium), regular pigging, UV treatment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="29">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">29</span>
+      <span class="q-text">Compare water flooding and polymer flooding in terms of efficiency and limitations.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th></th><th>Water Flooding</th><th>Polymer Flooding</th></tr>
+          <tr><td><strong>Sweep efficiency</strong></td><td>Poor in heterogeneous/high-viscosity systems</td><td>Better — more uniform displacement</td></tr>
+          <tr><td><strong>Recovery increment</strong></td><td>Baseline</td><td>5–12% additional OOIP over water flood</td></tr>
+          <tr><td><strong>Cost</strong></td><td>Low</td><td>Higher (polymer cost, higher pressure)</td></tr>
+          <tr><td><strong>Temperature limit</strong></td><td>None</td><td>Degrades above ~90°C</td></tr>
+          <tr><td><strong>Salinity limit</strong></td><td>None for sweep; causes clay issues</td><td>High salinity reduces polymer viscosity</td></tr>
+          <tr><td><strong>Best use</strong></td><td>Light-moderate oil, homogeneous reservoir</td><td>Heavy/viscous oil, heterogeneous reservoir</td></tr>
+          <tr><td><strong>Main limitation</strong></td><td>Channeling, early breakthrough in heterogeneous reservoirs</td><td>Polymer adsorption, degradation at high T/S</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="30">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">30</span>
+      <span class="q-text">How does microbial-induced corrosion (MIC) influence reservoir performance and injection efficiency during EOR?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Microbial-Induced Corrosion (MIC)</strong>: bacteria (mainly SRB) corrode metal infrastructure while also damaging the near-wellbore zone.
+        <br><br><strong>Effects on EOR performance:</strong>
+        <ul>
+          <li><strong>Reduced injectivity</strong>: biofilm + iron oxide deposits plug pore throats near injector wellbore.</li>
+          <li><strong>Equipment failures</strong>: corroded tubing, casing, and surface pipelines → unplanned shutdowns.</li>
+          <li><strong>H₂S production</strong>: "sours" the reservoir → more complex and expensive produced fluid handling (amine treatment, safety risks).</li>
+          <li><strong>Reduced EOR agent contact</strong>: plugged wells = poor distribution of polymer/surfactant/steam.</li>
+          <li><strong>Higher OPEX</strong>: biocide injection, corrosion monitoring, workovers add cost.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 11 -->
+<section class="lecture" id="l11">
+  <div class="lecture-title">Lecture 11 · Reservoir Simulation and Modeling Principles</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l11','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l11','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="31">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">31</span>
+      <span class="q-text">What is reservoir simulation, and how is it used to design and optimize EOR processes?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Reservoir simulation</strong>: numerical (computer) modeling of fluid flow, pressure, and phase behavior in porous rock over time. Uses mathematical equations (Darcy's law, material balance, PVT equations).
+        <br><br><strong>Use in EOR design:</strong>
+        <ul>
+          <li><strong>Predict performance</strong> before spending on field implementation.</li>
+          <li><strong>Optimize injection rates</strong>, well locations, EOR agent concentration, and timing.</li>
+          <li><strong>Compare scenarios</strong>: e.g., steam vs polymer vs CO₂ for a given reservoir.</li>
+          <li><strong>History matching</strong>: calibrate model to actual production data → more reliable forecasts.</li>
+          <li><strong>Risk reduction</strong>: identify problematic heterogeneity, souring risks, breakthrough timing before committing capital.</li>
+        </ul>
+        <strong>Common software:</strong> Eclipse (SLB), CMG STARS, INTERSECT, TEMPEST.
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="32">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">32</span>
+      <span class="q-text">Discuss the key input parameters for building a reliable reservoir simulation model for EOR.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th>Parameter</th><th>Source</th><th>Impact on simulation</th></tr>
+          <tr><td><strong>Porosity</strong></td><td>Core, well logs</td><td>Controls how much fluid the reservoir holds</td></tr>
+          <tr><td><strong>Permeability</strong></td><td>Core, well tests</td><td>Controls flow rates; most uncertain parameter</td></tr>
+          <tr><td><strong>Relative permeability</strong></td><td>Lab experiments (core floods)</td><td>Determines how oil and water share flow paths — critical for EOR prediction</td></tr>
+          <tr><td><strong>PVT data</strong></td><td>Laboratory fluid analysis</td><td>Fluid behavior (viscosity, density, GOR) at reservoir conditions</td></tr>
+          <tr><td><strong>Initial pressure & temperature</strong></td><td>Well tests, well logs</td><td>Starting conditions; temperature defines EOR method suitability</td></tr>
+          <tr><td><strong>EOR-specific</strong></td><td>Lab tests</td><td>Polymer viscosity vs. concentration, surfactant adsorption, steam quality</td></tr>
+        </table>
+        <div class="tip">Error in any parameter propagates forward. Permeability is usually the most uncertain and most influential.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="33">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">33</span>
+      <span class="q-text">Given a heavy oil reservoir with high viscosity and shallow depth, propose a suitable EOR method and justify.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Recommendation: Steam Flooding or SAGD (Steam-Assisted Gravity Drainage)</strong>
+        <br><br><strong>Justification:</strong>
+        <ul>
+          <li><strong>Heavy oil + high viscosity</strong> → thermal EOR is the most effective way to reduce viscosity and improve flow.</li>
+          <li><strong>Shallow depth</strong> → steam can be injected without excessive heat loss in tubing; economically viable pressure conditions.</li>
+          <li>For very thick, flat reservoirs: <strong>SAGD</strong> (horizontal wells) works best — steam rises, oil and condensate drain to lower producer well by gravity.</li>
+          <li>Real examples: Athabasca Oil Sands (Canada) — SAGD; Duri Field (Indonesia) — steam flooding.</li>
+        </ul>
+        <strong>Not recommended:</strong>
+        <ul>
+          <li>Chemical EOR — high cost, polymers may not work well in very heavy oil.</li>
+          <li>CO₂ — not miscible with very heavy oil at shallow depths.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="34">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">34</span>
+      <span class="q-text">How does well stimulation integrate with EOR to enhance production?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Well stimulation</strong>: techniques to improve near-wellbore permeability — hydraulic fracturing (fracking), matrix acidizing.
+        <br><br><strong>Integration with EOR:</strong>
+        <ul>
+          <li><strong>Better injectivity</strong>: fractures allow EOR fluids (steam, CO₂, polymer) to be injected at higher rates and penetrate deeper into the reservoir.</li>
+          <li><strong>Connect unswept zones</strong>: fractures can bridge across tight barriers to reach by-passed oil.</li>
+          <li><strong>Increase contact area</strong>: more of the EOR agent contacts the reservoir rock.</li>
+          <li><strong>Acid stimulation</strong>: removes formation damage (scale, clay) before or during EOR to restore injectivity/productivity.</li>
+        </ul>
+        <div class="tip">In unconventional EOR (shale oil), fracking is a prerequisite — without it, no EOR agent can enter the very-low-permeability rock.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="35">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">35</span>
+      <span class="q-text">What is the difference between dynamic and static reservoir models?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th></th><th>Static Model</th><th>Dynamic Model</th></tr>
+          <tr><td><strong>What it represents</strong></td><td>3D geometry of rock properties (porosity, permeability, lithology, structure)</td><td>How fluids move and pressures change over time during production/injection</td></tr>
+          <tr><td><strong>Changes over time</strong></td><td>No — snapshot of the geology</td><td>Yes — updates at each time step</td></tr>
+          <tr><td><strong>Built from</strong></td><td>Seismic, well logs, core data</td><td>Static model + fluid properties + production history</td></tr>
+          <tr><td><strong>Used for</strong></td><td>OOIP estimation, geological interpretation</td><td>Production forecasting, EOR design, history matching</td></tr>
+          <tr><td><strong>Software</strong></td><td>Petrel, Kingdom</td><td>Eclipse, CMG, INTERSECT</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="36">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">36</span>
+      <span class="q-text">What is the significance of reservoir boundary conditions in flow modeling?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Boundary conditions</strong> tell the model what happens at the edges of the reservoir:
+        <ul>
+          <li><strong>No-flow boundary</strong>: pressure declines as fluid is produced — acts like a sealed box. Common for fault-bounded reservoirs.</li>
+          <li><strong>Constant pressure (aquifer) boundary</strong>: connected to water aquifer — pressure stays high even with production. Requires modeling aquifer influx.</li>
+        </ul>
+        <strong>Significance in flow modeling:</strong>
+        <ul>
+          <li>Wrong boundary → wrong pressure decline → wrong production forecast.</li>
+          <li>If aquifer support ignored: model over-predicts pressure decline → recommends unnecessary water injection.</li>
+          <li>If closed boundary assumed when aquifer is active: under-estimates natural energy, delays EOR unnecessarily.</li>
+          <li>Critical for well test interpretation (pressure transient analysis) — boundary responses appear in late-time pressure data.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 13 -->
+<section class="lecture" id="l13">
+  <div class="lecture-title">Lecture 13 · Formation Damage and Its Prevention</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l13','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l13','close')">Collapse all</button>
+  </div>
+
+  <div class="qa repeat" data-id="37">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">37</span>
+      <span class="q-text">How does reservoir depth and temperature influence the choice of EOR technique?</span>
+      <span class="repeat-tag">repeat</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <p class="repeat-note">⚠ Same as Lecture 1, Q3 — see answer above.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="38">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">38</span>
+      <span class="q-text">What is formation damage, and how does it affect reservoir performance during EOR?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Formation damage</strong>: reduction in reservoir permeability, especially near the wellbore, caused by physical, chemical, or biological processes.
+        <br><br><strong>Effects on EOR:</strong>
+        <ul>
+          <li><strong>Reduced injectivity</strong>: plugged injector wells → can't maintain required injection rates → EOR process slows or fails.</li>
+          <li><strong>Reduced productivity</strong>: plugged producer wells → less oil reaches surface per unit of effort.</li>
+          <li><strong>Poor EOR agent distribution</strong>: if wellbore is damaged, steam, polymer, or CO₂ doesn't spread evenly.</li>
+          <li><strong>Increased workovers</strong>: more frequent acid jobs, cleanouts → higher operating cost.</li>
+          <li>Quantified by <strong>skin factor (S)</strong> — a positive skin means damage; S = 0 is undamaged; negative S means stimulated.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="39">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">39</span>
+      <span class="q-text">List the main causes of formation damage in EOR processes.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>Fines migration</strong>: small particles detach from pore walls and block pore throats.</li>
+          <li><strong>Clay swelling</strong>: freshwater injection causes smectite/illite to swell → pore blockage.</li>
+          <li><strong>Scale precipitation</strong>: incompatible injected and formation waters react → CaCO₃, BaSO₄, FeSx deposits.</li>
+          <li><strong>Asphaltene deposition</strong>: pressure/temperature or CO₂ mixing destabilizes asphaltenes → solid deposits.</li>
+          <li><strong>Wax / paraffin deposition</strong>: cooling (e.g., cold water injection) precipitates wax from oil.</li>
+          <li><strong>Bacterial plugging (biofouling)</strong>: biofilm and bacterial products block pores.</li>
+          <li><strong>Polymer retention</strong>: polymer flooding — excess polymer adsorbs on rock, reducing permeability.</li>
+          <li><strong>Emulsion blocking</strong>: tight emulsions can block pores near wellbore.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="40">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">40</span>
+      <span class="q-text">Describe the environmental risks associated with large-scale EOR projects.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <ul>
+          <li><strong>CO₂ leakage</strong> (CO₂-EOR): unintended CO₂ escape into atmosphere or shallow groundwater aquifers.</li>
+          <li><strong>Groundwater contamination</strong>: injected chemicals (polymers, surfactants, biocides) may leak into freshwater zones if well integrity fails.</li>
+          <li><strong>Induced seismicity</strong>: high-pressure injection can reactivate faults (especially in CO₂ and wastewater injection).</li>
+          <li><strong>H₂S emissions</strong>: reservoir souring from SRB produces toxic hydrogen sulfide gas.</li>
+          <li><strong>Produced water disposal</strong>: large volumes of contaminated water need safe disposal.</li>
+          <li><strong>Thermal effects</strong>: steam flooding changes subsurface temperature; potential effect on microecosystems.</li>
+          <li><strong>Surface footprint</strong>: infrastructure, pipelines, roads disturb land and habitats.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LECTURE 15 -->
+<section class="lecture" id="l15">
+  <div class="lecture-title">Lecture 15 · Digital Technologies in Reservoir Management</div>
+  <div class="section-controls">
+    <button class="btn-small" onclick="toggleSection('l15','open')">Expand all</button>
+    <button class="btn-small" onclick="toggleSection('l15','close')">Collapse all</button>
+  </div>
+
+  <div class="qa" data-id="41">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">41</span>
+      <span class="q-text">Application of AI in Geology — give software examples.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>AI applications in geology:</strong>
+        <ul>
+          <li>Automated seismic interpretation (fault picking, horizon mapping)</li>
+          <li>Well log correlation across fields</li>
+          <li>Reservoir property prediction from seismic attributes</li>
+          <li>Drilling optimization (real-time bit steering)</li>
+          <li>Production anomaly detection</li>
+        </ul>
+        <strong>Software examples:</strong>
+        <ul>
+          <li><strong>Petrel (SLB)</strong> — AI-assisted seismic interpretation, facies classification</li>
+          <li><strong>Ikon Science RokDoc</strong> — AI for rock physics and well log analysis</li>
+          <li><strong>Emerson Paradigm</strong> — AI seismic interpretation</li>
+          <li><strong>DeepMind / Google AI</strong> (research level) — subsurface prediction</li>
+          <li><strong>Halliburton iEnergy / DecisionSpace</strong> — AI-driven drilling and well planning</li>
+          <li><strong>Blueback Toolbox (Cegal)</strong> — Python-based ML in Petrel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="42">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">42</span>
+      <span class="q-text">What are positive and negative aspects of application of AI in Geology and compare them?</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <table>
+          <tr><th>✅ Positive</th><th>❌ Negative</th></tr>
+          <tr><td>Processes huge datasets (seismic, logs) much faster than humans</td><td>"Black box" — hard to explain why AI reached a conclusion</td></tr>
+          <tr><td>Consistent pattern recognition — no fatigue or bias</td><td>Requires large, high-quality training datasets (often unavailable)</td></tr>
+          <tr><td>Can find subtle correlations humans miss</td><td>Risk of overfitting — model works on training data, fails on new data</td></tr>
+          <tr><td>Reduces repetitive manual work (log picking, fault identification)</td><td>Can't replace geological intuition and contextual knowledge</td></tr>
+          <tr><td>Lowers cost and time for interpretation projects</td><td>Garbage in = garbage out — data quality issues propagate</td></tr>
+          <tr><td>Real-time monitoring and alerts</td><td>High initial investment in software and training</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="43">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">43</span>
+      <span class="q-text">Discuss the role of nanotechnology in improving modern EOR techniques.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Nanoparticles</strong> (1–100 nm, e.g., SiO₂, Al₂O₃, TiO₂, carbon nanotubes) enhance EOR by:
+        <ul>
+          <li><strong>Wettability alteration</strong>: nanoparticles adsorb on rock surface, shifting from oil-wet to water-wet → oil detaches more easily.</li>
+          <li><strong>IFT reduction</strong>: lower interfacial tension between oil and injected fluid, mobilizing trapped oil.</li>
+          <li><strong>Stabilizing foams and emulsions</strong>: nanoparticle-stabilized foams improve sweep by blocking high-k zones (like polymer).</li>
+          <li><strong>Enhanced thermal flooding</strong>: nanoparticles improve heat transfer in steam flooding.</li>
+          <li><strong>Nanosensors</strong>: injectable sensors to detect oil saturation and flow paths in the reservoir.</li>
+        </ul>
+        <div class="tip">Still mostly lab/pilot stage. Key challenges: cost, nanoparticle aggregation in brine, and large-scale delivery into reservoir pores.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="44">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">44</span>
+      <span class="q-text">Explain how digital oilfield technologies (IoT sensors, real-time data) improve reservoir management and EOR decision-making.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>Digital Oilfield / Smart Field</strong> uses sensors, automation, and data analytics:
+        <ul>
+          <li><strong>Real-time monitoring</strong>: downhole pressure, temperature, and flow rate sensors transmit data continuously → instant detection of problems.</li>
+          <li><strong>Optimization without field visits</strong>: remote adjustment of injection/production rates based on data.</li>
+          <li><strong>Digital twin</strong>: live reservoir simulation model updated with real-time data → more accurate forecasts and faster EOR decisions.</li>
+          <li><strong>Predictive maintenance</strong>: ML algorithms predict equipment failures before they happen → reduce downtime.</li>
+          <li><strong>Formation damage alerts</strong>: sudden injectivity drop detected in real time → biocide/acid treatment deployed quickly.</li>
+          <li><strong>EOR agent optimization</strong>: adjust polymer concentration or steam rate in real time based on sensor feedback.</li>
+        </ul>
+        <div class="tip">Result: higher production efficiency, lower OPEX, better EOR performance, and reduced environmental risk.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" data-id="45">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-number">45</span>
+      <span class="q-text">Application of machine learning in Geology — give software examples.</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="answer">
+      <div class="answer-inner">
+        <strong>ML in Geology:</strong>
+        <ul>
+          <li><strong>Lithology/facies classification</strong>: train ML on labeled well logs → predict lithology in unlabeled wells.</li>
+          <li><strong>Production forecasting</strong>: replace traditional decline curve analysis with neural networks.</li>
+          <li><strong>Seismic attribute analysis</strong>: identify gas chimneys, DHIs (direct hydrocarbon indicators).</li>
+          <li><strong>Petrophysical property prediction</strong>: porosity/permeability from seismic via ML.</li>
+          <li><strong>Drilling optimization</strong>: predict optimal weight on bit, rotation speed.</li>
+        </ul>
+        <strong>Software examples:</strong>
+        <ul>
+          <li><strong>Petrel + Blueback Toolbox</strong> — ML workflows in standard reservoir characterization</li>
+          <li><strong>Python (scikit-learn, TensorFlow, PyTorch)</strong> — open-source; widely used in research and industry</li>
+          <li><strong>DataRobot</strong> — automated ML platform used in oil companies</li>
+          <li><strong>Paleoscan (Eliis)</strong> — ML-based seismic facies analysis</li>
+          <li><strong>SAS Analytics</strong> — used for production analytics in NOCs</li>
+          <li><strong>Ikon Science RokDoc</strong> — ML for rock physics inversion</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // ── Toggle Q&A ──
+  let answered = new Set();
+
+  function toggle(header) {
+    const qa = header.closest('.qa');
+    const wasOpen = qa.classList.contains('open');
+    qa.classList.toggle('open');
+    const id = qa.dataset.id;
+    if (!wasOpen) {
+      answered.add(id);
+    }
+    updateProgress();
+  }
+
+  function toggleSection(sectionId, action) {
+    const section = document.getElementById(sectionId);
+    const cards = section.querySelectorAll('.qa');
+    cards.forEach(qa => {
+      if (action === 'open') {
+        qa.classList.add('open');
+        answered.add(qa.dataset.id);
+      } else {
+        qa.classList.remove('open');
+      }
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = 45;
+    const done = answered.size;
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${done} / ${total} questions reviewed`;
+  }
+
+  // ── Countdown ──
+  function updateCountdown() {
+    const examDate = new Date('2026-06-19T17:00:00');
+    const now = new Date();
+    const diff = examDate - now;
+
+    if (diff <= 0) {
+      document.getElementById('timer').textContent = 'EXAM TIME! 🎯';
+      document.getElementById('timer').style.color = '#4dffb8';
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('timer').textContent =
+      `${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+
+    // Color changes as exam approaches
+    const el = document.getElementById('timer');
+    if (days === 0 && hours < 2) {
+      el.style.color = '#ff4d4d';
+    } else if (days <= 1) {
+      el.style.color = '#ff9a4d';
+    } else if (days <= 3) {
+      el.style.color = '#ffd966';
+    } else {
+      el.style.color = '#ffd966';
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
