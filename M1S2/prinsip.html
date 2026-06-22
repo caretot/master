@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MİF-B1205 — Geological Regionalization Exam Prep</title>
+<style>
+:root{
+  --bg:#0a0c0b;
+  --bg-elev:#111513;
+  --bg-card:#161b18;
+  --bg-card-hover:#1b211d;
+  --border:#262e29;
+  --border-soft:#1d241f;
+  --text:#e9e5d8;
+  --text-dim:#97a098;
+  --text-faint:#5e6962;
+  --amber:#d99a4e;
+  --amber-soft:#3a2c1c;
+  --teal:#5fae9d;
+  --teal-soft:#1a2c28;
+  --rust:#d9665a;
+  --rust-soft:#3a1f1c;
+  --olive:#8a9a6e;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --sans: -apple-system, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--amber);text-decoration:none;}
+::selection{background:var(--amber-soft);color:var(--amber);}
+
+/* ---------- Layout ---------- */
+.app{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  min-height:100vh;
+}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr;}
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  background:var(--bg-elev);
+  border-right:1px solid var(--border);
+  padding:22px 18px 30px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.sidebar::-webkit-scrollbar{width:6px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+@media (max-width:900px){
+  .sidebar{
+    position:fixed;
+    top:0; left:0;
+    width:280px;
+    height:100vh;
+    z-index:50;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    box-shadow:20px 0 40px rgba(0,0,0,.5);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);
+    z-index:40;display:none;
+  }
+  .overlay.show{display:block;}
+}
+
+.brand{display:flex;flex-direction:column;gap:2px;}
+.brand .code{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--amber);text-transform:uppercase;}
+.brand h1{font-family:var(--serif);font-size:19px;margin:2px 0 0;font-weight:600;line-height:1.25;}
+.brand .meta{font-size:12.5px;color:var(--text-dim);margin-top:6px;}
+
+.countdown-box{
+  background:linear-gradient(160deg, var(--amber-soft), var(--bg-card));
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 14px;
+}
+.countdown-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+.countdown-clock{font-family:var(--mono);font-size:22px;color:var(--amber);letter-spacing:.02em;}
+.countdown-sub{font-size:11.5px;color:var(--text-faint);margin-top:6px;}
+
+.progress-box{font-size:12.5px;color:var(--text-dim);}
+.progress-track{
+  height:6px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:4px;overflow:hidden;margin-top:6px;
+}
+.progress-fill{height:100%;background:var(--teal);width:0%;transition:width .25s ease;}
+
+.search-wrap input{
+  width:100%;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:9px 11px;
+  border-radius:8px;
+  font-size:13.5px;
+  font-family:var(--sans);
+}
+.search-wrap input:focus{outline:none;border-color:var(--amber);}
+.search-wrap input::placeholder{color:var(--text-faint);}
+
+.sidebar-actions{display:flex;gap:8px;}
+.btn{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  color:var(--text-dim);
+  font-size:12px;
+  padding:7px 10px;
+  border-radius:7px;
+  cursor:pointer;
+  font-family:var(--sans);
+  flex:1;
+  transition:.15s;
+}
+.btn:hover{background:var(--bg-card-hover);color:var(--text);border-color:var(--amber);}
+
+.legend{display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:var(--text-dim);}
+.legend .row{display:flex;align-items:center;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot.ogr{background:var(--teal);}
+.dot.pogr{background:var(--amber);}
+.dot.prac{background:var(--rust);}
+
+.toc{display:flex;flex-direction:column;gap:2px;}
+.toc-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:6px 0 4px;}
+.toc a{
+  display:flex;justify-content:space-between;gap:6px;
+  font-size:13px;color:var(--text-dim);
+  padding:7px 9px;border-radius:7px;
+}
+.toc a:hover{background:var(--bg-card);color:var(--text);}
+.toc a.active{background:var(--bg-card);color:var(--amber);}
+.toc a .n{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+.toc a.is-pogr .n{color:var(--amber);}
+
+/* ---------- Main ---------- */
+.main{padding:0;max-width:980px;}
+.topbar{
+  display:none;
+  position:sticky;top:0;z-index:30;
+  background:rgba(10,12,11,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border);
+  padding:12px 16px;
+  align-items:center;
+  justify-content:space-between;
+}
+@media (max-width:900px){.topbar{display:flex;}}
+.topbar .menu-btn{
+  background:var(--bg-card);border:1px solid var(--border);color:var(--text);
+  padding:8px 12px;border-radius:8px;font-size:13px;
+}
+.topbar .small-code{font-family:var(--mono);font-size:12px;color:var(--amber);}
+
+.hero{
+  padding:64px 48px 40px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  right:-60px;top:-60px;
+  width:320px;height:320px;
+  background:radial-gradient(circle, var(--amber-soft), transparent 70%);
+  opacity:.6;
+}
+.hero .eyebrow{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(28px,4vw,42px);
+  margin:10px 0 14px;
+  font-weight:600;
+  line-height:1.15;
+  max-width:680px;
+}
+.hero p.lede{color:var(--text-dim);font-size:15.5px;max-width:600px;margin:0 0 18px;}
+.hero .facts{display:flex;flex-wrap:wrap;gap:10px;}
+.fact-pill{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:12.5px;
+  color:var(--text-dim);
+  font-family:var(--mono);
+}
+.fact-pill b{color:var(--text);font-family:var(--sans);font-weight:600;}
+
+@media (max-width:600px){.hero{padding:40px 20px 30px;}}
+
+.section{
+  padding:40px 48px;
+  border-bottom:1px solid var(--border-soft);
+}
+@media (max-width:600px){.section{padding:30px 20px;}}
+
+.section-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin-bottom:6px;
+  flex-wrap:wrap;
+}
+.lec-num{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text-faint);
+  border:1px solid var(--border);
+  padding:3px 8px;
+  border-radius:6px;
+}
+.section-head h2{
+  font-family:var(--serif);
+  font-size:24px;
+  margin:0;
+  font-weight:600;
+}
+.type-badge{
+  font-size:10.5px;
+  font-family:var(--mono);
+  letter-spacing:.05em;
+  padding:3px 8px;
+  border-radius:5px;
+  text-transform:uppercase;
+}
+.type-badge.ogr{background:var(--teal-soft);color:var(--teal);}
+.type-badge.pogr{background:var(--amber-soft);color:var(--amber);}
+.lec-sub{color:var(--text-dim);font-size:13.5px;margin:4px 0 18px;}
+
+/* depth bar - signature element */
+.depth{
+  margin:16px 0 26px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.depth-label{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--text-faint);
+  width:110px;
+  flex-shrink:0;
+  line-height:1.3;
+}
+.depth-track{
+  flex:1;
+  height:10px;
+  background:repeating-linear-gradient(90deg, var(--border-soft) 0 1px, transparent 1px 41.6px);
+  border:1px solid var(--border);
+  border-radius:5px;
+  position:relative;
+  overflow:hidden;
+}
+.depth-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--olive), var(--amber));
+  border-radius:5px 0 0 5px;
+}
+.depth-ticks{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:9.5px;color:var(--text-faint);
+  margin-top:3px;
+}
+.depth-note{font-size:12px;color:var(--text-dim);font-family:var(--mono);white-space:nowrap;}
+
+/* question cards */
+.qcard{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.qcard.repeat{border-color:var(--rust);}
+.qhead{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:15px 18px;
+  cursor:pointer;
+  user-select:none;
+}
+.qhead:hover{background:var(--bg-card-hover);}
+.qnum{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--text-faint);
+  flex-shrink:0;
+  padding-top:2px;
+  width:28px;
+}
+.qtitle-wrap{flex:1;min-width:0;}
+.qtitle{font-size:15.5px;font-weight:600;color:var(--text);}
+.qtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;}
+.tag{
+  font-size:10px;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  padding:2px 7px;
+  border-radius:4px;
+  border:1px solid var(--border);
+  color:var(--text-dim);
+}
+.tag.practical{border-color:var(--rust);color:var(--rust);}
+.tag.repeat-tag{border-color:var(--rust);color:var(--rust);}
+.qcheck{
+  flex-shrink:0;
+  width:20px;height:20px;
+  border:1px solid var(--border);
+  border-radius:5px;
+  margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:transparent;
+  cursor:pointer;
+}
+.qcheck.checked{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);}
+.chev{
+  width:18px;height:18px;flex-shrink:0;margin-top:3px;
+  border-right:2px solid var(--text-faint);
+  border-bottom:2px solid var(--text-faint);
+  transform:rotate(45deg);
+  transition:transform .2s ease;
+}
+.qcard.open .chev{transform:rotate(-135deg);}
+.qbody{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .25s ease;
+}
+.qbody-inner{
+  padding:0 18px 20px 58px;
+  font-size:14.5px;
+  color:var(--text);
+}
+.qbody-inner p{margin:0 0 12px;}
+.qbody-inner h4{
+  font-family:var(--sans);
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--text-faint);
+  margin:18px 0 8px;
+}
+.qbody-inner ul{margin:0 0 4px;padding-left:20px;}
+.qbody-inner li{margin-bottom:7px;color:var(--text);}
+.qbody-inner li b{color:var(--text);}
+
+.box{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:13px 15px;
+  margin:14px 0;
+  background:var(--bg-elev);
+}
+.box.def{border-left:3px solid var(--teal);}
+.box.def b{color:var(--teal);}
+.box.tip{border-left:3px solid var(--amber);}
+.box.tip .tip-label{color:var(--amber);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;}
+.box.warn{border-left:3px solid var(--rust);}
+.box.warn .warn-label{color:var(--rust);font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;}
+.box.data{border-left:3px solid var(--olive);font-family:var(--mono);font-size:13px;}
+.box p:last-child{margin-bottom:0;}
+
+table.cmp{
+  width:100%;
+  border-collapse:collapse;
+  margin:14px 0;
+  font-size:13.5px;
+}
+table.cmp th, table.cmp td{
+  border:1px solid var(--border);
+  padding:8px 10px;
+  text-align:left;
+  vertical-align:top;
+}
+table.cmp th{
+  background:var(--bg-elev);
+  color:var(--teal);
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+table.cmp tr:nth-child(even) td{background:rgba(255,255,255,.015);}
+
+.overview-table-wrap{overflow-x:auto;}
+
+.hier-svg{width:100%;height:auto;display:block;margin:18px 0;}
+
+.no-results{
+  color:var(--text-faint);
+  font-size:14px;
+  padding:30px;
+  text-align:center;
+  display:none;
+}
+
+footer{
+  padding:50px 48px 80px;
+  text-align:center;
+  color:var(--text-faint);
+  font-size:13px;
+}
+footer .sig{font-family:var(--serif);color:var(--amber);font-size:16px;margin-bottom:8px;}
+
+.expand-all-row{display:flex;gap:8px;margin-bottom:18px;}
+
+@media (max-width:600px){
+  .qbody-inner{padding-left:18px;}
+  .qnum{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="code">MİF-B1205</span>
+      <h1>Geological Regionalization Principles of Oil and Gas Fields</h1>
+      <div class="meta">Teacher: Qənbərova Şura Əli</div>
+    </div>
+
+    <div class="countdown-box">
+      <div class="countdown-label">Exam starts in</div>
+      <div class="countdown-clock" id="countdown">--d --h --m --s</div>
+      <div class="countdown-sub">23 June 2026 · 17:00–20:00 (Baku time)</div>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search questions, regions, terms...">
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn" id="expandAllBtn">Expand all</button>
+      <button class="btn" id="collapseAllBtn">Collapse all</button>
+    </div>
+
+    <div class="progress-box">
+      <span id="progressText">0 / 60 questions reviewed</span>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="legend">
+      <div class="row"><span class="dot ogr"></span> OGR — proven oil/gas region</div>
+      <div class="row"><span class="dot pogr"></span> POGR — possible (unproven) region</div>
+      <div class="row"><span class="dot prac"></span> Marked practical / classification note</div>
+    </div>
+
+    <nav class="toc" id="toc">
+      <div class="toc-title">Jump to lecture</div>
+      <!-- filled by JS -->
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-btn" id="menuBtn">☰ Menu</button>
+      <span class="small-code">MİF-B1205</span>
+    </div>
+
+    <section class="hero">
+      <div class="eyebrow">Final exam · fast revision</div>
+      <h1>Oil &amp; Gas Geological Zoning — everything in one place</h1>
+      <p class="lede">All 14 lectures, 60 exam sub-questions, explained in simple English. Built from your lecture slides plus extra research where the slides were thin, so every region of Azerbaijan's oil and gas map makes sense before tomorrow at 17:00.</p>
+      <div class="facts">
+        <span class="fact-pill"><b>14</b> lectures</span>
+        <span class="fact-pill"><b>60</b> sub-questions</span>
+        <span class="fact-pill"><b>8</b> proven OGR + <b>6</b> possible POGR</span>
+        <span class="fact-pill">Exam: <b>23 Jun 2026, 17:00</b></span>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-head"><h2>The big picture first</h2></div>
+      <p style="color:var(--text-dim);font-size:14.5px;max-width:680px;">Before the details, lock in the skeleton. Every region you will be asked about fits into this one chain, and into one of two "families" — proven (OGR) or possible (POGR). Look at this table again right before you walk into the exam room.</p>
+
+      <h4 style="font-family:var(--sans);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);margin:24px 0 8px;">The zoning chain (smallest unit to biggest)</h4>
+      <svg class="hier-svg" viewBox="0 0 980 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10" fill="none" stroke="#97a098" stroke-width="1.5"/>
+          </marker>
+        </defs>
+        <g font-family="ui-monospace, monospace" font-size="11.5">
+        <!-- boxes -->
+        <g>
+          <rect x="5" y="25" width="120" height="55" rx="8" fill="#1a2c28" stroke="#5fae9d"/>
+          <text x="65" y="48" fill="#5fae9d" text-anchor="middle" font-weight="bold">PROVINCE</text>
+          <text x="65" y="64" fill="#97a098" text-anchor="middle" font-size="10">e.g. South Caucasus</text>
+        </g>
+        <line x1="128" y1="52" x2="150" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="153" y="25" width="120" height="55" rx="8" fill="#1a2c28" stroke="#5fae9d"/>
+          <text x="213" y="48" fill="#5fae9d" text-anchor="middle" font-weight="bold">REGION (OGR)</text>
+          <text x="213" y="64" fill="#97a098" text-anchor="middle" font-size="10">e.g. Absheron OGR</text>
+        </g>
+        <line x1="276" y1="52" x2="298" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="301" y="25" width="110" height="55" rx="8" fill="#211c14" stroke="#d99a4e"/>
+          <text x="356" y="48" fill="#d99a4e" text-anchor="middle" font-weight="bold">AREA</text>
+          <text x="356" y="64" fill="#97a098" text-anchor="middle" font-size="10">geochemical unit</text>
+        </g>
+        <line x1="414" y1="52" x2="436" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="439" y="25" width="110" height="55" rx="8" fill="#211c14" stroke="#d99a4e"/>
+          <text x="494" y="48" fill="#d99a4e" text-anchor="middle" font-weight="bold">BASIN</text>
+          <text x="494" y="64" fill="#97a098" text-anchor="middle" font-size="10">sedimentary depression</text>
+        </g>
+        <line x1="552" y1="52" x2="574" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="577" y="25" width="100" height="55" rx="8" fill="#1a1f1b" stroke="#8a9a6e"/>
+          <text x="627" y="48" fill="#8a9a6e" text-anchor="middle" font-weight="bold">ZONE</text>
+          <text x="627" y="64" fill="#97a098" text-anchor="middle" font-size="10">where shows found</text>
+        </g>
+        <line x1="680" y1="52" x2="702" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="705" y="25" width="100" height="55" rx="8" fill="#1a1f1b" stroke="#8a9a6e"/>
+          <text x="755" y="48" fill="#8a9a6e" text-anchor="middle" font-weight="bold">FIELD</text>
+          <text x="755" y="64" fill="#97a098" text-anchor="middle" font-size="10">accumulation</text>
+        </g>
+        <line x1="808" y1="52" x2="830" y2="52" stroke="#97a098" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <g>
+          <rect x="833" y="25" width="142" height="55" rx="8" fill="#241a18" stroke="#d9665a"/>
+          <text x="904" y="48" fill="#d9665a" text-anchor="middle" font-weight="bold">DEPOSIT</text>
+          <text x="904" y="64" fill="#97a098" text-anchor="middle" font-size="10">one trap, one unit</text>
+        </g>
+        </g>
+        <text x="5" y="110" fill="#5e6962" font-size="11" font-family="ui-monospace,monospace">Bigger / more general  ───────────────────────────────────────────────────────────────────────►  Smaller / more specific</text>
+      </svg>
+
+      <div class="box warn">
+        <span class="warn-label">Watch out</span>
+        <p>Your short summary slide writes the order as <b>province → area → region → basin...</b>, but the full lecture text writes <b>province → region → area → basin...</b>. The diagram above follows the full lecture text. If the exam asks you to write the chain from memory, say it out loud first — examiners usually accept either order as long as province is first and deposit is last, but know that this small mismatch exists in your own materials.</p>
+      </div>
+
+      <h4 style="font-family:var(--sans);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);margin:24px 0 8px;">All 14 regions at a glance</h4>
+      <div class="overview-table-wrap">
+        <table class="cmp">
+          <tr><th>#</th><th>Region</th><th>Type</th><th>Parent province</th><th>Main rock age</th><th>One-line memory hook</th></tr>
+          <tr><td>—</td><td>Principles &amp; zoning</td><td>—</td><td>—</td><td>—</td><td>The rulebook for everything below</td></tr>
+          <tr><td>2</td><td>Gusar-Devechy</td><td><span class="type-badge ogr">OGR</span></td><td>North Absheron</td><td>Jurassic–Pliocene</td><td>NW corner, low productivity, heavy oil only</td></tr>
+          <tr><td>3</td><td>Khyzy</td><td><span class="type-badge ogr">OGR</span></td><td>SE Caucasus</td><td>Mesozoic</td><td>Narrow Tengi-Beshbarmag ridge, gas-prone</td></tr>
+          <tr><td>4</td><td>Shamakhi-Gobustan</td><td><span class="type-badge ogr">OGR</span></td><td>SE Caucasus</td><td>Mesozoic–Pliocene</td><td>4 tectonic zones, mud volcanoes everywhere</td></tr>
+          <tr><td>5</td><td>Absheron</td><td><span class="type-badge ogr">OGR</span></td><td>SE Caucasus</td><td>Eocene–Pliocene</td><td>The peninsula itself, oldest oil province</td></tr>
+          <tr><td>6</td><td>Lower Kura</td><td><span class="type-badge ogr">OGR</span></td><td>Kura-South Caspian</td><td>Productive Series</td><td>Deepest basin, 4 anticline rows</td></tr>
+          <tr><td>7</td><td>Muradkhanli</td><td><span class="type-badge ogr">OGR</span></td><td>Lesser Caucasus-Transtalysh</td><td>Upper Cretaceous volcanics</td><td>Oil from cracked volcanic rock, not sandstone</td></tr>
+          <tr><td>8</td><td>Ganja</td><td><span class="type-badge ogr">OGR</span></td><td>Lesser Caucasus-Transtalysh</td><td>Cretaceous–Paleogene</td><td>Low output, several fields on conservation</td></tr>
+          <tr><td>9</td><td>Kura-Gabyrry interfluve</td><td><span class="type-badge ogr">OGR</span></td><td>Lesser Caucasus-Transtalysh</td><td>Miocene/Eocene</td><td>Only Tarsdallar field is truly industrial</td></tr>
+          <tr><td>10</td><td>Ajinohur</td><td><span class="type-badge pogr">POGR</span></td><td>Trans-Greater-Caucasus</td><td>Pliocene cover / Mesozoic buried</td><td>5 parallel antiklinal rows, no real flow yet</td></tr>
+          <tr><td>11</td><td>Kurdamir-Saatli-Lankaran</td><td><span class="type-badge pogr">POGR</span></td><td>Kura-South Caspian</td><td>Buried Mesozoic</td><td>Saatly super-deep well, 8.3 km</td></tr>
+          <tr><td>12</td><td>Gazakh-Dallar-Dalimammadli</td><td><span class="type-badge pogr">POGR</span></td><td>Lesser Caucasus-Transtalysh</td><td>Mesozoic monocline</td><td>Far NW, next to Ganja OGR</td></tr>
+          <tr><td>13</td><td>Transtalysh (Jalilabad)</td><td><span class="type-badge pogr">POGR</span></td><td>Lesser Caucasus-Transtalysh</td><td>Paleogene volcanics</td><td>SW edge, against the Talysh mountains</td></tr>
+          <tr><td>14</td><td>Nakhchivan</td><td><span class="type-badge pogr">POGR</span></td><td>Araz-adjacent</td><td>Upper Cretaceous, Maykop</td><td>Separate exclave, 5,000 km²</td></tr>
+        </table>
+      </div>
+      <div class="box tip">
+        <span class="tip-label">Memory tip</span>
+        <p>8 OGR + 6 POGR = 14 region "families". Your exam groups Kurdamir-Saatli and Saatli-Lankaran into ONE lecture (11), but some textbooks (Yusifov &amp; Aslanov, industry reports) count them as TWO separate POGRs. If the exam asks "how many possible oil-gas regions are there", the textbook answer is <b>6</b>: Ajinohur, Kurdamir-Saatli, Saatli-Lankaran, Gazakh-Dallar-Dalimammadli, Transtalysh(Jalilabad), Nakhchivan.</p>
+      </div>
+    </section>
+
+    <!-- LECTURE SECTIONS injected by JS -->
+    <div id="lectures"></div>
+
+    <div class="no-results" id="noResults">No questions match your search.</div>
+
+    <footer>
+      <div class="sig">Good luck tomorrow, 17:00.</div>
+      <p>You already know more than you think — most of this is the same four questions (tectonics, stratigraphy, oil/gas-bearing, borders) asked about 13 different places. Learn the pattern once, then just swap the place names.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* =====================================================
+   DATA
+===================================================== */
+const LECTURES = [
+{
+  id:"l1", num:1, title:"Oil and Gas Geological Zoning and Principles", hours:"2.00 saat", type:null, depth:null,
+  questions:[
+    {
+      title:"Oil and Gas Geological Zoning and Principles (overview)",
+      tags:[],
+      body:`
+      <p><b>Oil and gas geological zoning</b> means cutting up a big sedimentary basin into smaller pieces, from huge provinces down to one single oil deposit. We do this by looking for patterns: where does oil and gas actually sit, and why there and not somewhere else.</p>
+      <div class="box def"><b>Definition.</b> Zoning = dividing oil/gas-bearing ground into objects of different sizes, based on tectonics, lithology, stratigraphy, hydrogeology and geochemistry.</div>
+      <h4>Why we bother</h4>
+      <ul>
+        <li>It tells geologists <b>where to drill next</b> instead of guessing.</li>
+        <li>It groups fields that share the same geological story, so lessons from one field can be reused on its neighbour.</li>
+        <li>It is the skeleton the whole course (and the rest of this exam) hangs on — every later lecture is just "one branch" of this tree.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>If a question just says "what is zoning", give: definition + the 5 factors + the chain (province→...→deposit) + the purpose list. That combo covers almost any phrasing of this question.</div>`
+    },
+    {
+      title:"Basic concepts of oil and gas geological zoning",
+      tags:[],
+      body:`
+      <p>The whole subject is built on one chain of nested units. Think of it like Russian dolls: each unit sits fully inside the bigger one above it.</p>
+      <div class="box def"><b>Chain:</b> Oil and gas province (OGP) → Oil and gas region (OGR) → Oil and gas area (OGA) → Oil and gas basin (OGB) → Oil and gas zone (OGZ) → Oil and gas field (OGF) → Individual deposit (ID).</div>
+      <table class="cmp">
+        <tr><th>Unit</th><th>What it actually is</th><th>Azerbaijan example</th></tr>
+        <tr><td>Province</td><td>Huge crust area, several regions sharing the same formation history</td><td>South Caucasus oil-gas province</td></tr>
+        <tr><td>Region</td><td>Territory with <b>proven</b> reserves, tied to one or more tectonic units</td><td>Absheron OGR</td></tr>
+        <tr><td>Area</td><td>Marked off by geochemistry — how much oil/gas could it generate</td><td>Bayimdagh-Tekchay area</td></tr>
+        <tr><td>Basin</td><td>A large depression filled with sediment where HC could form and be kept</td><td>Lower Kura depression</td></tr>
+        <tr><td>Zone</td><td>Spot where deposits were actually found</td><td>Kurovdagh-Neftchala zone</td></tr>
+        <tr><td>Field</td><td>A place in the Earth where oil/gas accumulates</td><td>Muradkhanli field</td></tr>
+        <tr><td>Deposit</td><td>One single accumulation, tied to one trap type</td><td>The Jafarli oil deposit</td></tr>
+      </table>
+      <div class="box warn"><span class="warn-label">Watch out</span>The order shown above (province→region→area→basin) is from the full lecture text. The short revision slide lists it as province→<b>area</b>→region→basin instead. Mention both if you are unsure which one the teacher prefers, but lead with province→region→area→basin.</div>`
+    },
+    {
+      title:"Factors taken into account in oil and gas zoning",
+      tags:[],
+      body:`
+      <p>Four kinds of evidence decide where one zone ends and another begins.</p>
+      <ul>
+        <li><b>Regional tectonics &amp; paleotectonics</b> — faults, folds, uplifts: the "shape" of the crust now and in the past.</li>
+        <li><b>Lithology &amp; stratigraphy</b> — what rock types are in the section, and in what order/age.</li>
+        <li><b>Hydrogeological conditions</b> — how groundwater moves and what it is made of (this can flush oil out, or help trap it).</li>
+        <li><b>Geochemical conditions</b> — richness and maturity of the source rock (does it actually have HC potential).</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Say it as <b>T-L-H-G</b>: Tectonics, Lithology(+stratigraphy), Hydrogeology, Geochemistry. Same four letters come back in nearly every region's description in this course.</div>
+      <div class="box warn"><span class="warn-label">Confusing with Q5?</span>This question (factors) asks <b>what evidence</b> is collected. Question 5 (principles) asks <b>how</b> that evidence is turned into boundary lines. Same ingredients, different question — factors are the inputs, principles are the method.</div>`
+    },
+    {
+      title:"Oil and gas zoning (purpose)",
+      tags:[],
+      body:`
+      <p>Zoning is not just academic bookkeeping — it exists to make exploration cheaper and smarter.</p>
+      <ul>
+        <li><b>Find promising areas</b> for exploration before spending money on drilling.</li>
+        <li><b>Estimate scale</b> of hydrocarbon potential per region, so budgets can be ranked.</li>
+        <li><b>Optimize exploration work</b> — drill where the geology actually supports a trap.</li>
+        <li><b>Improve understanding</b> of structure and HC potential as new data comes in.</li>
+      </ul>
+      <div class="box def"><b>One-line definition for the exam:</b> the purpose of oil and gas zoning is to systemize what we know about HC distribution so exploration and field development can be planned efficiently.</div>`
+    },
+    {
+      title:"Principles of Oil and Gas Geological Zoning",
+      tags:[],
+      body:`
+      <p>"Principles" means the actual rules used to draw the line between one unit and its neighbour.</p>
+      <ul>
+        <li><b>Structural-tectonic principle</b> — the main one used in Azerbaijan. Borders follow deep faults, anticlinoriums, synclinoriums and other tectonic elements.</li>
+        <li><b>Stratigraphic-lithological principle</b> — borders follow changes in rock age or facies (e.g. where Productive Series sand wedges out).</li>
+        <li><b>Hydrogeological principle</b> — borders follow changes in the groundwater regime.</li>
+        <li><b>Geochemical principle</b> — borders follow changes in source-rock richness/maturity.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Azerbaijan's modern oil-geological zoning leans most heavily on the <b>structural-tectonic principle</b>, while also checking the Mesozoic / Paleogene-Miocene / Pliocene sediment differences across each area. If you only remember one principle, remember this one.</div>`
+    },
+    {
+      title:"Provinces of Azerbaijan territory",
+      tags:[],
+      body:`
+      <p>At the very top of the chain, Azerbaijan's onshore oil-gas territory splits into two big provinces, which then break down step by step into the 14 regions you study in this course.</p>
+      <table class="cmp">
+        <tr><th>Level</th><th>Units</th></tr>
+        <tr><td>Provinces (2)</td><td>Greater-Caucasus-foreland province · South Caucasus intermontane province</td></tr>
+        <tr><td>Subprovinces (3)</td><td>Terek-Khazar · Kura-South Caspian · Southeast Caucasus</td></tr>
+        <tr><td>"Vilayət" / regions (5)</td><td>North Absheron · Southeast Caucasus · Trans-Greater-Caucasus · Lesser Caucasus-Transtalysh · Araz-adjacent</td></tr>
+        <tr><td>Proven OGR (8)</td><td>Gusar-Devechy, Khyzy, Shamakhi-Gobustan, Absheron, Lower Kura, Muradkhanli, Ganja, Kura-Gabyrry</td></tr>
+        <tr><td>Possible POGR (6)</td><td>Ajinohur, Kurdamir-Saatli, Saatli-Lankaran, Gazakh-Dallar-Dalimammadli, Transtalysh(Jalilabad), Nakhchivan</td></tr>
+      </table>
+      <div class="box warn"><span class="warn-label">Watch out</span>Don't confuse "vilayət" (regional grouping, 5 of them) with "rayon" (the actual OGR/POGR, 14 of them). Many students mix these two Azerbaijani words up — "vilayət" is one level higher than "rayon" in the chain.</div>`
+    },
+    {
+      title:"Lesser Caucasus megaanticlinorium",
+      tags:[],
+      body:`
+      <p>This is the mountain belt on the SW side of the Kura depression — Murovdagh, Shahdagh (Lesser Caucasus version, different from the Greater Caucasus Shahdagh), East Goycha, and the Garabagh range, plus the Garabagh volcanic plateau.</p>
+      <div class="box def"><b>Key fact:</b> Mesozoic <b>magmatic / effusive (volcanic)</b> rocks dominate here — this is the opposite of the Greater Caucasus, which is mostly sedimentary.</div>
+      <ul>
+        <li>Strong present-day seismicity, especially in the Ganjabasar zone.</li>
+        <li>This is exactly why the Ganja and Muradkhanli OGRs (which sit on its NE foreland) get their oil from <b>cracked volcanic rock</b>, not normal sandstone — the source mountain belt next door is built of volcanics.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Lesser Caucasus = <b>volcanic</b> (effusive rock). Greater Caucasus = <b>sedimentary</b> (thick stratified cover). One word each is enough to tell them apart on the exam.</div>`
+    },
+    {
+      title:"Greater Caucasus megaanticlinorium",
+      tags:[],
+      body:`
+      <p>This is the long mountain arc running NW–SE that gives almost every OGR in this course its NE border. Its SE end ("plunge") dives under the Absheron peninsula and continues offshore.</p>
+      <div class="box def"><b>Key fact:</b> Thick, stratified <b>Cenozoic and Mesozoic sedimentary</b> rock — this is what makes it a source of reservoir and seal rock for the regions around it (Gusar-Devechy, Khyzy, Shamakhi-Gobustan, Absheron all sit on its SE "step-like" plunge).</div>
+      <ul>
+        <li>The "step-like" structure changes as it goes SE: it splits into North and South Absheron steps inside the Absheron periclinal depression.</li>
+        <li>Many anticline ages get younger going SE — Eocene rocks on the surface near the mountains, replaced by Oligocene-Miocene, then Miocene, then Pliocene rocks further toward the coast.</li>
+      </ul>`
+    },
+    {
+      title:"South Caspian oil and gas bearing region",
+      tags:[],
+      body:`
+      <p>This is the deepest and most productive basin in the whole area — and it is genuinely unusual on a world scale.</p>
+      <ul>
+        <li>Sedimentary cover can reach more than <b>20–24 km</b> thick south of the Absheron peninsula.</li>
+        <li>The crust under it has <b>no granite layer</b> — it behaves like oceanic-type crust under a huge sediment pile.</li>
+        <li><b>Low geothermal gradient</b> (~1.5°C per 100 m) means oil and gas can survive at unusually great depth without "cooking" into pure gas too early.</li>
+        <li>Main reservoir = Pliocene <b>Productive Series</b>, the source of most of Azerbaijan's giant fields (onshore and offshore).</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Three numbers to remember: <b>20+ km</b> sediment, <b>1.5°C/100m</b> low heat flow, Pliocene <b>Productive Series</b> reservoir. These three facts explain why the South Caspian holds so much oil and gas compared to its neighbours.</div>`
+    }
+  ]
+},
+
+{
+  id:"l2", num:2, title:"Gusar-Devechy Oil and Gas-bearing Region (OGBR)", hours:"2.00 saat", type:"ogr", depth:{label:"Talabi well: 4,461 m", value:18},
+  questions:[
+    {
+      title:"Gusar-Devechy oil and gas-bearing region — tectonics",
+      tags:[],
+      body:`
+      <p>Located in the NW corner of the North Absheron province, covering the Greater Caucasus' NE slope, the Gusar inclined plain, and the Samur-Devechy lowland.</p>
+      <div class="box def"><b>Borders (quick map):</b> Caspian Sea to the E/NE · Siyazan fault to the S/SW · Samur deep fault to the NW. The shape resembles a triangle.</div>
+      <ul>
+        <li>Two uplift zones plus one depression between them: <b>Yalama-Khudat</b> uplift zone, <b>Gusar-Khachmaz-Aghzibirchala</b> buried uplift zone, and the small <b>Zeykhur</b> depression between them.</li>
+        <li>SW of all this sits the large <b>Guba-Devechy depression</b>, which is "buried" — covered over by Miocene sediment so you cannot see it directly from the surface.</li>
+        <li>On Mesozoic rock the Gusar-Khachmaz-Aghzibirchala zone looks like an <b>anticlinorium</b> (many small folds together); on younger Upper Miocene–Pliocene rock the same zone behaves like a simple <b>monocline</b> (one gentle tilt). Same rocks at depth, totally different shape on top — a classic exam trap.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Watch out</span>"Derivative depression" in this lecture refers ONLY to the Upper Miocene and Pliocene-Anthropogenic layers of the Gusar-Devechy basin — not to the whole basin. Don't apply that label to the Mesozoic part.</div>`
+    },
+    {
+      title:"Gusar-Devechy oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>The section spans Middle Jurassic through Pliocene-Anthropogenic, but how much of it you actually find depends entirely on which uplift you stand on.</p>
+      <ul>
+        <li><b>Yalama uplifts</b>: Middle Jurassic, Cretaceous (Upper Barremian to Maastrichtian), Paleogene-Miocene and Pliocene-Anthropogenic — getting simpler as you go up.</li>
+        <li>On the buried Gusar uplift: Middle Jurassic is directly overlain by <b>Sarmatian</b>. On the Khachmaz uplift: overlain by <b>Paleocene</b>. On Aghzibirchala: overlain by <b>Pontic clay</b>. (Same uplift zone, three different "missing chapters" — a good gap/unconformity example.)</li>
+        <li>In the <b>Siyazan monocline</b> (the most important oil object here): Maastrichtian carbonate, Danian, Eocene, Oligocene-Miocene (Maykop), Chokrak sand-clay, and Sarmatian — these are the layers that actually matter industrially.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Three different "caps" sitting straight on the same Middle Jurassic floor (Sarmatian / Paleocene / Pontic clay) = a textbook picture of an <b>unconformity</b> changing along a buried ridge.</div>`
+    },
+    {
+      title:"Gusar-Devechy oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>This is the weakest OGR in the whole course in terms of actual production — good to know, since the exam may test whether you can spot a "low potential" region.</p>
+      <div class="box data">
+        Talabi area, well No.12: <b>heavy oil, 40 m³/day</b> from Sarmatian sediments, depth 4,461 m<br>
+        Yalama area, well No.9: <b>28–30 m³/day</b> + a little water, from Barremian sand<br>
+        Yalama well No.1: strong gas shows in Turonian-Konyak rock<br>
+        Yalama wells No.8 &amp; 12: oil films only (no real flow)
+      </div>
+      <ul>
+        <li>No oil/gas signs at all in Middle-Lower Jurassic terrigenous rock or Triassic volcanics — but the lecture authors still say this zone is not hopeless, because of possible <b>stratigraphic traps</b> under the Upper Miocene unconformity.</li>
+        <li>The Yalama-Khudat zone never gave an industrially significant flow despite several wells, so it cannot be rated highly.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Don't write "Gusar-Devechy = no oil at all." It has shows and small flows, just nothing of industrial scale. The correct phrase is <b>"low industrial potential, not zero potential."</b></div>`
+    },
+    {
+      title:"Borders of Gusar-Devechy OGR",
+      tags:[],
+      body:`
+      <p>Use this simple compass rule for the exam map question:</p>
+      <table class="cmp">
+        <tr><th>Direction</th><th>Border</th></tr>
+        <tr><td>East / Northeast</td><td>Caspian Sea</td></tr>
+        <tr><td>South / Southwest</td><td>Siyazan fault</td></tr>
+        <tr><td>Northwest</td><td>Samur deep fault</td></tr>
+      </table>
+      <p>It sits in the NW part of the North Absheron oil-gas province, which itself belongs to the SE part of the Terek-Khazar subprovince — so on a country-scale map, Gusar-Devechy is the northern-most OGR of Azerbaijan, right against the Russian border area.</p>`
+    }
+  ]
+},
+
+{
+  id:"l3", num:3, title:"Khyzy Oil and Gas-bearing Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Reservoir ~1.6–1.8 km", value:7},
+  questions:[
+    {
+      title:"Khyzy Oil and Gas-bearing Region — tectonics",
+      tags:["practical"],
+      body:`
+      <p><span class="tag practical" style="margin-right:6px;">Practical exam tag</span> Your syllabus marks this exact sub-question as a <b>practical</b> exam item (PraktikiFinal), not only theoretical. Expect possibly a map/structure-naming task here, not just a written description.</p>
+      <div class="box def"><b>Borders:</b> Siyazan fault (NE) · Western Caspian fault (NW) · Malkamud-Khaltan-Germian deep faults (SW) · Caspian Sea (SE).</div>
+      <ul>
+        <li>Covers the <b>Khyzy tectonic zone</b> and part of the <b>Tengi-Beshbarmag anticlinorium</b>, both inside the Velvelachay basin.</li>
+        <li>The Tengi-Beshbarmag anticlinorium is a narrow ridge — <b>100 km long but only 7–10 km wide</b> — that physically separates the Khyzy and Gusar-Devechy synclinoriums from each other.</li>
+        <li>The Shahdagh-Khyzy synclinorium (sometimes written as two names merging into one) is bordered by the Dubrar-Yashma synclinorium along the Malkamud-Khaltan-Germian fault.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Khyzy = the region <b>between</b> two synclinoriums, split by one narrow anticlinorium ridge. Picture a "W" shape: syncline – ridge – syncline.</div>`
+    },
+    {
+      title:"Khyzy oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Lower Cretaceous rock dominates the surface across most of the Khyzy zone; older and younger rock only shows up in special spots.</p>
+      <ul>
+        <li>NW &amp; central parts: wide synclines of <b>Upper Cretaceous</b> rock at surface.</li>
+        <li>SE part: anticlines of <b>Lower Cretaceous</b> rock dominate the surface.</li>
+        <li>Upper Cretaceous and Paleogene rock survive only inside synclines — everywhere else they were eroded away.</li>
+        <li>The Tengi-Beshbarmag anticline core = clayey Middle Jurassic; its central syncline = Tithonian-Valanginian carbonate.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Direction trick: go from NW to SE across Khyzy, and rock age at the surface gets <b>older</b> (Upper Cretaceous → Lower Cretaceous). That's the opposite trend you will see in some other regions, so don't auto-apply the same direction rule everywhere.</div>`
+    },
+    {
+      title:"Khyzy oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Khyzy is mostly a <b>gas</b> region, with a few oil shows tied to specific sandy horizons.</p>
+      <div class="box data">
+        Keshchay well No.1: gas, <b>75,000 m³/day</b> + 70–80 m³ water, from Middle Jurassic sand<br>
+        Bayimdagh-Tekchay well No.3: gas <b>66,000 m³/day</b> + oil <b>21 m³/day</b> (1,772–1,643 m)<br>
+        Shurabad: oil 20–40 t/day + gas up to 160,000 m³/day from "Kulluli sandstone" (Albian)
+      </div>
+      <ul>
+        <li>Natural oil/gas seeps recorded in the Tenge valley and Chiraggala massif, tied to Upper Jurassic rock.</li>
+        <li>Best prospects: the <b>Bayimdag-Tekchay-Sitalchay-Yashma</b> anticline zone, plus Middle Jurassic sand in Keshchay/Shurabad, plus Lower Cretaceous (Berriasian, Valanginian, Hauterivian) carbonate.</li>
+      </ul>`
+    },
+    {
+      title:"Khyzy oil and gas-bearing region borders",
+      tags:[],
+      body:`
+      <table class="cmp">
+        <tr><th>Direction</th><th>Border</th></tr>
+        <tr><td>Northeast</td><td>Siyazan</td></tr>
+        <tr><td>Northwest</td><td>Western Caspian fault</td></tr>
+        <tr><td>Southwest</td><td>Malkamud-Khaltan-Germian deep faults</td></tr>
+        <tr><td>Southeast</td><td>Caspian Sea</td></tr>
+      </table>
+      <p>Khyzy sits right between Gusar-Devechy (to its N) and Shamakhi-Gobustan (to its S) — three OGRs in a row, all stacked along the SE plunge of the Greater Caucasus.</p>`
+    }
+  ]
+},
+
+{
+  id:"l4", num:4, title:"Shamakhi-Gobustan Oil and Gas-bearing Region (OGR)", hours:"4.00 saat", type:"ogr", depth:{label:"Maykop oil ~1–2 km", value:9},
+  questions:[
+    {
+      title:"Shamakhi-Gobustan oil and gas-bearing region — tectonics",
+      tags:[],
+      body:`
+      <p>This region is the biggest of the bunch (4 lecture-hours instead of 2) because it has <b>four</b> separate tectonic zones, each behaving differently.</p>
+      <div class="box def"><b>Borders:</b> Malkamud-Germian fault (NE) · West Caspian fault (NW) · Langebiz-Alat fault (SW) · a line from Gilazi cape to Sangachal cape (E, conventional).</div>
+      <table class="cmp">
+        <tr><th>Zone</th><th>Main rock complex</th><th>Character</th></tr>
+        <tr><td>Northern Gobustan</td><td>Mesozoic</td><td>Parallel anticlinal ridges (Altıağac-Kürkeçidağ, etc.)</td></tr>
+        <tr><td>Central Gobustan</td><td>Paleogene-Miocene</td><td>Calm, narrow latitudinal folds, longitudinal faults</td></tr>
+        <tr><td>Southwestern Gobustan</td><td>Paleogene-Miocene + Pliocene</td><td>Brachyanticlines, thrust faults, mud volcanoes</td></tr>
+        <tr><td>Southeastern Gobustan (Jeyrankechmez depression)</td><td>Pliocene Productive Series</td><td>Semicircular folds, thrust + mud volcanoes</td></tr>
+      </table>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Going N→S inside this OGR, the dominant rock age gets <b>younger</b>: Mesozoic → Paleogene-Miocene → Pliocene. That's the natural order to recite the four zones in.</div>`
+    },
+    {
+      title:"Shamakhi-Gobustan oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>The same four-zone split controls both the rock record and where the oil/gas actually sits.</p>
+      <ul>
+        <li>Northern zone: oil/gas <b>shows</b> mostly in Cretaceous limestone — up to 12 kg of oil collected in a day from Campanian rock at Garayazi; short bursts from Albian/Aptian-Barremian sand at Gedisu and Gizmeydani.</li>
+        <li>Central &amp; SW zones: <b>industrial</b> flows from the <b>Maykop suite</b> (III, IV, V horizons) and Chokrak horizon — Umbaki gave 100–150 t/day, Eastern Hajiveli gave 15 t/day.</li>
+        <li>SE zone (Jeyrankechmez): oil/gas-condensate from the <b>Productive Series</b> — Duvanni, Kenizedagh, Dashgil fields; Shikhigaya well gave 50,000 m³/day of gas.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>This is the only OGR in the course where <b>three different reservoir types</b> (Cretaceous limestone, Maykop/Chokrak sand, Productive Series sand) all matter at once — a good "compare and contrast" answer if the exam asks for stratigraphy detail.</div>`
+    },
+    {
+      title:"Shamakhi-Gobustan oil and gas-bearing borders",
+      tags:[],
+      body:`
+      <table class="cmp">
+        <tr><th>Direction</th><th>Border</th></tr>
+        <tr><td>Northeast</td><td>Malkamud-Germian fault</td></tr>
+        <tr><td>Northwest</td><td>West Caspian fault</td></tr>
+        <tr><td>Southwest</td><td>Langebiz-Alat fault</td></tr>
+        <tr><td>East (conventional line)</td><td>Gilazi cape → Sangachal cape</td></tr>
+      </table>
+      <div class="box warn"><span class="warn-label">Note</span>Your syllabus lists only 3 sub-questions for this lecture (tectonics, stratigraphy, borders) — "oil and gas bearing" is folded into the stratigraphy answer above. If the exam paper has a separate 4th question for this region, reuse the production data from the stratigraphy card.</div>`
+    }
+  ]
+},
+
+{
+  id:"l5", num:5, title:"Absheron Oil and Gas-bearing Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Reservoir ~1–3 km", value:11},
+  questions:[
+    {
+      title:"Absheron Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>This is the peninsula itself — Baku's home ground, and Azerbaijan's oldest producing oil province.</p>
+      <div class="box def"><b>Position:</b> the SE continuation of the Greater Caucasus megaanticlinorium, where the step-like Caucasus structure changes inside the Absheron periclinal depression, splitting into North Absheron and South Absheron steps.</div>
+      <ul>
+        <li>Three tectonic zones: <b>Western, Central, Eastern</b> Absheron.</li>
+        <li><b>Western Absheron</b>: a circular anticlinorium (Govundag, Shabandag, Lokbatan, Shongar, etc.) wrapped around the Guzdek depression.</li>
+        <li>Anticline-surface rock age gets younger going E/SE/SW from the NW: Eocene (Govundag) → Oligocene-Miocene (Shorbulag, Fatmayi) → Middle/Upper Miocene (Binagadi) → Pliocene (Lokbatan-Giziltepe).</li>
+        <li><b>Eastern Absheron depression</b> (Pliocene-filled) holds the Buzovna-Mashtagha, Gala-Turkan and Zira uplifts.</li>
+      </ul>`
+    },
+    {
+      title:"Absheron oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Sediments range from Eocene at the oldest exposures to Pliocene at the youngest — and the exposed age tells you exactly where you are standing.</p>
+      <ul>
+        <li>Oligocene-Miocene rock surfaces in the Kecheldagh-Binagadi, Saray, Chorat-Novkhani and Fatmayi-Kirmaki uplifts (Central Absheron).</li>
+        <li>The Sulutepe-Binagadi-Chakhnaglar zone holds <b>stratigraphic-type</b> oil/gas — meaning the trap is formed by sandy layers thinning out ("wedging") on the flanks of structures pointed toward the Baku basin.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Absheron is the best place in the course to learn what a <b>stratigraphic trap</b> looks like in practice — sand simply runs out sideways and traps the oil, no fault or fold needed.</div>`
+    },
+    {
+      title:"Absheron oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Absheron has been Azerbaijan's main oil ground since the 19th century, and its anticlines are the textbook examples used worldwide for "structural trap".</p>
+      <ul>
+        <li>Major producing structures: Lokbatan, Binagadi, Surakhany, Balakhany-Sabunchu-Ramana, Bibieybat, Garadagh, and many more named on the regional map.</li>
+        <li>Most fields are <b>structural-type</b> anticline traps; the Sulutepe-Binagadi-Chakhnaglar zone adds stratigraphic traps on top.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Don't describe Absheron only as "33 named structures on a map" without saying WHY — it is the model anticlinal province; almost every classic Azerbaijani oilfield name students half-remember (Bibi-Heybat, Surakhany, Balakhany) is here.</div>`
+    },
+    {
+      title:"Borders of Absheron OGR",
+      tags:[],
+      body:`
+      <p>The land part is simply the Absheron Peninsula. Its western border with Shamakhi-Gobustan is the conventional line from <b>Gilazi cape to Sangachal cape</b>; its N, S and E borders follow the coastline of the peninsula itself.</p>
+      <div class="box def"><b>Wider context:</b> Absheron OGR is part of the South-East Caucasus Oil and Gas-bearing Subprovince (OGSP), inside the South Caucasus oil-gas area (OGA).</div>`
+    }
+  ]
+},
+
+{
+  id:"l6", num:6, title:"Lower Kura Oil and Gas-bearing Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Sediment 10–20 km", value:20},
+  questions:[
+    {
+      title:"Lower Kura Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>This is the <b>deepest</b> basin among the proven OGRs — a key fact to remember for any "which region has the thickest sediment" question.</p>
+      <div class="box def"><b>Borders:</b> Langebiz-Alat fault (N/NE) · West Caspian fault (S/SW) · Caspian coast (E/SE, conventional).</div>
+      <ul>
+        <li>Sedimentary layer thickness: <b>10–16 km, locally up to 20 km</b> — dominated by Paleogene-Neogene rock.</li>
+        <li>Inside the depression: <b>Upper Shirvan, Lower Shirvan, Mughan-Salyan</b> secondary depressions.</li>
+        <li>4 anticline rows trending NW–SE: <b>Pirsaat-Hamamdag, Kalamaddin-Mishovdagh-Bandovan, Kursangi, Kurovdag-Neftchala</b>.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>4 rows of anticlines, all NW–SE, all named after their two end-fields. Learn the 4 names as a single chant: <b>Pirsaat–Kalamaddin–Kursangi–Kurovdag</b>, north to south.</div>`
+    },
+    {
+      title:"Lower Kura oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Almost nothing is known directly about the Mesozoic here — it is simply too deep to drill economically, so geologists infer it indirectly.</p>
+      <ul>
+        <li>Surface rock = mostly Aghjagil, Absheron and Ancient Caspian / Baku-stage sediment.</li>
+        <li>Productive Series rock reaches the surface ONLY in the highest uplift arches (Kalamaddin, Boyuk Harami, Kichik Harami, Mishovdag, Bandovan).</li>
+        <li>Cretaceous rock is inferred to be carbonate, based only on rock fragments thrown up by mud volcanoes — nobody has actually drilled into it here.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Don't say "Mesozoic rock here is well-studied." The lecture explicitly says there is <b>almost no real information</b> about it — only indirect clues from mud volcano debris.</div>`
+    },
+    {
+      title:"Lower Kura oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>The Productive Series is the star reservoir of this whole OGR, with the Kurovdagh-Neftchala zone being the single most important.</p>
+      <ul>
+        <li><b>Pirsaat-Hamamdag</b> zone: oil in horizon VII (Surakhani suite) and gas in Middle Absheron sand.</li>
+        <li><b>Kalamaddin-Mishovdagh-Bandovan</b> zone: tectonically/lithologically screened deposits in horizons I–VIII.</li>
+        <li><b>Kursangi</b> zone: oil-gas condensate in horizons I–VIII; the deepest-buried of the 4 zones.</li>
+        <li><b>Kurovdagh-Neftchala</b> zone: the <b>main</b> oil/gas accumulation zone of the whole OGR — horizons I-V and I-VI on the SW limb of Kurovdagh and Garabaghly uplifts.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>If asked "which zone is most important in Lower Kura", the answer is <b>Kurovdagh-Neftchala</b> — it is explicitly named the main accumulation zone in the source text.</div>`
+    },
+    {
+      title:"Limits of Lower Kura oil and gas-bearing region",
+      tags:[],
+      body:`
+      <table class="cmp">
+        <tr><th>Direction</th><th>Border</th></tr>
+        <tr><td>North/Northeast</td><td>Langebiz-Alat fault</td></tr>
+        <tr><td>South/Southwest</td><td>West Caspian fault</td></tr>
+        <tr><td>East/Southeast</td><td>Caspian coast (conventional)</td></tr>
+      </table>
+      <p>Belongs to the Greater Transcaucasian oil-gas area, inside the Kura-South Caspian subprovince — sitting directly SE of Shamakhi-Gobustan and feeding into the South Caspian basin.</p>`
+    }
+  ]
+},
+
+{
+  id:"l7", num:7, title:"Muradkhanli Oil and Gas Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Basement 8–14 km", value:14},
+  questions:[
+    {
+      title:"Muradkhanli Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>Muradkhanli is special: its oil comes from <b>volcanic rock</b>, not sandstone — a useful contrast case against almost everything else in this course.</p>
+      <div class="box def"><b>Position:</b> NE flank of the Yevlakh-Aghjabedi depression. Bordered by Mingachevir-Goychay thrust (N, vs Ajinohur), Jarlı-Jalilabad fault (NE, vs Kurdamir-Saatli-Lankaran), Ashagi Araz fault (SE), and the depression's own axis (SW).</div>
+      <ul>
+        <li>Crystalline basement depth: <b>12–14 km in the centre, 8–10 km on the flanks</b>.</li>
+        <li>Structural plan mismatch: Paleogene/Mesozoic complex dips steeply SW, while the Neogene-Anthropogenic complex above it tilts gently NE — two different "tilts" stacked on each other.</li>
+        <li>Region splits into NW, central, and SE tectonic zones; the SE zone holds the important <b>Zardab-Muradkhanli-Jafarli</b> anticline chain.</li>
+      </ul>`
+    },
+    {
+      title:"Muradkhanli oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Mesozoic, Paleogene-Miocene, and Pliocene-Anthropogenic sediment all take part — but the reservoir rock itself is unusual.</p>
+      <ul>
+        <li>The Muradkhanli uplift is large: <b>6.3 × 8.7 km</b>, height &gt;500 m, on a 3,500 m isohypse of the Upper Cretaceous surface.</li>
+        <li>The Jafarli anticline is much smaller: 3.0 × 3.8 km, height 100 m, on a 4,400 m isohypse.</li>
+        <li>Key reservoir rocks: weathered (cracked, "secondary porosity") <b>Upper Cretaceous volcanogenic rock</b> + <b>Middle Eocene tuffogenic</b> rock + Chokrak sandy horizons.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>"Weathered surface of volcanic rock" is the phrase to remember — it explains why fractured/weathered <b>Santonian (Upper Cretaceous)</b> volcanics act as the reservoir here instead of sandstone.</div>`
+    },
+    {
+      title:"Muradkhanli oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <div class="box data">
+        Zardab brachyanticline, well No.3: oil <b>420 t/day</b> from the Cretaceous-Eocene contact (reservoir tester)<br>
+        Well No.4 (NW periclinal): 35–40 t/day from carbonate rock<br>
+        Well No.7: 10 t/day<br>
+        Muradkhanli uplift, well No.18 (Chokrak) &amp; well No.27 (Maykop): industrially significant oil
+      </div>
+      <ul>
+        <li>The Jafarli field (small, dome-shaped) also produces from Middle Eocene tuffogenic rock.</li>
+        <li>Search target going forward: lithostratigraphic traps in the wedge zone of Middle Eocene tuffogenic sediment.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>The single biggest number in this whole course's production data is Muradkhanli's <b>420 t/day</b> (Zardab well No.3) — a strong fact to drop if asked for an example of high productivity.</div>`
+    },
+    {
+      title:"Muradkhanli oil and gas-bearing region limits",
+      tags:[],
+      body:`
+      <table class="cmp">
+        <tr><th>Direction</th><th>Border</th><th>Separates from</th></tr>
+        <tr><td>North</td><td>Mingachevir-Goychay thrust fault</td><td>Ajinohur depression</td></tr>
+        <tr><td>Northeast</td><td>Jarlı-Jalilabad regional fault</td><td>Kurdamir-Saatli-Lankaran buried uplift</td></tr>
+        <tr><td>Southeast</td><td>Ashagi Araz</td><td>—</td></tr>
+        <tr><td>Southwest</td><td>Axis of Yevlakh-Aghjabedi depression (conventional)</td><td>Ganja OGR</td></tr>
+      </table>`
+    }
+  ]
+},
+
+{
+  id:"l8", num:8, title:"Ganja Oil and Gas-bearing Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Mesozoic 1.5–7 km", value:9},
+  questions:[
+    {
+      title:"Ganja Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>Ganja covers the SW flank of the Yevlakh-Aghjabedi depression and the "Lesser Caucasus-Transtalysh monocline" — basically the gentle slope coming off the Lesser Caucasus mountains.</p>
+      <ul>
+        <li>Structural noses (weak ridges) continue the Murovdagh and Aghdam anticlinoriums into this OGR; hemisynclines continue the Aghjakend and Aghdere synclinoriums.</li>
+        <li><b>Godakboz-Tartar fault</b> splits the NW part of the monocline from its central part.</li>
+        <li><b>Naftalan-Godekboz-Duzdag fault</b> and its uplift zone divide the NW part further into a simpler central block.</li>
+        <li>Mesozoic depth ranges hugely: <b>1,500 m</b> toward the Yevlakh-Aghjabedi centre up to <b>7,000 m</b> toward the Barda uplift.</li>
+      </ul>`
+    },
+    {
+      title:"Ganja oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Two reservoir families matter here: Cretaceous carbonate and Paleogene-Miocene sand.</p>
+      <div class="box def"><b>Key reservoirs:</b> Upper Cretaceous carbonate-fractured rock + Maykop sandy beds + Eocene sandy-clayey-marly beds.</div>
+      <ul>
+        <li>HC moved laterally and vertically along faults from the centre of the Yevlakh-Aghjabedi depression toward the SW, ending up in structural, lithological and tectonic-screen traps.</li>
+      </ul>`
+    },
+    {
+      title:"Ganja oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Ganja is the clearest "low productivity" case study in the course — useful if the exam asks for an example of a region with limited industrial output.</p>
+      <div class="box data">
+        Sovetler field, well No.2: gas <b>20,000 m³/day</b> + oil <b>18 m³/day</b> from 3,919 m<br>
+        Gazanbulag, Ajidara, Sariyaldag: oil from Eocene (III-Gazanbulag horizon)<br>
+        Tartar 152, Naftalan 58, Gulluja 3, Beylagan 7/9: strong shows but high water content
+      </div>
+      <ul>
+        <li>The Gazanbulag, Ajidara, Naftalan and Tartar fields have been <b>put on conservation</b> (shut in) due to low production — a strong, specific fact for the exam.</li>
+        <li>Upper Cretaceous carbonate reservoirs here have <b>high water content</b>, which hurts productivity.</li>
+      </ul>`
+    },
+    {
+      title:"Borders of Ganja oil and gas-bearing region",
+      tags:[],
+      body:`
+      <p>Ganja sits along the SW flank of the Yevlakh-Aghjabedi depression, bordered internally by the Godakboz-Tartar and Naftalan-Godekboz-Duzdag faults, and connects geologically toward the NW with the Gazakh-Dallar-Dalimammadli possible region (lecture 12) — same Lesser Caucasus monocline, just further along it.</p>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Ganja and Gazakh-Dallar-Dalimammadli are geological neighbours on the same monocline — if the exam asks you to compare two regions, this pair is a natural choice.</div>`
+    }
+  ]
+},
+
+{
+  id:"l9", num:9, title:"Kura-Gabyrry Interfluve Oil and Gas-bearing Region (OGR)", hours:"2.00 saat", type:"ogr", depth:{label:"Basement 8–9 km", value:9},
+  questions:[
+    {
+      title:"Kura-Gabyrry interfluve Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>"Interfluve" means the land between two rivers — here, between the Kura and Gabyrry rivers. The region splits cleanly into a mountain part and a lowland part.</p>
+      <div class="box def"><b>Two sub-zones:</b> <b>Chatma</b> (mountainous, around the Gabyrry river) and <b>Jeyrankechol</b> (lowland, around the Kura river).</div>
+      <ul>
+        <li>Lies NE of the Kura deep fault; SW of the fault the rock forms a monocline complicated by small structural noses and small brachyanticlines.</li>
+        <li>Chatma zone is bounded N by the Gabyrry river, S by the Herikdere overthrust fault running past several named heights.</li>
+        <li>Chatma's folds split into 3 groups (N, central, S) — e.g. Yaylacıq/Alaçıq/Eldaroyuğu (north), Taxtatəpə/Acıdərə/Armudlu (centre), Udabno/Sacdağ/Molladağ (south).</li>
+        <li>Jeyrankechol synclinorium differs sharply from Chatma: Paleogene-Neogene thickness drops, and Middle Miocene sediment wedges out toward the south.</li>
+      </ul>`
+    },
+    {
+      title:"Kura-Gabyrry interfluve oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Jeyrankechol's anticlines split into 3 rows too: northern, central, southern — mirroring the Chatma pattern but in younger rock.</p>
+      <ul>
+        <li>Most folds are <b>brachyanticlinal</b> (short, oval-shaped anticlines), most 10–15 km long, 500–1,000 m high.</li>
+        <li>Where Paleogene-Cretaceous rock wedges out, Aghjagil layers sit on Sarmatian (and further south, on Maykop) with a sharp angular unconformity.</li>
+        <li>Largest fault: 30 km long, 1,500 m displacement, running from W of Molladağ anticline, past Sacdağ, to Mammadtapa.</li>
+      </ul>`
+    },
+    {
+      title:"Kura-Gabyrry interfluve oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>This is the OGR where you must remember <b>one specific field name</b>: Tarsdallar — the only place here that reached truly industrial scale.</p>
+      <div class="box data">
+        Tarsdallar, well No.1: oil <b>230 t/day</b> from Middle Eocene tuffogenic sandstone — later found to be a lithologically-limited deposit on the NE flank arch<br>
+        Eldaroyuğu uplift: well No.1, short gas burst <b>2,000 m³/day</b> from Middle Sarmatian sand; surface oil layers up to 100 m thick<br>
+        Soyuqbulaq SE periclinal, well No.16: strong gas + water with oil film, from Eocene
+      </div>
+      <ul>
+        <li>Surface oil/gas seeps mostly tied to mud volcano griffons along the Herikdere overthrust, in the northern part of the Chatma anticlinorium.</li>
+        <li>Future prospects: lithologically-limited traps in Middle Eocene wedge zones, alongside the already-known arch and tectonic-screen traps.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span><b>Only Tarsdallar</b> reached industrial status (230 t/day) — everywhere else in this OGR gave shows, not commercial flow. If the exam asks "name the industrial field of Kura-Gabyrry", the answer is Tarsdallar, full stop.</div>`
+    },
+    {
+      title:"Kura-Gabyrry interfluve oil and gas-bearing region structures",
+      tags:[],
+      body:`
+      <p>Two structural "families" exist, both made of molass-type sediment, lined up in three groups each (north/centre/south):</p>
+      <table class="cmp">
+        <tr><th>Zone</th><th>North group</th><th>Centre group</th><th>South group</th></tr>
+        <tr><td>Chatma</td><td>Yaylacıq, Alaçıq, Eldaroyuğu, Eldar</td><td>Taxtatəpə, Acıdərə, Armudlu</td><td>Udabno, Sacdağ, Molladağ, Çobandağ-Ağtaxtatəpə, B./K. Palantökən</td></tr>
+        <tr><td>Jeyrankechol</td><td>Cahandar, Soyuqbulaq, Memmedtepe, Garatepe, Keyrük-Keylan, Gurzundag (W &amp; main), N. Jeyrankechol</td><td>Gushquna I, Ortaqash, Elimerdanli, Quyruqenci, Yenikend</td><td>Gushquna II, Qiraq Kesemen, Gaflandere, Khatinli, Girzan</td></tr>
+      </table>
+      <p>Folds run mostly submeridional and "Caucasus-reversed", with most closed structures 3–8 km long, 1–3 km wide, 50–200 m high — and structures show <b>en-echelon</b> (overlapping, staggered) arrangement.</p>`
+    }
+  ]
+},
+
+{
+  id:"l10", num:10, title:"Ajinohur Possible Oil and Gas-bearing Region (POGR)", hours:"2.00 saat", type:"pogr", depth:{label:"Basement ~8–9 km", value:9},
+  questions:[
+    {
+      title:"Ajinohur Possible Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>Located in the NW part of the Trans-Greater-Caucasus province, Ajinohur is a closed depression bordered by faults on every side.</p>
+      <div class="box def"><b>Borders:</b> Qanıx fault (W) · West Caspian deep fault (E, in the Girdiman valley) · North Ajinohur fault (NE) · Kura &amp; Mingachevir-Goychay faults (S/SW).</div>
+      <ul>
+        <li>Asymmetric anticline zones inside the depression: steep S flanks (often complicated by faults), gentle N flanks, separated by wide flat synclines.</li>
+        <li>The Xocaşen-Göyçay zone in the south continues the Alaçıq-Eldaroyuğu belt of the Chatma anticlinorium (lecture 9) eastward — Ajinohur is geologically the <b>direct continuation</b> of Kura-Gabyrry's Chatma structures.</li>
+        <li>Crystalline basement here is estimated at <b>8–9 km depth</b> (from gravity surveys only — too deep to drill economically).</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Ajinohur = "Chatma's eastern twin." Same anticlinal style, same basement depth ballpark, just shifted east and renamed once it crosses into its own depression.</div>`
+    },
+    {
+      title:"Ajinohur Possible oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Surface rock is almost entirely Pliocene-Anthropogenic; older rock is inferred from geophysics, not drilling.</p>
+      <ul>
+        <li>Surface: Aghjagil, Absheron, Anthropogenic sediment (some arch tops expose Productive Series and Pontic rock too).</li>
+        <li>At depth: Paleogene-Miocene and Mesozoic complexes, known only through gravity/seismic modelling.</li>
+        <li>Estimated thicknesses: Mesozoic complex 2.5–3.0 km, Paleogene-Miocene 3.5 km, Neogene-Anthropogenic up to 2.2 km — all sitting <b>disharmonically</b> (mismatched fold pattern) on top of each other.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Because this is a POGR, don't invent specific drilled depths for the Mesozoic. The lecture is explicit: these numbers come from <b>gravimetric mapping</b>, not wells.</div>`
+    },
+    {
+      title:"Ajinohur Possible oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Ajinohur has shows, not flows — exactly what you'd expect from a "possible" (unproven) region.</p>
+      <ul>
+        <li>Surface seeps: oil films + gas bubbles on water, tied to overthrust faults complicating the anticlines.</li>
+        <li>East Qocaşen well No.2 and Gəmiqaya-Acıbulaq well No.1: shows recorded while drilling.</li>
+        <li>Near Bozdag, the Acıbulaq spring shows strong gas release tied to Aghjagil-stage outcrop.</li>
+        <li>Prospect rocks: fractured-carbonate Upper Cretaceous, Eocene, Maykop suite, Chokrak horizon, Sarmatian stage, and granular Productive Series reservoirs.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Best bet inside Ajinohur: the <b>Qocaşen-Göyçay</b> and <b>Bozdağ-Qaraca-Qaraməryəm</b> zones in the south — these are named as the most promising for future search.</div>`
+    },
+    {
+      title:"Ajinohur Possible oil and gas-bearing region folds",
+      tags:[],
+      body:`
+      <p>Five named antiklinal zones run roughly parallel, north to south:</p>
+      <table class="cmp">
+        <tr><th>#</th><th>Zone</th><th>Notes</th></tr>
+        <tr><td>1</td><td>Daşyüz-Qeyvəndli</td><td>7 folds between the Qanıx and Girdiman rivers</td></tr>
+        <tr><td>2</td><td>Qüdbərəkdağ-Gənzə</td><td>Tectonic element of the Mirzaani-Eresh synclinorium</td></tr>
+        <tr><td>3</td><td>Acınohur-Kürdməşi</td><td>Asymmetric folds, steep S flank, gentle N flank</td></tr>
+        <tr><td>4</td><td>Qocaşen-Göyçay</td><td>11 folds; cut by the Göyçay overthrust (1,200–1,300 m displacement)</td></tr>
+        <tr><td>5</td><td>Bozdağ-Qaraca-Qaraməryəm</td><td>Southern-most row, parallel to all the above</td></tr>
+      </table>
+      <p>Shared traits across all 5 zones: straight long folds, narrow and asymmetric, staggered ("en-echelon") layout, steep SW flank complicated by an overthrust fault — and rock gets younger going west to east across the whole set.</p>`
+    }
+  ]
+},
+
+{
+  id:"l11", num:11, title:"Kurdamir-Saatli-Lankaran Possible Oil and Gas-bearing Region", hours:"2.00 saat", type:"pogr", depth:{label:"Saatly SD-1 well: 8.3 km", value:24},
+  questions:[
+    {
+      title:"Kurdamir-Saatli-Lankaran possible Oil and Gas-bearing Region — tectonics",
+      tags:["repeat"],
+      body:`
+      <div class="box warn"><span class="warn-label">Classification difference between sources</span>Your exam syllabus treats this as <b>one</b> combined lecture/region. Other reference sources (e.g. the Yusifov &amp; Aslanov monograph, and industry summaries on Azerbaijan's onshore zoning) list <b>"Kurdamir-Saatli"</b> and <b>"Saatli-Lankaran"</b> as <b>two separate</b> POGRs — making 6, not 5, possible regions in total. Know both versions; lead with the textbook's combined version unless the question explicitly asks "how many possible regions are there."</div>
+      <p>This zone sits in the very centre of Azerbaijan, underneath the Middle Kura depression, between the Greater and Lesser Caucasus mountain belts.</p>
+      <ul>
+        <li>It corresponds to the <b>Kurdamir-Saatli buried Mesozoic uplift</b> — a deep, hidden ridge of old, dense, magnetised volcanic-intermediate rock, first suspected from gravity and magnetic surveys, not from drilling.</li>
+        <li>This buried ridge is connected by a regional gravity high (the "Mingachevir-Geychay-Kurdamir-Saatly-Mugan" maximum) running from the Lesser Caucasus toward the Mugan steppe — a single underground "spine" linking several POGRs.</li>
+        <li>The <b>Saatly super-deep well (SD-1)</b>, drilled to test this idea, reached <b>8.3 km</b> and confirmed the basement really is Mesozoic igneous rock, not older platform crust as once thought.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>One number to keep: <b>SD-1, 8.3 km</b>. It is the deepest well mentioned anywhere in this course, and it proved the Kurdamir-Saatli ridge is Mesozoic volcanic rock continuing from the Lesser Caucasus underground.</div>`
+    },
+    {
+      title:"Kurdamir-Saatli-Lankaran possible oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Because almost everything here is buried very deep, the stratigraphic picture is built mostly from geophysics and a handful of deep wells, similar in spirit to the Ajinohur and Lower Kura "hidden Mesozoic" stories.</p>
+      <ul>
+        <li>Thick Neogene-Anthropogenic and Paleogene-Miocene cover sits on top of the buried Mesozoic ridge, just like in Muradkhanli to its SW.</li>
+        <li>The ridge itself is mostly <b>Jurassic-aged volcanic-intermediate rock</b>, widely distributed under the NE part of the Lesser Caucasus and continuing underground toward Saatli.</li>
+        <li>This is geologically the same basement family that produces oil at <b>Muradkhanli</b> (lecture 7) — both sit on weathered Upper Cretaceous/Jurassic volcanic rock, just at very different depths.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Do not describe this zone's Mesozoic rock as "well known from drilling." Outside of the single SD-1 well, almost all of what we know comes from gravity and magnetic modelling — that is exactly why it is still called a <b>possible</b>, not proven, region.</div>`
+    },
+    {
+      title:"Kurdamir-Saatli-Lankaran possible oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>No industrial field has been confirmed inside this POGR itself — its importance is more about <b>connecting the geological story</b> of its proven neighbours than about its own production.</p>
+      <ul>
+        <li>Local gravity/magnetic minima here match the same type of signal recorded over the producing <b>Muradkhanli and Jafarli</b> fields just to the SW — meaning similar exploration methods can be reused here.</li>
+        <li>The Arabkubaly area, in the centre of the related Kurdamir-Sabirabad uplift row, has been studied with the same gravimetric and magnetometric methods, again without (yet) a confirmed industrial flow.</li>
+        <li>Prospects are tied to possible fractured/weathered Upper Cretaceous-Jurassic volcanic rock, by analogy with Muradkhanli — but this remains a hypothesis to test, not a proven play.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Think of Kurdamir-Saatli-Lankaran as "Muradkhanli's deeper, unproven cousin": same rock idea (weathered volcanics), much greater burial depth, no confirmed industrial well yet.</div>`
+    },
+    {
+      title:"Structures of Kurdamir-Saatli-Lankaran possible oil and gas-bearing region",
+      tags:[],
+      body:`
+      <p>Key named elements to recall for a map-labelling question:</p>
+      <table class="cmp">
+        <tr><th>Element</th><th>Role</th></tr>
+        <tr><td>Kurdamir-Saatli buried uplift</td><td>Main hidden ridge, confirmed by SD-1 well</td></tr>
+        <tr><td>Saatly-Kurdamir gravity maximum</td><td>The geophysical signature used to first detect the ridge</td></tr>
+        <tr><td>Mil-Mugan buried uplift</td><td>Related buried ridge inside the Lower Kura synclinorium, further SE toward Lankaran</td></tr>
+        <tr><td>Arabkubaly / Kurdamir-Sabirabad zone of uplifts</td><td>A studied sub-area within the same gravity high</td></tr>
+      </table>
+      <p>All of these sit inside the <b>Lower Kura synclinorium</b>, part of the broader Middle/Lower Kura mega-synclinorium that separates the Greater and Lesser Caucasus.</p>`
+    }
+  ]
+},
+
+{
+  id:"l12", num:12, title:"Gazakh-Dallar-Dalimammadli Possible Oil and Gas Region (POGR)", hours:"2.00 saat", type:"pogr", depth:{label:"Monocline, shallow-moderate", value:6},
+  questions:[
+    {
+      title:"Gazakh-Daller-Dalimammadli Possible Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>This POGR sits at the far NW edge of Azerbaijan's oil-gas map, in the Lesser Caucasus-Transtalysh province, right next to the Ganja OGR (lecture 8) on the same regional monocline.</p>
+      <ul>
+        <li>Structurally it is a continuation of the same <b>Lesser Caucasus-Transtalysh monocline</b> described for Ganja — a gentle slope coming off the Lesser Caucasus mountains toward the Kura depression, here further to the NW near Gazakh.</li>
+        <li>The Dalimammadli structure itself appears on Ganja's own geological profile (the "Dalimammadli-Borsunlu-Duzdagh" cross-section) — showing the two regions are directly connected geologically, not just by name.</li>
+        <li>Like Ganja, it is complicated by weak structural noses and shallow hemisynclines rather than sharp, tight folds.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Picture Ganja and Gazakh-Dallar-Dalimammadli as <b>one long monocline cut into two study units</b> — Ganja is the proven SE half, Gazakh-Dallar-Dalimammadli is its unproven NW continuation.</div>`
+    },
+    {
+      title:"Gazakh-Daller-Dalimammadli Possible oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Because no industrial field has been confirmed here, the stratigraphic picture is built mostly by projecting Ganja's known section further NW.</p>
+      <ul>
+        <li>Expected reservoir families, by analogy with Ganja: Upper Cretaceous carbonate-fractured rock, and Paleogene-Miocene (Maykop / Eocene) sandy-clayey beds.</li>
+        <li>Mesozoic depth here is expected to follow the same shallowing trend seen on Ganja's NW side (toward 1,500–3,000 m), rather than the deep 7,000 m seen toward Barda.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Watch out</span>Public, detailed well-by-well data for this specific POGR is limited (it is one of the least-drilled zones in the course) — for the exam, the safest strategy is to describe it by its <b>structural relationship to Ganja</b> rather than inventing specific production numbers.</div>`
+    },
+    {
+      title:"Gazakh-Daller-Dalimammadli Possible oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>As with most POGRs in this course, this is a "geological promise, not yet a confirmed field" region.</p>
+      <ul>
+        <li>No confirmed industrial flow is reported for this zone in the available course material — its status remains "possible", same as the other 5 POGRs.</li>
+        <li>If oil/gas does occur, by analogy with Ganja it would most likely sit in fractured Upper Cretaceous carbonate or Maykop/Eocene sand, trapped by structural or lithological screening along the same fault systems that cut Ganja.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>If you are unsure of a detail for this lecture, anchor your answer to the nearest proven OGR (Ganja) and explain the geological link — examiners reward correct reasoning about relationships even when exact numbers aren't available.</div>`
+    },
+    {
+      title:"Borders Gazakh-Daller-Dalimammadli Possible oil and gas-bearing region",
+      tags:[],
+      body:`
+      <p>This region occupies the NW end of the Lesser Caucasus-Transtalysh oil-gas province, bordering:</p>
+      <ul>
+        <li><b>SE:</b> Ganja OGR (lecture 8), along the same monocline.</li>
+        <li><b>NW/N:</b> the Lesser Caucasus mountain front itself, near Gazakh.</li>
+        <li><b>S:</b> the Kura depression axis (shared conventional border style with Ganja).</li>
+      </ul>
+      <p>Because it lies right against the international border area in NW Azerbaijan, it is geographically the most remote OGR/POGR studied in this course.</p>`
+    }
+  ]
+},
+
+{
+  id:"l13", num:13, title:"Transtalysh (Jalilabad) Possible Oil and Gas-bearing Region (POGR)", hours:"2.00 saat", type:"pogr", depth:{label:"Paleogene volcanics, varies", value:8},
+  questions:[
+    {
+      title:"Transtalysh (Jalilabad) possible Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>This POGR sits in the far SW of Azerbaijan's onshore territory, on the western edge of the Kura depression, right against the Talysh mountains and the Iranian border.</p>
+      <ul>
+        <li>It belongs to the Lesser Caucasus-Transtalysh province — the same family as Ganja, Muradkhanli, Kura-Gabyrry, and Gazakh-Dallar-Dalimammadli, but positioned at its <b>southern</b> end instead of the NW end.</li>
+        <li>The neighbouring <b>Talysh anticlinorium</b> is built mostly of <b>Paleogene magmatic (volcanic) rock</b> — meaning this zone, like Muradkhanli and Ganja, sits next to a volcanic-rock mountain belt rather than a purely sedimentary one.</li>
+        <li>Jalilabad district itself (giving the region its alternate name) lies on flat-to-low-hill ground at the foot of the Talysh range's Burovar ridge.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Three POGRs sit against volcanic mountain belts: Muradkhanli &amp; Ganja (Lesser Caucasus volcanics) and now Transtalysh/Jalilabad (Talysh volcanics). Same logic, different mountain front.</div>`
+    },
+    {
+      title:"Transtalysh (Jalilabad) possible oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>Expect a similar pattern to other "edge of the mountains" zones in this course: thinner, more variable sediment cover compared to the deep Kura/South Caspian basins.</p>
+      <ul>
+        <li>Paleogene volcanic-associated rock dominates near the mountain front; younger cover (Neogene-Quaternary) thickens toward the Kura/Caspian lowland to the east.</li>
+        <li>By analogy with the Shamakhi-Gobustan and Ganja patterns, likely reservoir candidates include Paleogene-Miocene sandy/marly beds and any fractured carbonate present in older rock.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Watch out</span>This is one of the least-documented regions in the official course material — for the exam, focus on its <b>position</b> (SW edge of Kura depression, against Talysh) and its <b>province membership</b>, rather than memorising production figures that aren't given in the source lecture.</div>`
+    },
+    {
+      title:"Transtalysh (Jalilabad) possible oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Like Gazakh-Dallar-Dalimammadli, this region carries POGR status because no industrial-scale field has been confirmed yet — the local district records mention only general "oil-and-gas-bearing ground" among its natural resources, without confirmed commercial output.</p>
+      <ul>
+        <li>Its potential is tied to the same general logic as other POGRs near volcanic mountain fronts: weathered/fractured volcanic or carbonate rock could host fractured-type traps, similar in concept to Muradkhanli, but unconfirmed here.</li>
+        <li>Because it sits at the far SW tip of the country, exploration activity and published well data are sparser than in the established OGRs.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>For any POGR with thin source material (Transtalysh/Jalilabad, Gazakh-Dallar-Dalimammadli), your safest exam answer structure is: position → parent province → nearest proven analogy → why it's still "possible" not "proven".</div>`
+    },
+    {
+      title:"Transtalysh (Jalilabad) possible oil and gas-bearing region structures",
+      tags:[],
+      body:`
+      <p>Key things to mention if asked about structure here:</p>
+      <ul>
+        <li>Position against the <b>Burovar ridge</b> of the Talysh mountains, on the SW margin of the Kura depression.</li>
+        <li>Membership in the <b>Lesser Caucasus-Transtalysh</b> oil-gas province (same family as Muradkhanli, Ganja, Kura-Gabyrry, Gazakh-Dallar-Dalimammadli).</li>
+        <li>Its geological "opposite number" to the north is Gazakh-Dallar-Dalimammadli — together the two POGRs effectively bookend the whole Lesser Caucasus-Transtalysh province, one at the NW tip, one at the SW tip.</li>
+      </ul>`
+    }
+  ]
+},
+
+{
+  id:"l14", num:14, title:"Nakhchivan Possible Oil and Gas Region", hours:"2.00 saat", type:"pogr", depth:{label:"Upper Cretaceous at ~1 km", value:4},
+  questions:[
+    {
+      title:"Nakhchivan possible Oil and Gas-bearing Region — tectonics",
+      tags:[],
+      body:`
+      <p>Nakhchivan is the odd one out in this course: it is a separate exclave, not physically connected to the rest of Azerbaijan, and belongs to its own "Araz-adjacent" oil-gas region rather than to the Kura-South Caspian family.</p>
+      <div class="box def"><b>Key fact:</b> total area about <b>5,000 km²</b>, the smallest POGR studied in this course.</div>
+      <ul>
+        <li>Geologically tied to the <b>Nakhchivan folding system</b> — a heterogeneous mix where Paleozoic carbonate rock and Cenozoic magmatic (volcanic) rock sit side by side, unlike anywhere else in the course.</li>
+        <li>Bordered structurally by the Talysh anticlinorium's broader family to the east and the Lesser Caucasus megaanticlinorium's volcanic terrain to the north.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Nakhchivan = the only region in this whole course with <b>Paleozoic</b> rock involved at all. Every other region you studied starts at Mesozoic or younger.</div>`
+    },
+    {
+      title:"Nakhchivan possible oil and gas-bearing region — stratigraphy",
+      tags:[],
+      body:`
+      <p>The known section here is shallower and more accessible than most other POGRs — a useful contrast against deeply buried Kurdamir-Saatli or Ajinohur.</p>
+      <ul>
+        <li>Upper Cretaceous rock was reached by drilling at only about <b>1,000 m</b> depth, and consists of marl and clay.</li>
+        <li>Cenozoic terrigenous and volcanogenic (volcanic-derived) sediment developed widely above it.</li>
+        <li>The Maykop suite (Oligocene-Miocene) and the Chokrak horizon are the two units most associated with recorded shows.</li>
+      </ul>
+      <div class="box warn"><span class="warn-label">Common mistake</span>Don't assume "possible region" automatically means "very deep and unreachable." Nakhchivan shows the opposite: its key Upper Cretaceous target is unusually <b>shallow</b> (~1 km) — it is still "possible" only because no industrial flow has been proven, not because it's inaccessible.</div>`
+    },
+    {
+      title:"Nakhchivan possible oil and gas-bearing region — oil and gas bearing",
+      tags:[],
+      body:`
+      <p>Nakhchivan has real oil-gas <b>shows</b> recorded by drilling, which is more than some other POGRs can claim — but, like all 6 POGRs, nothing reaching confirmed industrial scale yet.</p>
+      <ul>
+        <li>Intensive oil-gas shows were recorded in structural-prospecting wells while drilling the <b>Maykop suite</b> and <b>Chokrak horizon</b>.</li>
+        <li>Future potential is linked to: Maykop's sandy-silty (alevritic) beds, the Chokrak horizon, and the fractured carbonate Upper Cretaceous.</li>
+      </ul>
+      <div class="box tip"><span class="tip-label">Memory tip</span>Two reservoir names to keep for Nakhchivan: <b>Maykop</b> (sandy-silty) and <b>Chokrak</b> (the horizon with the strongest recorded shows) — plus fractured Upper Cretaceous carbonate as the third candidate.</div>`
+    },
+    {
+      title:"Borders of Nakhchivan possible oil and gas-bearing region",
+      tags:[],
+      body:`
+      <p>As an exclave, Nakhchivan's borders are mostly international rather than purely tectonic faults, which makes it different from every other region in this course.</p>
+      <ul>
+        <li>Surrounded by Armenia (N/NE), Iran (S/SE, along the Araz river), and a short border with Turkey (extreme W).</li>
+        <li>Sits SW of the main Lesser Caucasus megaanticlinorium and is separated from the rest of Azerbaijan's mainland oil-gas territory by Armenian territory.</li>
+      </ul>
+      <div class="box def"><b>One-line summary for the exam:</b> Nakhchivan POGR — ~5,000 km², shallow Upper Cretaceous target (~1 km), Maykop &amp; Chokrak shows, Paleozoic-Cenozoic mixed basement, geographically separate exclave.</div>`
+    }
+  ]
+}
+];
+
+/* =====================================================
+   RENDER
+===================================================== */
+const lecturesEl = document.getElementById('lectures');
+const tocEl = document.getElementById('toc');
+let totalQuestions = 0;
+let reviewedCount = 0;
+
+function depthBarHTML(depth){
+  if(!depth) return '';
+  const max = 24;
+  const pct = Math.min(100, Math.round((depth.value/max)*100));
+  return `
+    <div class="depth">
+      <div class="depth-label">${depth.label}</div>
+      <div style="flex:1;">
+        <div class="depth-track"><div class="depth-fill" style="width:${pct}%;"></div></div>
+        <div class="depth-ticks"><span>0</span><span>6km</span><span>12km</span><span>18km</span><span>24km</span></div>
+      </div>
+    </div>`;
+}
+
+LECTURES.forEach(lec=>{
+  const sec = document.createElement('section');
+  sec.className = 'section';
+  sec.id = lec.id;
+
+  const badge = lec.type ? `<span class="type-badge ${lec.type}">${lec.type.toUpperCase()}</span>` : '';
+  let html = `
+    <div class="section-head">
+      <span class="lec-num">L${lec.num}</span>
+      <h2>${lec.title}</h2>
+      ${badge}
+    </div>
+    <div class="lec-sub">${lec.hours}${lec.type==='pogr' ? ' · possible / unproven region' : (lec.type==='ogr' ? ' · proven region' : '')}</div>
+    ${depthBarHTML(lec.depth)}
+    <div class="qlist">
+  `;
+
+  lec.questions.forEach((q,i)=>{
+    totalQuestions++;
+    const qid = `${lec.id}-q${i}`;
+    let tagsHTML = '';
+    if(q.tags && q.tags.length){
+      tagsHTML = '<div class="qtags">' + q.tags.map(t=>{
+        if(t==='practical') return '<span class="tag practical">Practical</span>';
+        if(t==='repeat') return '<span class="tag repeat-tag">⚠ classification differs by source</span>';
+        return `<span class="tag">${t}</span>`;
+      }).join('') + '</div>';
+    }
+    html += `
+      <div class="qcard" id="${qid}" data-search="${(q.title+' '+lec.title).toLowerCase().replace(/"/g,'&quot;')}">
+        <div class="qhead" onclick="toggleCard('${qid}')">
+          <div class="qnum">${lec.num}.${i+1}</div>
+          <div class="qtitle-wrap">
+            <div class="qtitle">${q.title}</div>
+            ${tagsHTML}
+          </div>
+          <div class="qcheck" onclick="event.stopPropagation();toggleCheck(this)">✓</div>
+          <div class="chev"></div>
+        </div>
+        <div class="qbody">
+          <div class="qbody-inner">${q.body}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  sec.innerHTML = html;
+  lecturesEl.appendChild(sec);
+
+  const tocLink = document.createElement('a');
+  tocLink.href = '#'+lec.id;
+  tocLink.className = lec.type==='pogr' ? 'is-pogr' : '';
+  tocLink.innerHTML = `<span>L${lec.num} · ${lec.title.split(' Oil')[0].split(' (')[0].split(' Possible')[0]}</span><span class="n">${lec.questions.length}</span>`;
+  tocLink.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.getElementById(lec.id).scrollIntoView({behavior:'smooth', block:'start'});
+    closeSidebarMobile();
+  });
+  tocEl.appendChild(tocLink);
+});
+
+document.getElementById('progressText').textContent = `0 / ${totalQuestions} questions reviewed`;
+
+/* ---------- interactivity ---------- */
+function toggleCard(qid){
+  const card = document.getElementById(qid);
+  const body = card.querySelector('.qbody');
+  const isOpen = card.classList.contains('open');
+  if(isOpen){
+    card.classList.remove('open');
+    body.style.maxHeight = null;
+  } else {
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  reviewedCount = document.querySelectorAll('.qcheck.checked').length;
+  document.getElementById('progressText').textContent = `${reviewedCount} / ${totalQuestions} questions reviewed`;
+  document.getElementById('progressFill').style.width = (reviewedCount/totalQuestions*100) + '%';
+}
+
+document.getElementById('expandAllBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.qcard').forEach(card=>{
+    card.classList.add('open');
+    const body = card.querySelector('.qbody');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  });
+});
+document.getElementById('collapseAllBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.qcard').forEach(card=>{
+    card.classList.remove('open');
+    card.querySelector('.qbody').style.maxHeight = null;
+  });
+});
+
+/* search */
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', ()=>{
+  const term = searchInput.value.trim().toLowerCase();
+  let anyVisible = false;
+  document.querySelectorAll('section.section').forEach(sec=>{
+    if(sec.id === 'overview'){ return; }
+    let sectionHasMatch = false;
+    const cards = sec.querySelectorAll('.qcard');
+    if(cards.length === 0){ return; }
+    cards.forEach(card=>{
+      const hay = card.getAttribute('data-search') || '';
+      const match = term === '' || hay.indexOf(term) !== -1;
+      card.style.display = match ? '' : 'none';
+      if(match) sectionHasMatch = true;
+    });
+    sec.style.display = sectionHasMatch ? '' : 'none';
+    if(sectionHasMatch) anyVisible = true;
+  });
+  document.getElementById('noResults').style.display = (!anyVisible && term!=='') ? 'block' : 'none';
+});
+
+/* mobile sidebar */
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+document.getElementById('menuBtn').addEventListener('click', ()=>{
+  sidebar.classList.add('open');
+  overlay.classList.add('show');
+});
+overlay.addEventListener('click', closeSidebarMobile);
+function closeSidebarMobile(){
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+}
+
+/* active TOC highlight on scroll */
+const sections = LECTURES.map(l=>document.getElementById(l.id));
+const tocLinks = Array.from(tocEl.querySelectorAll('a'));
+function onScroll(){
+  let current = null;
+  sections.forEach(sec=>{
+    const rect = sec.getBoundingClientRect();
+    if(rect.top <= 140) current = sec.id;
+  });
+  tocLinks.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* countdown */
+const examDate = new Date("2026-06-23T17:00:00+04:00");
+function updateCountdown(){
+  const now = new Date();
+  let diff = examDate - now;
+  const el = document.getElementById('countdown');
+  if(diff <= 0){
+    el.textContent = "Exam time — good luck!";
+    return;
+  }
+  const d = Math.floor(diff/(1000*60*60*24));
+  diff -= d*(1000*60*60*24);
+  const h = Math.floor(diff/(1000*60*60));
+  diff -= h*(1000*60*60);
+  const m = Math.floor(diff/(1000*60));
+  diff -= m*(1000*60);
+  const s = Math.floor(diff/1000);
+  el.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
