@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MÜF-B02 — Akademik yazı və etika — Final Exam Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ================= TOKENS ================= */
+:root{
+  --bg:#11151c;
+  --bg-soft:#161b24;
+  --bg-card:#1b212c;
+  --bg-card-2:#1f2632;
+  --border:#2a3242;
+  --border-soft:#232a38;
+  --text:#e9ecf2;
+  --text-dim:#a9b1c2;
+  --text-faint:#6e7689;
+  --gold:#dcab52;
+  --gold-bright:#ecc06e;
+  --gold-soft:rgba(220,171,82,0.12);
+  --teal:#5fb8ad;
+  --teal-soft:rgba(95,184,173,0.13);
+  --coral:#e2825f;
+  --coral-soft:rgba(226,130,95,0.13);
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+  --maxw:1040px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 85% -10%, rgba(220,171,82,0.08), transparent 60%),
+    radial-gradient(ellipse 700px 500px at -10% 10%, rgba(95,184,173,0.06), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.6;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold-soft); color:var(--gold-bright);}
+a{color:var(--gold-bright); text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:4px;}
+
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; color:var(--text); margin:0;}
+p{margin:0 0 0.9em 0; color:var(--text-dim);}
+p:last-child{margin-bottom:0;}
+strong{color:var(--text); font-weight:600;}
+
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+/* ================= TOP BAR ================= */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(17,21,28,0.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topbar-inner{
+  max-width:var(--maxw); margin:0 auto; padding:12px 24px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.topbar-id{display:flex; flex-direction:column; line-height:1.25;}
+.topbar-code{font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--gold); text-transform:uppercase;}
+.topbar-name{font-size:13px; color:var(--text-dim); font-weight:500;}
+.jumpnav select{
+  background:var(--bg-card); color:var(--text); border:1px solid var(--border);
+  border-radius:8px; padding:8px 12px; font-family:var(--sans); font-size:13px;
+  max-width:46vw;
+}
+
+/* ================= HERO ================= */
+.hero{padding:56px 0 28px; position:relative; overflow:hidden;}
+.hero-quote{
+  position:absolute; top:-40px; right:-10px; font-family:var(--serif);
+  font-size:260px; color:var(--gold); opacity:0.05; line-height:1; user-select:none; pointer-events:none;
+}
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.10em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:14px; display:inline-block;
+}
+.hero h1{font-size:clamp(28px,4.4vw,44px); line-height:1.15; max-width:780px;}
+.hero .lede{font-size:16.5px; max-width:640px; margin-top:16px;}
+
+.stat-row{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+  margin-top:32px; border:1px solid var(--border); border-radius:14px; overflow:hidden;
+  background:var(--border);
+}
+.stat{background:var(--bg-card); padding:16px 14px;}
+.stat .num{font-family:var(--serif); font-size:26px; color:var(--gold-bright); font-weight:600; display:block;}
+.stat .lbl{font-size:12px; color:var(--text-faint); margin-top:2px;}
+
+.countdown-card{
+  margin-top:26px; padding:22px 24px; border-radius:16px;
+  background:linear-gradient(160deg, var(--bg-card-2), var(--bg-card));
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+.countdown-label{font-size:13px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.06em; font-family:var(--mono);}
+.countdown-date{font-size:14px; color:var(--text-dim); margin-top:4px;}
+.countdown-clock{display:flex; gap:10px;}
+.cd-unit{text-align:center; min-width:54px;}
+.cd-unit .v{font-family:var(--serif); font-size:30px; color:var(--gold-bright); font-weight:600; font-variant-numeric:tabular-nums;}
+.cd-unit .u{font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em;}
+
+/* ================= SECTION SHELL ================= */
+.section{padding:46px 0;}
+.section-head{margin-bottom:22px;}
+.section-eyebrow{font-family:var(--mono); font-size:12px; color:var(--teal); letter-spacing:0.08em; text-transform:uppercase;}
+.section h2{font-size:clamp(22px,3vw,28px); margin-top:6px;}
+.section .section-sub{color:var(--text-dim); max-width:680px; margin-top:8px; font-size:15px;}
+.rule{height:1px; background:linear-gradient(90deg, var(--border), transparent); margin:0 0 0 0;}
+
+/* intro explainer box */
+.explainer{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+  padding:20px 22px; margin-top:18px;
+}
+.explainer p{margin-bottom:0.7em;}
+.explainer .tag-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+.tag{
+  font-family:var(--mono); font-size:12px; padding:6px 10px; border-radius:999px;
+  background:var(--gold-soft); color:var(--gold-bright); border:1px solid rgba(220,171,82,0.25);
+}
+
+/* ================= TICKET STUBS ================= */
+.ticket-grid{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:20px;
+}
+.ticket{
+  position:relative;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  display:grid; grid-template-columns:64px 1fr;
+  overflow:hidden;
+}
+.ticket-stub{
+  background:var(--bg-card-2);
+  border-right:1px dashed var(--border);
+  display:flex; align-items:center; justify-content:center;
+  padding:14px 6px;
+}
+.ticket-stub .num{
+  font-family:var(--serif); font-size:24px; color:var(--gold-bright); font-weight:700;
+  writing-mode:vertical-rl; text-orientation:mixed;
+}
+.ticket-body{padding:16px 18px;}
+.ticket-body h3{font-size:15.5px; line-height:1.35; margin-bottom:4px;}
+.ticket-hours{font-family:var(--mono); font-size:11px; color:var(--text-faint); margin-bottom:10px; display:block;}
+.chip-row{display:flex; gap:6px; flex-wrap:wrap;}
+.chip{
+  font-size:12.5px; padding:5px 10px; border-radius:8px;
+  background:var(--bg-soft); border:1px solid var(--border-soft); color:var(--text-dim);
+}
+.chip:hover{border-color:var(--teal); color:var(--teal); text-decoration:none;}
+
+/* ================= CLUSTERS / CONCEPT CARDS ================= */
+.cluster-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px;}
+.cluster-index{font-family:var(--mono); color:var(--text-faint); font-size:13px;}
+.cluster-head h2{font-size:clamp(20px,2.6vw,25px);}
+
+.card{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+  padding:22px 24px; margin-bottom:16px; scroll-margin-top:80px;
+}
+.card h3{font-size:18px; margin-bottom:10px; color:var(--gold-bright);}
+.card h3 .anchor-tag{font-family:var(--mono); font-size:11px; color:var(--text-faint); font-weight:500; margin-left:8px;}
+.card ol, .card ul{margin:0.6em 0; padding-left:1.3em; color:var(--text-dim);}
+.card li{margin-bottom:0.4em;}
+.card li::marker{color:var(--gold); font-family:var(--mono); font-size:0.9em;}
+
+/* callouts */
+.callout{
+  border-radius:10px; padding:14px 16px; margin-top:14px; font-size:14.5px;
+  border:1px solid; display:flex; gap:10px;
+}
+.callout .ic{font-family:var(--serif); font-weight:700; flex-shrink:0;}
+.callout.watch{background:var(--coral-soft); border-color:rgba(226,130,95,0.3);}
+.callout.watch .ic{color:var(--coral);}
+.callout.tip{background:var(--teal-soft); border-color:rgba(95,184,173,0.3);}
+.callout.tip .ic{color:var(--teal);}
+.callout p{color:var(--text); margin:0;}
+.callout .label{display:block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px;}
+.callout.watch .label{color:var(--coral);}
+.callout.tip .label{color:var(--teal);}
+
+/* tables */
+.table-wrap{overflow-x:auto; margin-top:14px; border:1px solid var(--border); border-radius:10px;}
+table{width:100%; border-collapse:collapse; font-size:14px; min-width:480px;}
+th,td{padding:10px 14px; text-align:left; border-bottom:1px solid var(--border-soft); vertical-align:top;}
+th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-faint); background:var(--bg-soft);}
+td{color:var(--text-dim);}
+tr:last-child td{border-bottom:none;}
+td strong{color:var(--text);}
+
+/* back to top */
+.totop{
+  position:fixed; bottom:22px; right:22px; z-index:40;
+  background:var(--bg-card); border:1px solid var(--border); color:var(--gold-bright);
+  width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:18px; cursor:pointer; opacity:0; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,0.35);
+}
+.totop.show{opacity:1;}
+
+footer{padding:40px 0 60px; text-align:center;}
+footer p{color:var(--text-faint); font-size:13.5px;}
+footer .lucky{font-family:var(--serif); font-size:18px; color:var(--gold-bright); margin-bottom:8px;}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:760px){
+  .stat-row{grid-template-columns:repeat(2,1fr);}
+  .ticket-grid{grid-template-columns:1fr;}
+  .countdown-card{flex-direction:column; align-items:flex-start;}
+  .hero-quote{font-size:160px; top:-20px;}
+  .topbar-name{display:none;}
+}
+@media (max-width:480px){
+  .wrap{padding:0 16px;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .cd-unit{min-width:46px;}
+  .cd-unit .v{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-id">
+      <span class="topbar-code">MÜF-B02 · Akademik yazı və etika</span>
+      <span class="topbar-name">Poqorelova Yelena Yuriyevna</span>
+    </div>
+    <div class="jumpnav">
+      <select onchange="if(this.value)location.hash=this.value;">
+        <option value="">Jump to…</option>
+        <option value="#ticket-map">Lecture / ticket map</option>
+        <option value="#features">Features of academic writing</option>
+        <option value="#types">Types of academic writing</option>
+        <option value="#planning">Structure & planning (the 7 stages)</option>
+        <option value="#main-parts">Main parts of academic writing</option>
+        <option value="#refs-citations">References & citations basics</option>
+        <option value="#ref-functions">Functions of referencing</option>
+        <option value="#source-criteria">Criteria for selecting sources</option>
+        <option value="#primary-secondary">Primary vs secondary sources</option>
+        <option value="#ref-tools">Mendeley / EndNote / BibTeX</option>
+        <option value="#ref-styles">APA / Harvard / MLA / IEEE</option>
+        <option value="#paraphrasing">Paraphrasing</option>
+        <option value="#editing">Editing academic writing</option>
+        <option value="#bibliography">Bibliography</option>
+        <option value="#critical-reading">Critical reading & review</option>
+        <option value="#review-types">Types of review articles</option>
+        <option value="#review-structure">Structure of a review article</option>
+        <option value="#review-steps">Steps to prepare a review</option>
+        <option value="#presentations">Preparing presentations</option>
+        <option value="#france-case">France case study</option>
+        <option value="#french-research">French research types</option>
+        <option value="#publications">Types of publications</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap" style="position:relative;">
+    <div class="hero-quote">”</div>
+    <span class="eyebrow">Final exam · fast revision</span>
+    <h1>Everything for the final, explained the simple way</h1>
+    <p class="lede">Built from your lecture notes, plus extra research wherever the slides moved fast — so every one of the 45 required sub-questions across all 8 lectures actually makes sense before you walk in. No jargon you haven't met yet, no walls of bullet points.</p>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">8</span><span class="lbl">Lecture topics</span></div>
+      <div class="stat"><span class="num">45</span><span class="lbl">Required sub-questions</span></div>
+      <div class="stat"><span class="num">15</span><span class="lbl">Ticket variants</span></div>
+      <div class="stat"><span class="num">5</span><span class="lbl">Questions per ticket</span></div>
+    </div>
+
+    <div class="countdown-card">
+      <div>
+        <div class="countdown-label">Exam starts in</div>
+        <div class="countdown-date">2 July 2026 · 17:00–20:00 (Baku time)</div>
+      </div>
+      <div class="countdown-clock" id="countdown">
+        <div class="cd-unit"><span class="v" id="cd-d">--</span><span class="u">days</span></div>
+        <div class="cd-unit"><span class="v" id="cd-h">--</span><span class="u">hrs</span></div>
+        <div class="cd-unit"><span class="v" id="cd-m">--</span><span class="u">min</span></div>
+        <div class="cd-unit"><span class="v" id="cd-s">--</span><span class="u">sec</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ HOW THE TICKET WORKS ============ -->
+  <section class="section" id="how-it-works">
+    <div class="section-head">
+      <span class="section-eyebrow">Before you revise anything</span>
+      <h2>How your exam ticket actually works</h2>
+    </div>
+    <div class="explainer">
+      <p>On exam day you won't answer all 45 questions — you draw one <strong>ticket</strong> ("bilet") out of <strong>15 possible variants</strong>, and every ticket has exactly <strong>5 theory questions</strong> on it. There are no practical or calculation questions this term, it's all explaining-in-words.</p>
+      <p>Here's the part that matters for how you revise: every question on every one of the 15 variants is pulled from the <strong>same pool of 45 sub-questions</strong>, grouped under the 8 lecture topics below. So instead of trying to guess which 5 you'll personally get, the safest plan is simply to be able to explain <strong>every</strong> sub-question in your own words. Then it genuinely doesn't matter which ticket you pull out of the box.</p>
+      <div class="tag-row">
+        <span class="tag">8 lectures</span>
+        <span class="tag">45 sub-questions</span>
+        <span class="tag">21 concepts (some repeat)</span>
+        <span class="tag">100% theory</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TICKET MAP ============ -->
+  <section class="section" id="ticket-map">
+    <div class="section-head">
+      <span class="section-eyebrow">Lecture map</span>
+      <h2>Tap any sub-question to jump to its explanation</h2>
+      <p class="section-sub">Same wording, same numbering as your course question bank. A few sub-questions repeat across lectures on purpose — they just link to the same explanation, so you only have to learn it once.</p>
+    </div>
+
+    <div class="ticket-grid">
+
+      <div class="ticket" id="lecture-1">
+        <div class="ticket-stub"><span class="num">01</span></div>
+        <div class="ticket-body">
+          <h3>Features of academic writing. Types of academic writing</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#features">Features of academic writing</a>
+            <a class="chip" href="#types">Types of academic writing</a>
+            <a class="chip" href="#planning">Structure & its planning</a>
+            <a class="chip" href="#refs-citations">References and citations</a>
+            <a class="chip" href="#ref-functions">Functions of referencing</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-2">
+        <div class="ticket-stub"><span class="num">02</span></div>
+        <div class="ticket-body">
+          <h3>Structure and planning of academic writing. Main parts of academic writing</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#main-parts">Main parts of academic writing</a>
+            <a class="chip" href="#review-types">Types of Review Article</a>
+            <a class="chip" href="#source-criteria">Criteria for selecting sources</a>
+            <a class="chip" href="#french-research">Educational research</a>
+            <a class="chip" href="#french-research">Three types of French research</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-3">
+        <div class="ticket-stub"><span class="num">03</span></div>
+        <div class="ticket-body">
+          <h3>References & citations. Reference functions, criteria, tools (Mendeley, EndNote, BibTeX), styles (APA, Harvard, IEEE, MLA)</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#source-criteria">Criteria for selecting sources</a>
+            <a class="chip" href="#ref-tools">Mendeley, EndNote, BibTeX</a>
+            <a class="chip" href="#ref-styles">APA, Harvard, IEEE, MLA</a>
+            <a class="chip" href="#paraphrasing">Paraphrasing</a>
+            <a class="chip" href="#paraphrasing">Expressing ideas in own words</a>
+            <a class="chip" href="#editing">Editing academic writing</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-4">
+        <div class="ticket-stub"><span class="num">04</span></div>
+        <div class="ticket-body">
+          <h3>Paraphrase. Methods of expressing the author's ideas in your own words</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#paraphrasing">Paraphrasing</a>
+            <a class="chip" href="#paraphrasing">Expressing ideas in own words</a>
+            <a class="chip" href="#editing">Editing academic writing</a>
+            <a class="chip" href="#french-research">French magistracy feature</a>
+            <a class="chip" href="#planning">Scientific research requires…</a>
+            <a class="chip" href="#primary-secondary">Primary scientific information</a>
+            <a class="chip" href="#primary-secondary">Secondary scientific information</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-5">
+        <div class="ticket-stub"><span class="num">05</span></div>
+        <div class="ticket-body">
+          <h3>Editing an academic article. Bibliography. Critical reading — reviewing the article</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#bibliography">Bibliography</a>
+            <a class="chip" href="#critical-reading">Critical reading / reviewing</a>
+            <a class="chip" href="#review-steps">Preparing a review article</a>
+            <a class="chip" href="#review-types">Types of Review Article</a>
+            <a class="chip" href="#review-structure">Structure of a review article</a>
+            <a class="chip" href="#review-steps">Steps to prepare a review</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-6">
+        <div class="ticket-stub"><span class="num">06</span></div>
+        <div class="ticket-body">
+          <h3>Preparing a summary article. Mini/full reviews; narrative/systematic reviews</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#presentations">Preparing presentations</a>
+            <a class="chip" href="#france-case">Traditional vs international approach</a>
+            <a class="chip" href="#review-types">Mini- and full reviews</a>
+            <a class="chip" href="#review-types">Narrative & systematic reviews</a>
+            <a class="chip" href="#publications">Types of educational publications</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-7">
+        <div class="ticket-stub"><span class="num">07</span></div>
+        <div class="ticket-body">
+          <h3>Review structure (components). Steps (algorithm) for preparing a summary article</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#review-types">Types of Review Article</a>
+            <a class="chip" href="#review-structure">Structure of a review article</a>
+            <a class="chip" href="#review-steps">Steps for preparing a review</a>
+            <a class="chip" href="#review-types">Narrative & systematic reviews</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket" id="lecture-8">
+        <div class="ticket-stub"><span class="num">08</span></div>
+        <div class="ticket-body">
+          <h3>Preparation of presentations on scientific research</h3>
+          <span class="ticket-hours">LECTURE · 2.00 saat</span>
+          <div class="chip-row">
+            <a class="chip" href="#publications">Types of educational publications</a>
+            <a class="chip" href="#planning">The plot of scientific work</a>
+            <a class="chip" href="#features">Features & main body</a>
+            <a class="chip" href="#planning">Structure of academic writing</a>
+            <a class="chip" href="#refs-citations">References and citations</a>
+            <a class="chip" href="#ref-functions">Functions of referencing</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CLUSTER 1 ============ -->
+  <section class="section" id="cluster-1">
+    <div class="cluster-head"><span class="cluster-index">01</span><h2>What academic writing actually is</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="features">
+      <h3>Features of academic writing</h3>
+      <p>Academic writing is simply the skill of explaining and defending your own ideas about a topic in a way other students or researchers can follow and check. It covers essays, term papers, theses, articles, and even full books (monographs) — basically any text where you're expected to think for yourself and back it up.</p>
+      <p>Three things separate it from ordinary writing. Every claim needs evidence — you don't just say "this is true," you show where that comes from. The structure is deliberate — intro, body, conclusion, not a stream of thoughts. And the language is precise and formal rather than casual or emotional.</p>
+      <p>Your course notes specifically push back on one common confusion: people often think "academic writing skill" just means good spelling and grammar. Spelling matters, but it's the smallest part of it — the real skill is organizing and arguing ideas clearly, which is exactly what neither school nor most university courses ever teach directly.</p>
+    </article>
+
+    <article class="card" id="types">
+      <h3>Types of academic writing</h3>
+      <p>Different academic genres do different jobs, so knowing which is which helps. An <strong>essay</strong> argues a personal position, usually in one of three modes: <strong>persuasion</strong> (convince the reader of a viewpoint), <strong>narration</strong> (tell a sequence of events), or <strong>reasoning</strong> (explain causes and effects, or how something works).</p>
+      <p>An <strong>abstract / annotation</strong> is a short, compressed summary of someone else's longer work. A <strong>term paper or thesis</strong> is a full structured research project written for a course or degree. A <strong>scientific article</strong> reports an original result for a journal. A <strong>monograph</strong> is a complete book on one topic by one or a few authors. And a <strong>review</strong> isn't a new discovery at all — it's an evaluation of research that already exists.</p>
+    </article>
+
+    <article class="card" id="planning">
+      <h3>Structure of academic writing & its planning<span class="anchor-tag">also: "scientific research requires…", "the plot of scientific work"</span></h3>
+      <p>Writing anything substantial — a term paper, a thesis — isn't one step, it's a planned sequence. Your notes break it into roughly seven real stages.</p>
+      <ol>
+        <li><strong>Preparatory</strong> — pick and get your topic, plan, and hypothesis approved.</li>
+        <li><strong>Studying what's already known</strong> — collect and organize the literature, look through archives.</li>
+        <li><strong>Draft writing</strong> — decide your chapters and headings, write a full first version, adjust the plan as you go.</li>
+        <li><strong>Editing</strong> — fix the manuscript, format the reference list and appendices, proofread.</li>
+        <li><strong>Final formatting</strong> — match the official requirements, hand it to your supervisor.</li>
+        <li><strong>Defense prep</strong> — build your presentation and your speech.</li>
+        <li><strong>Defense</strong> — present, usually 10 to 15 minutes.</li>
+      </ol>
+      <div class="callout watch">
+        <span class="ic">!</span>
+        <p><span class="label">Watch out</span>Your slides number this list up to "8," but step 8 is actually the start of a brand new topic (sources of information), not a real eighth stage. So if you only count seven real planning steps, you haven't missed anything.</p>
+      </div>
+    </article>
+
+    <article class="card" id="main-parts">
+      <h3>Main parts of academic writing</h3>
+      <p>Separate from the planning stages above, every finished academic text — paper, thesis, article — tends to follow the same skeleton of parts, whatever the subject. A specific <strong>Title</strong> that tells the reader exactly what's inside. An <strong>Abstract</strong>, a short stand-alone summary covering the problem, the approach and the main result, written so someone could understand your whole project from that one paragraph alone. An <strong>Introduction</strong> explaining why the topic matters and what question you're answering. A <strong>Main body</strong> where you review what's already known, explain your method, and present your findings. A <strong>Conclusion</strong> that says what you found and why it matters. And a <strong>References list</strong> of everything you cited.</p>
+      <p>Think of the seven planning stages as how you build the house, and these main parts as what rooms the finished house actually has.</p>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 2 ============ -->
+  <section class="section" id="cluster-2">
+    <div class="cluster-head"><span class="cluster-index">02</span><h2>Working with sources</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="refs-citations">
+      <h3>References & citations — the basics</h3>
+      <p>A citation is a marker that says "this idea or these words came from somewhere else, here's where." There are two honest ways to use someone else's material. A <strong>direct quotation</strong> copies their exact words inside quotation marks, and you also note the page where it starts. An <strong>indirect citation</strong> takes their idea and puts it into your own words — you still point to where it came from, you just don't use their exact wording.</p>
+      <p>One small but easy-to-miss rule: when you quote directly, quote a complete chunk — a whole sentence or a whole short paragraph, not a random fragment — and if the quoted chunk is a full sentence, punctuate it like direct speech.</p>
+      <p>There's also a difference between a citation and a plain "extract" you make for yourself while reading: an extract is just your own working notes in your own words, while a direct quotation has to preserve the author's exact wording, because the wording itself carries meaning. That matters a lot for legal texts and historical documents, which must be reproduced with full accuracy — exact title, year, publisher, even the archive where the original is kept.</p>
+    </article>
+
+    <article class="card" id="ref-functions">
+      <h3>Functions of referencing</h3>
+      <p>Why bother citing anything at all? Four honest reasons. It <strong>gives credit</strong> — the difference between presenting an idea as yours versus honestly showing it's someone else's, which is exactly what keeps you out of plagiarism trouble. It lets your reader <strong>check you</strong> — they can go look at your source and confirm you represented it fairly. It <strong>strengthens your argument</strong> — showing you've engaged with existing research makes your conclusions more convincing than if you just asserted them. And it <strong>connects research over time</strong> — your reference list is literally how one researcher's work leads another researcher to it years later, which is how a whole field builds on itself instead of everyone starting from zero.</p>
+    </article>
+
+    <article class="card" id="source-criteria">
+      <h3>Criteria for selecting sources</h3>
+      <p>Not every source you find deserves to end up in your paper. A simple way to test one — often remembered as the <strong>CRAAP</strong> check — is to ask five questions. Is it <strong>current</strong>, or has something newer replaced it? Is it <strong>relevant</strong> — does it answer your specific question, not just mention your topic in passing? Does it have <strong>authority</strong> — written by someone qualified, published somewhere credible, not posted anonymously online? Is it <strong>accurate</strong> — can you verify its facts elsewhere? And what's its <strong>purpose</strong> — written to inform honestly, or to sell, persuade, or push an agenda?</p>
+      <p>If a source fails most of these, leave it out, no matter how easy it was to find.</p>
+    </article>
+
+    <article class="card" id="primary-secondary">
+      <h3>Primary vs secondary scientific information</h3>
+      <p>Sources of scientific information split into two layers. <strong>Primary sources</strong> are the original, first-hand output of research — monographs, collections of scientific papers, dissertation abstracts, raw research reports. Think of this as straight from the researcher's own desk.</p>
+      <p><strong>Secondary sources</strong> are built by processing primary sources for you — reference books, abstract or review publications, bibliographies. Think of this as someone else having already read a pile of primary sources and organized or summarized them so you don't have to start from scratch.</p>
+      <div class="callout tip">
+        <span class="ic">★</span>
+        <p><span class="label">Memory tip</span>A primary source is the actual recipe a chef wrote down. A secondary source is a restaurant guide that's already read and rated hundreds of chefs' recipes for you.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 3 ============ -->
+  <section class="section" id="cluster-3">
+    <div class="cluster-head"><span class="cluster-index">03</span><h2>Tools & citation styles</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="ref-tools">
+      <h3>Referencing tools — Mendeley, EndNote, BibTeX</h3>
+      <p>These are tools that store your sources for you, so you don't have to type out a reference list by hand and risk getting the formatting wrong.</p>
+      <p><strong>Mendeley</strong> is free, friendly, and includes a built-in PDF reader and annotator; it works on desktop, in the browser, and on your phone — a good first reference manager for a student. <strong>EndNote</strong> is the more powerful, paid option: better for managing huge libraries of hundreds of sources, more customization, and it can auto-fill missing reference details from academic databases. <strong>BibTeX</strong> is different from the other two — it's not really an app, it's a plain-text file format used with LaTeX (a typesetting system common in maths, physics and engineering papers). You keep your sources as a simple list of tagged entries, and the citation style is generated automatically when the document compiles.</p>
+      <div class="callout tip">
+        <span class="ic">★</span>
+        <p><span class="label">Memory tip</span>Mendeley and EndNote are full programs with a library and a Word plugin. BibTeX is just a reference file format for LaTeX users.</p>
+      </div>
+    </article>
+
+    <article class="card" id="ref-styles">
+      <h3>Reference styles — APA, Harvard, MLA, IEEE</h3>
+      <p>Different academic fields settled on different citation formats, and the differences aren't random — each style grew out of what that field actually needs to see at a glance.</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Style</th><th>Mostly used in</th><th>In-text citation looks like</th><th>End list is called</th></tr>
+          <tr><td><strong>APA</strong></td><td>Social sciences, education, psychology</td><td>(Smith, 2020)</td><td>References</td></tr>
+          <tr><td><strong>Harvard</strong></td><td>General / UK & Australia, business</td><td>(Smith, 2020) — varies a bit by university, no single official rulebook</td><td>Reference list</td></tr>
+          <tr><td><strong>MLA</strong></td><td>Humanities, literature</td><td>(Smith 45) — page number, no year</td><td>Works Cited</td></tr>
+          <tr><td><strong>IEEE</strong></td><td>Engineering, computer science</td><td>[1] — a number in square brackets</td><td>References (numbered)</td></tr>
+        </table>
+      </div>
+      <p>Memory hook: APA and Harvard care about <strong>WHEN</strong> something was published, because newer research often replaces older research in those fields. MLA cares about <strong>WHERE</strong> — the exact page — because literature scholars are often analysing a precise line of text. IEEE cares about <strong>ORDER</strong> — a running number — because technical papers cite dozens of sources quickly and a number reads faster than a name.</p>
+      <div class="callout watch">
+        <span class="ic">!</span>
+        <p><span class="label">Watch out</span>IEEE uses a number inside square brackets, like [1], directly in the sentence — not a small floating footnote number above the line. Mixing these two up is an easy point to lose.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 4 ============ -->
+  <section class="section" id="cluster-4">
+    <div class="cluster-head"><span class="cluster-index">04</span><h2>Using someone else's words without copying them</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="paraphrasing">
+      <h3>Paraphrasing & expressing ideas in your own words</h3>
+      <p>Paraphrasing means rewriting somebody's idea using different words and a different sentence shape, while keeping the same meaning — and you still cite where the idea came from, you just don't put it in quotation marks.</p>
+      <p>The single most common mistake is thinking paraphrasing just means swapping a few words for synonyms. It doesn't — that still counts as too close to the original. Four techniques actually work, and work best combined:</p>
+      <ol>
+        <li>Swap several key words for genuine synonyms — not just one or two.</li>
+        <li>Restructure the sentence — active into passive, split one long sentence into two, reorder the clauses.</li>
+        <li>Change the part of speech — turn a verb into a noun or back ("the team analyzed the data" → "the analysis of the data, carried out by the team, showed…").</li>
+        <li>Read it, cover it, then explain it like you're talking to a friend — read the original, cover the page, explain the idea from memory, then check back that the meaning survived.</li>
+      </ol>
+      <p>Your lecture notes also classify quoted material this way: a thesis (a short stated point) can be <strong>simple</strong> — just one statement with nothing backing it up — or <strong>complex/detailed</strong>, where the statement comes with supporting arguments. It can also be <strong>textual</strong>, staying close to the source's own wording, or <strong>free</strong>, where the idea is rebuilt fully in your own words. Free, detailed theses are generally the strongest writing, because they prove you actually understood the source rather than just copied its shape.</p>
+    </article>
+
+    <article class="card" id="editing">
+      <h3>Editing academic writing</h3>
+      <p>Editing is stage four of the planning process you saw earlier, but it deserves its own attention as a skill. Do it in three passes, big to small.</p>
+      <p>First, the big things: does the structure make sense, are the chapters in a logical order, is anything missing or repeated? Second, the medium things: is every claim actually backed by a reference, are quotations formatted correctly, are your headings consistent? Third, the small things: spelling, punctuation, grammar.</p>
+      <p>Remember the earlier point about "literacy" meaning more than just spelling — that's exactly why editing academic writing needs more than a spellchecker. It needs someone checking that the logic actually flows, and that your in-text citations match what's in your final reference list.</p>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 5 ============ -->
+  <section class="section" id="cluster-5">
+    <div class="cluster-head"><span class="cluster-index">05</span><h2>Bibliographies & critical reading</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="bibliography">
+      <h3>Bibliography</h3>
+      <p>People use "bibliography" loosely to mean "the list of sources at the end," but there's a real distinction worth knowing. A <strong>reference list</strong> contains only sources you actually cited in your text. A <strong>bibliography</strong> can be broader — everything you read or consulted while researching, even things you never directly quoted.</p>
+      <p>Different citation styles even use different names for basically the same idea: APA and Harvard call it a "reference list," MLA calls it "Works Cited." In the terms used in this course, a bibliographic publication is an informational publication containing an ordered set of full source descriptions — in plain words, an organized list detailed enough that a reader could go and find every source themselves.</p>
+      <div class="callout watch">
+        <span class="ic">!</span>
+        <p><span class="label">Watch out</span>If asked to define bibliography on the exam, the safe answer is: an ordered, organized list of full source descriptions, so a reader can locate every work that informed the research — not just "a fancy word for reference list."</p>
+      </div>
+    </article>
+
+    <article class="card" id="critical-reading">
+      <h3>Critical reading & reviewing an article</h3>
+      <p>Critical reading isn't reading to remember facts — it's reading while constantly questioning the text. What exactly is the author claiming? What evidence backs it up, and is that evidence strong, recent, or possibly biased? What did the author leave out? Do other researchers in the field agree or push back?</p>
+      <p>"Reviewing" an article turns that critical reading into a short written piece: a brief, fair summary of what the article actually says in your own words, plus your own honest evaluation of its strengths, weaknesses, and how it fits next to everything else you know about the topic. The key difference from a plain summary: a review judges the work, it doesn't just describe it.</p>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 6 ============ -->
+  <section class="section" id="cluster-6">
+    <div class="cluster-head"><span class="cluster-index">06</span><h2>Review articles</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="review-types">
+      <h3>Types of review articles<span class="anchor-tag">mini/full · narrative/systematic</span></h3>
+      <p>A review article doesn't report a brand-new experiment — it gathers, organizes and evaluates everything already published on a topic, so a reader gets a clear, current picture without reading fifty separate papers themselves. They're classified two ways at once: by how much they cover, and by how strictly they're built.</p>
+      <p><strong>By depth:</strong> a <strong>mini-review</strong> is short, covers a narrow slice of a topic, and uses relatively few sources — a quick, focused overview. A <strong>full (comprehensive) review</strong> is long, covers a whole field broadly, and draws on many sources — often substantial enough to be a major article on its own.</p>
+      <p><strong>By method:</strong> a <strong>narrative review</strong> is the classic kind — the author picks and discusses sources based on their own expertise and judgment. It's flexible and especially good at tracing how an idea developed over time, but it's also more subjective. A <strong>systematic review</strong> follows a strict, written-in-advance plan: one specific question, clear written rules for which studies are allowed in, a documented and thorough search, and a method built so another researcher could repeat it and get the same result. It's far more objective — considered the gold standard, especially in medicine — but it takes much more time and work.</p>
+      <div class="callout tip">
+        <span class="ic">★</span>
+        <p><span class="label">Memory tip</span>A narrative review is a guided tour led by an expert who picks the best stops for you. A systematic review is a checklist itinerary that visits every relevant stop in a fixed order, no matter who's leading it.</p>
+      </div>
+      <div class="callout watch">
+        <span class="ic">!</span>
+        <p><span class="label">Watch out</span>"Systematic" doesn't just mean "thorough" or "a lot of reading." It specifically means a predefined protocol existed — a question and search rules written down before the search even started. A narrative review can also be thorough and still not count as systematic.</p>
+      </div>
+    </article>
+
+    <article class="card" id="review-structure">
+      <h3>Structure of a review article (components)</h3>
+      <p>A review article's components, in order: <strong>Title and abstract</strong> (what it covers, and the main takeaway, in brief). <strong>Introduction</strong> (why this topic now, what's the gap in current understanding). <strong>Main body</strong>, organized into themed sections rather than one paper-by-paper summary in date order — group findings by theme, compare them against each other, and point out where studies agree or disagree. <strong>Discussion/conclusion</strong> (what we now know overall, what's still unclear, what should be studied next). <strong>References</strong> — often a long list, since the whole point of a review is gathering many sources.</p>
+    </article>
+
+    <article class="card" id="review-steps">
+      <h3>Steps for preparing a review article (algorithm)</h3>
+      <ol>
+        <li>Check the topic is actually worth reviewing — is it current, and is there enough recent primary research out there?</li>
+        <li>Search broadly and collect sources using the source-selection criteria covered earlier, ideally organized with a tool like Mendeley.</li>
+        <li>Read everything critically and group your sources by theme or finding, not by publication date.</li>
+        <li>Sketch the outline using the structure above.</li>
+        <li>Write the draft, comparing and contrasting themes instead of listing summaries one after another.</li>
+        <li>Edit, and finalize the reference list in whichever citation style is required.</li>
+      </ol>
+    </article>
+  </section>
+
+  <!-- ============ CLUSTER 7 ============ -->
+  <section class="section" id="cluster-7">
+    <div class="cluster-head"><span class="cluster-index">07</span><h2>Presenting research & publication types</h2></div>
+    <div class="rule" style="margin-bottom:20px;"></div>
+
+    <article class="card" id="presentations">
+      <h3>Preparing presentations on scientific research</h3>
+      <p>A presentation is not your written text shrunk down onto slides — it needs far less text per slide, one clear idea per slide, and you have to be ready to explain it in your own words instead of reading it off the screen.</p>
+      <p>The structure mirrors a review article: a short opening on why the topic matters, the key findings grouped by theme, a clear takeaway at the end, and room left for questions. This connects directly back to the defense stage of the planning process covered earlier — preparing your presentation and your speech is literally the second-to-last step before defending any major piece of academic work.</p>
+    </article>
+
+    <article class="card" id="france-case">
+      <h3>Scientific research: traditional approach vs international experience</h3>
+      <p>Your lecture notes use France as a case study for comparing how seriously, and how early, research-writing skills get taught elsewhere. French universities run a 3+2+3 system — Bachelor's, then Master's, then Doctorate — matching the wider European reform this region is also moving toward.</p>
+      <p>From the very start of their Master's, French students choose either a research track or a professional track, and can still switch later. Either way, research is treated as central, not extra: students often publish their results as an actual article, or sometimes even a collective textbook written with classmates, and from the second year onward they join a dedicated doctoral school's seminars alongside their regular coursework.</p>
+      <p>The point of this comparison isn't to memorize French bureaucracy — it's to notice how much variation exists internationally in how early and how formally research-writing gets taught, which is exactly the gap this course is trying to close locally.</p>
+    </article>
+
+    <article class="card" id="french-research">
+      <h3>Research types at French universities<span class="anchor-tag">educational research · special feature of the magistracy</span></h3>
+      <p>French master's students carry out research projects that differ by year and by track, and the notes name three specific types. <strong>Mémoire d'étude</strong> is educational research, done in the first year — this is what the question bank calls "educational research": basic, foundational, sometimes done by a small team rather than solo, and its result is often formalized as an article or even a collective educational monograph. <strong>Mémoire de recherche</strong> is proper scientific research, done in the second year by students on the research track. <strong>Mémoire professionnalisé</strong> is professional, practice-based research, also second year, by students on the professional track.</p>
+      <p>One specific feature worth remembering: not every first-year student automatically continues into year two. Students must first successfully defend their first-year research, and a special committee reviews each student's "dossier" — a file of their overall academic record — before deciding who continues. Only the students who pass this review join the research school directly with a supervisor.</p>
+    </article>
+
+    <article class="card" id="publications">
+      <h3>Types of scientific & educational publications</h3>
+      <p>Publications split into a few practical categories, and the exam pool covers both the scientific and the educational side.</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Scientific publication</th><th>What it actually is</th></tr>
+          <tr><td><strong>Monograph</strong></td><td>A full, complete study of one topic, by one author or a small group — a whole book on a single subject.</td></tr>
+          <tr><td><strong>Collection of scientific papers</strong></td><td>Several authors' shorter papers bundled together in one volume.</td></tr>
+          <tr><td><strong>Conference materials</strong></td><td>The actual programs, papers and decisions produced by a real scientific conference.</td></tr>
+          <tr><td><strong>Conference abstracts</strong></td><td>Short previews of conference talks, published before the conference happens.</td></tr>
+          <tr><td><strong>Popular science publication</strong></td><td>Research explained for a general audience, without specialist jargon.</td></tr>
+        </table>
+      </div>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <tr><th>Educational publication</th><th>What it actually is</th></tr>
+          <tr><td><strong>Textbook</strong></td><td>Official, matches the curriculum exactly, covers a full course or subject.</td></tr>
+          <tr><td><strong>Study guide / teaching aid</strong></td><td>Extra material on how to teach or learn one specific topic — supplements the textbook, doesn't replace it.</td></tr>
+        </table>
+      </div>
+      <p>And on the reference/information side: dictionaries and encyclopedias (built for quick lookup), bibliographic publications (the ordered source lists covered earlier), and review/abstract publications (something that's already gathered and summarized other sources for you).</p>
+    </article>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="lucky">Good luck on 2 July, 17:00.</div>
+    <p>Most of these 45 sub-questions are really the same handful of ideas — citing, paraphrasing, and reviewing — asked about in slightly different wording across 8 lectures. Learn each idea once here, and the lecture it's filed under stops mattering.</p>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Countdown to 2 July 2026, 17:00 Baku time (UTC+4)
+var target = new Date("2026-07-02T17:00:00+04:00").getTime();
+function tick(){
+  var now = new Date().getTime();
+  var diff = target - now;
+  var d = document.getElementById('cd-d');
+  var h = document.getElementById('cd-h');
+  var m = document.getElementById('cd-m');
+  var s = document.getElementById('cd-s');
+  if(diff <= 0){
+    d.textContent = h.textContent = m.textContent = s.textContent = '00';
+    return;
+  }
+  var days = Math.floor(diff / 86400000);
+  var hours = Math.floor((diff % 86400000) / 3600000);
+  var mins = Math.floor((diff % 3600000) / 60000);
+  var secs = Math.floor((diff % 60000) / 1000);
+  d.textContent = String(days).padStart(2,'0');
+  h.textContent = String(hours).padStart(2,'0');
+  m.textContent = String(mins).padStart(2,'0');
+  s.textContent = String(secs).padStart(2,'0');
+}
+tick();
+setInterval(tick, 1000);
+
+// back to top button visibility
+var totop = document.getElementById('totop');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 500){ totop.classList.add('show'); }
+  else{ totop.classList.remove('show'); }
+});
+</script>
+
+</body>
+</html>
