@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yaz imtahan sessiyası — All exams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#11151c;
+  --bg-card:#1b212c;
+  --bg-card-2:#1f2632;
+  --border:#2a3242;
+  --border-soft:#232a38;
+  --text:#e9ecf2;
+  --text-dim:#a9b1c2;
+  --text-faint:#6e7689;
+  --gold:#dcab52;
+  --gold-bright:#ecc06e;
+  --gold-soft:rgba(220,171,82,0.12);
+  --teal:#5fb8ad;
+  --teal-soft:rgba(95,184,173,0.13);
+  --coral:#e2825f;
+  --coral-soft:rgba(226,130,95,0.13);
+  --green:#7fbf83;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 800px 500px at 90% -10%, rgba(220,171,82,0.07), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 0% 20%, rgba(95,184,173,0.06), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit; text-decoration:none;}
+:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:4px;}
+h1,h2{font-family:var(--serif); font-weight:600; margin:0;}
+
+.wrap{max-width:880px; margin:0 auto; padding:48px 24px 70px;}
+
+header.page-head{margin-bottom:28px;}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.09em; text-transform:uppercase; color:var(--teal);}
+h1{font-size:clamp(26px,4vw,36px); margin-top:10px;}
+.page-head .dates{color:var(--text-dim); font-size:14.5px; margin-top:8px;}
+.page-head .dates strong{color:var(--text-dim); font-weight:600;}
+
+/* progress strip */
+.progress-strip{
+  display:flex; align-items:center; gap:16px; margin-top:24px;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px 18px;
+}
+.progress-strip .count{font-family:var(--serif); font-size:22px; color:var(--gold-bright); font-weight:600; flex-shrink:0;}
+.progress-bar-track{flex:1; height:8px; border-radius:99px; background:var(--bg-card-2); overflow:hidden;}
+.progress-bar-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--green)); border-radius:99px;}
+.progress-strip .pct{font-family:var(--mono); font-size:13px; color:var(--text-faint); flex-shrink:0;}
+
+/* next exam banner */
+.next-exam{
+  margin-top:18px; border-radius:14px; padding:20px 22px;
+  background:linear-gradient(150deg,var(--bg-card-2),var(--bg-card));
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+}
+.next-exam .lbl{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-faint);}
+.next-exam .name{font-size:17px; font-weight:600; margin-top:4px;}
+.next-exam .when{font-size:13.5px; color:var(--text-dim); margin-top:2px;}
+.cd-clock{display:flex; gap:10px;}
+.cd-unit{text-align:center; min-width:48px;}
+.cd-unit .v{font-family:var(--serif); font-size:24px; color:var(--gold-bright); font-weight:600; font-variant-numeric:tabular-nums;}
+.cd-unit .u{font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.07em;}
+.all-done{font-size:15px; color:var(--green); font-weight:600;}
+
+/* list of exams */
+.exam-list{margin-top:32px; display:flex; flex-direction:column; gap:12px;}
+.exam-card{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+  padding:18px 20px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+}
+.exam-main{flex:1 1 260px; min-width:0;}
+.exam-name{font-size:16px; font-weight:600; color:var(--text);}
+.exam-meta{display:flex; gap:10px; align-items:center; margin-top:6px; flex-wrap:wrap;}
+.exam-date{font-family:var(--mono); font-size:12.5px; color:var(--text-faint);}
+.badge{font-size:11px; padding:3px 9px; border-radius:99px; font-family:var(--mono); letter-spacing:0.03em; text-transform:uppercase;}
+.badge.done{background:var(--teal-soft); color:var(--teal); border:1px solid rgba(95,184,173,0.3);}
+.badge.upcoming{background:var(--gold-soft); color:var(--gold-bright); border:1px solid rgba(220,171,82,0.3);}
+
+.diff-block{flex:0 0 150px;}
+.diff-label-row{display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px; color:var(--text-faint); font-family:var(--mono);}
+.diff-track{height:6px; border-radius:99px; background:var(--bg-card-2); overflow:hidden;}
+.diff-fill{height:100%; border-radius:99px;}
+.diff-fill.easy{background:var(--green);}
+.diff-fill.mid{background:var(--gold);}
+.diff-fill.hard{background:var(--coral);}
+
+.open-btn{
+  flex:0 0 auto; font-size:13.5px; font-weight:600; padding:9px 16px; border-radius:9px;
+  background:var(--gold-soft); color:var(--gold-bright); border:1px solid rgba(220,171,82,0.3);
+  white-space:nowrap;
+}
+.open-btn:hover{background:var(--gold); color:#1a140a; text-decoration:none;}
+
+.exam-countdown{font-family:var(--mono); font-size:11.5px; color:var(--gold-bright); margin-top:2px;}
+
+footer{margin-top:38px; text-align:center;}
+footer p{color:var(--text-faint); font-size:12.5px; max-width:480px; margin:0 auto;}
+
+@media (max-width:560px){
+  .exam-card{flex-direction:column; align-items:stretch;}
+  .diff-block{flex:1 1 auto; width:100%;}
+  .open-btn{width:100%; text-align:center;}
+  .next-exam{flex-direction:column; align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <span class="eyebrow">2025–2026 · Second semester</span>
+    <h1>All exams, one page</h1>
+    <p class="dates"><strong>Yaz imtahan sessiyası</strong> · 25.05.2026 – 03.07.2026</p>
+  </header>
+
+  <div class="progress-strip">
+    <span class="count" id="progress-count">–/–</span>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="pct" id="progress-pct">completed</span>
+  </div>
+
+  <div class="next-exam" id="next-exam-banner">
+    <div>
+      <div class="lbl">Next exam</div>
+      <div class="name" id="next-name">—</div>
+      <div class="when" id="next-when">—</div>
+    </div>
+    <div class="cd-clock" id="next-clock">
+      <div class="cd-unit"><span class="v" id="ne-d">--</span><span class="u">days</span></div>
+      <div class="cd-unit"><span class="v" id="ne-h">--</span><span class="u">hrs</span></div>
+      <div class="cd-unit"><span class="v" id="ne-m">--</span><span class="u">min</span></div>
+      <div class="cd-unit"><span class="v" id="ne-s">--</span><span class="u">sec</span></div>
+    </div>
+  </div>
+
+  <div class="exam-list" id="exam-list">
+
+    <div class="exam-card" data-end="2026-06-03T20:00:00+04:00">
+      <div class="exam-main">
+        <div class="exam-name">Tədqiqat metodları</div>
+        <div class="exam-meta">
+          <span class="exam-date">03.06.2026 · 17:00–20:00</span>
+          <span class="badge status-badge">—</span>
+        </div>
+      </div>
+      <div class="diff-block">
+        <div class="diff-label-row"><span>Difficulty</span><span>45%</span></div>
+        <div class="diff-track"><div class="diff-fill mid" style="width:45%"></div></div>
+      </div>
+      <a class="open-btn" href="research.html">Open guide →</a>
+    </div>
+
+    <div class="exam-card" data-end="2026-06-10T20:00:00+04:00">
+      <div class="exam-main">
+        <div class="exam-name">Seysmik məlumatların atribut analizi və seysmik inversiya</div>
+        <div class="exam-meta">
+          <span class="exam-date">10.06.2026 · 17:00–20:00</span>
+          <span class="badge status-badge">—</span>
+        </div>
+      </div>
+      <div class="diff-block">
+        <div class="diff-label-row"><span>Difficulty</span><span>85%</span></div>
+        <div class="diff-track"><div class="diff-fill hard" style="width:85%"></div></div>
+      </div>
+      <a class="open-btn" href="seismic.html">Open guide →</a>
+    </div>
+
+    <div class="exam-card" data-end="2026-06-19T20:00:00+04:00">
+      <div class="exam-main">
+        <div class="exam-name">Neft-qaz yataqlarında süni təsir üsullarına müasir yanaşma</div>
+        <div class="exam-meta">
+          <span class="exam-date">19.06.2026 · 17:00–20:00</span>
+          <span class="badge status-badge">—</span>
+        </div>
+      </div>
+      <div class="diff-block">
+        <div class="diff-label-row"><span>Difficulty</span><span>70%</span></div>
+        <div class="diff-track"><div class="diff-fill hard" style="width:70%"></div></div>
+      </div>
+      <a class="open-btn" href="muasir.html">Open guide →</a>
+    </div>
+
+    <div class="exam-card" data-end="2026-06-23T20:00:00+04:00">
+      <div class="exam-main">
+        <div class="exam-name">Neft və qaz yataqlarının geoloji rayonlaşdırılması prinsipləri</div>
+        <div class="exam-meta">
+          <span class="exam-date">23.06.2026 · 17:00–20:00</span>
+          <span class="badge status-badge">—</span>
+        </div>
+      </div>
+      <div class="diff-block">
+        <div class="diff-label-row"><span>Difficulty</span><span>75%</span></div>
+        <div class="diff-track"><div class="diff-fill hard" style="width:75%"></div></div>
+      </div>
+      <a class="open-btn" href="prinsip.html">Open guide →</a>
+    </div>
+
+    <div class="exam-card" data-end="2026-07-02T20:00:00+04:00">
+      <div class="exam-main">
+        <div class="exam-name">Akademik yazı və etika</div>
+        <div class="exam-meta">
+          <span class="exam-date">02.07.2026 · 17:00–20:00</span>
+          <span class="badge status-badge">—</span>
+        </div>
+        <div class="exam-countdown" style="display:none;"></div>
+      </div>
+      <div class="diff-block">
+        <div class="diff-label-row"><span>Difficulty</span><span>40%</span></div>
+        <div class="diff-track"><div class="diff-fill easy" style="width:40%"></div></div>
+      </div>
+      <a class="open-btn" href="academic.html">Open guide →</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Difficulty bars are a rough personal estimate based on how much content and math each course covers — not an official rating. Statuses and the countdown above update automatically based on today's date.</p>
+  </footer>
+
+</div>
+
+<script>
+var cards = Array.prototype.slice.call(document.querySelectorAll('.exam-card'));
+var now = new Date();
+
+function fmtPart(n){ return String(n).padStart(2,'0'); }
+
+function renderCountdownInto(prefix, diff){
+  var days = Math.floor(diff/86400000);
+  var hours = Math.floor((diff%86400000)/3600000);
+  var mins = Math.floor((diff%3600000)/60000);
+  var secs = Math.floor((diff%60000)/1000);
+  document.getElementById(prefix+'-d').textContent = fmtPart(days);
+  document.getElementById(prefix+'-h').textContent = fmtPart(hours);
+  document.getElementById(prefix+'-m').textContent = fmtPart(mins);
+  document.getElementById(prefix+'-s').textContent = fmtPart(secs);
+}
+
+function tick(){
+  var now = new Date();
+  var doneCount = 0;
+  var nextCard = null;
+
+  cards.forEach(function(card){
+    var end = new Date(card.getAttribute('data-end'));
+    var badge = card.querySelector('.status-badge');
+    if(now > end){
+      doneCount++;
+      badge.textContent = 'Completed';
+      badge.className = 'badge done status-badge';
+    } else {
+      badge.textContent = 'Upcoming';
+      badge.className = 'badge upcoming status-badge';
+      if(!nextCard) nextCard = card;
+    }
+  });
+
+  // progress strip
+  document.getElementById('progress-count').textContent = doneCount + '/' + cards.length;
+  document.getElementById('progress-fill').style.width = Math.round((doneCount/cards.length)*100) + '%';
+  document.getElementById('progress-pct').textContent = Math.round((doneCount/cards.length)*100) + '% completed';
+
+  // next exam banner
+  if(nextCard){
+    var name = nextCard.querySelector('.exam-name').textContent;
+    var when = nextCard.querySelector('.exam-date').textContent;
+    document.getElementById('next-name').textContent = name;
+    document.getElementById('next-when').textContent = when;
+    var end = new Date(nextCard.getAttribute('data-end'));
+    var diff = end - now;
+    document.getElementById('next-clock').style.display = 'flex';
+    renderCountdownInto('ne', diff > 0 ? diff : 0);
+  } else {
+    document.getElementById('next-exam-banner').innerHTML =
+      '<div class="all-done">All exams for this session are completed. 🎉</div>';
+  }
+}
+
+tick();
+setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
